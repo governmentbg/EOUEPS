@@ -1,0 +1,207 @@
+﻿@model EPayments.Web.Models.EserviceAdmin.TransactionDetailsVM
+@using EPayments.Common.Helpers
+@{
+    ViewBag.Title = "Детайли за плащане";
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">Детайли за плащане</h4>
+</div>
+<div class="modal-body">
+    @*<table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Verdana; font-size: 14px; border-collapse: collapse; margin-left: auto; margin-right: auto; table-layout: fixed; width: 100%;">*@
+    <table cellpadding="0" cellspacing="0" border="0" style="font-family:Verdana; font-size: 14px; border-collapse: collapse; margin-left: auto; margin-right: auto; table-layout: fixed; width: 100%;">
+        <tbody>
+
+            @if (!String.IsNullOrWhiteSpace(Model.BankStatementIban))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">IBAN на получател:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.BankStatementIban</td>
+                </tr>
+            }
+
+            @if (!String.IsNullOrWhiteSpace(Model.InfoSenderIban))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">IBAN на наредител:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoSenderIban</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoSenderBic))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">BIC на наредител:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoSenderBic</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoSenderName))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Име на наредител:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoSenderName</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDebtorName))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Име на задължено лице:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDebtorName</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDebtorBulstat))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">ЕИК на задължено лице:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDebtorBulstat</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDebtorEgn))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">ЕГН на задължено лице:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDebtorEgn</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDebtorLnch))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">ЛНЧ на задължено лице:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDebtorLnch</td>
+                </tr>
+            }
+
+            @if (!String.IsNullOrWhiteSpace(Model.InfoPaymentReason))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Oснование:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoPaymentReason</td>
+                </tr>
+            }
+
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDocumentNumber))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Номер на документ:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDocumentNumber</td>
+                </tr>
+            }
+            @if (Model.InfoDocumentDate.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Дата на документ:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.InfoDocumentDate))</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoPaymentType))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Код за вид плащане:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoPaymentType</td>
+                </tr>
+            }
+            @if (Model.InfoPaymentPeriodBegining.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Начало на платежен период:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.InfoPaymentPeriodBegining))</td>
+                </tr>
+            }
+            @if (Model.InfoPaymentPeriodEnd.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Край на платежен период:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.InfoPaymentPeriodEnd))</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoDocumentType))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Вид на документ:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoDocumentType</td>
+                </tr>
+            }
+            @if (Model.TransactionAccountingDate.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Счетоводна дата:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.TransactionAccountingDate))</td>
+                </tr>
+            }
+            @if (Model.TransactionAmount.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Сума:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DecimalToTwoDecimalPlacesFormat(Model.TransactionAmount)) лв.</td>
+                </tr>
+            }
+
+            <tr>
+                <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">&nbsp;</td>
+                <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">&nbsp;</td>
+            </tr>
+
+            @if (!String.IsNullOrWhiteSpace(Model.BankStatementNumber))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Номер на извлечение:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.BankStatementNumber</td>
+                </tr>
+            }
+            @if (Model.BankStatementDate.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Дата на извлечение:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.BankStatementDate))</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoSystemTransactionDesc))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Описание на транзакция:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoSystemTransactionDesc</td>
+                </tr>
+            }
+            @if (Model.TransactionDate.HasValue)
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Вальор:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@(Formatter.DateToBgFormatWithoutYearSuffix(Model.TransactionDate))</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.TransactionReferenceId))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Банкова референция:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.TransactionReferenceId</td>
+                </tr>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.InfoSystemTransactionType))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Вид на транзакция:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoSystemTransactionType</td>
+                </tr>
+            }
+
+            @if (!String.IsNullOrWhiteSpace(Model.InfoAC1AuthorizationCode))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Авторизационен код:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoAC1AuthorizationCode</td>
+                </tr>
+            }
+
+            @if (!String.IsNullOrWhiteSpace(Model.InfoAC1BankCardInfo))
+            {
+                <tr>
+                    <td width="50%" align="right" style="padding-right: 16px; font-weight:bold;">Данни за карта:</td>
+                    <td align="left" width="50%" style="padding-left: 15px; word-break: break-all; border-left: 1px solid #000;">@Model.InfoAC1BankCardInfo</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

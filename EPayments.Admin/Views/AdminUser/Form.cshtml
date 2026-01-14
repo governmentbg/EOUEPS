@@ -1,0 +1,93 @@
+﻿@model EPayments.Admin.Models.AdminUser.InternalAdminUserVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Admin.Models.AdminUser
+
+@{
+    Html.EnableClientValidation(false);
+
+    IDictionary<string, object> formControlHtmlAttributes = new Dictionary<string, object>();
+    formControlHtmlAttributes.Add("class", "form-control");
+
+    IDictionary<string, object> formControlToUpperHtmlAttributes = new Dictionary<string, object>();
+    formControlToUpperHtmlAttributes.Add("class", "form-control");
+    formControlToUpperHtmlAttributes.Add("style", "text-transform: uppercase;");
+
+    if (Model.Mode == FormMode.View)
+    {
+        formControlHtmlAttributes.Add("disabled", "disabled");
+        formControlToUpperHtmlAttributes.Add("disabled", "disabled");
+    }
+
+    IDictionary<string, object> formDropDownControlToUpperHtmlAttributes = new Dictionary<string, object>(formControlToUpperHtmlAttributes);
+    formDropDownControlToUpperHtmlAttributes.Add("SelectionMode", "Multiple");
+
+    List<SelectListItem> permissions = new List<SelectListItem>();
+    permissions.Add(new SelectListItem() { Value = "", Text = "--Няма права--" });
+    permissions.Add(new SelectListItem()
+    {
+        Value = ((int)(ValueType)PermissionEnum.Modify).ToString(),
+        Text = PermissionEnum.Modify.GetDescription(),
+        Selected = Model.Permission != null ? ((PermissionEnum)Model.Permission & (PermissionEnum)PermissionEnum.Modify) != 0 : false
+    });
+
+    permissions.Add(new SelectListItem()
+    {
+        Value = ((int)(ValueType)PermissionEnum.ViewReferences).ToString(),
+        Text = PermissionEnum.ViewReferences.GetDescription(),
+        Selected = Model.Permission != null ? ((PermissionEnum)Model.Permission & (PermissionEnum)PermissionEnum.ViewReferences) != 0 : false
+    });
+
+    permissions.Add(new SelectListItem()
+    {
+        Value = ((int)(ValueType)PermissionEnum.DistributionReferences).ToString(),
+        Text = PermissionEnum.DistributionReferences.GetDescription(),
+        Selected = Model.Permission != null ? ((PermissionEnum)Model.Permission & (PermissionEnum)PermissionEnum.DistributionReferences) != 0 : false
+    });
+}
+
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.InternalAdminUserId)
+
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Име</label>
+        @Html.TextBoxFor(m => m.Name, formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>ЕГН</label>
+        @Html.TextBoxFor(m => m.Egn, formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Суперадмин</label>
+        @Html.DropDownListFor(m => m.IsSuperadminBoolNom, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<BoolNom>(true), formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Права</label>
+        @if (Model.Permission != null)
+        {
+            @Html.ListBoxFor(m => m.Permissions, permissions, formDropDownControlToUpperHtmlAttributes)
+        }
+        else
+        {
+            @Html.ListBoxFor(m => m.Permissions, permissions, formDropDownControlToUpperHtmlAttributes)
+        }
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Статус активност</label>
+        @Html.DropDownListFor(m => m.IsActiveBoolNom, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<ActiveStatus>(true), formControlHtmlAttributes)
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c7c10d21-1c7c-4a66-9a39-a15599eec3d9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="C:\Users\Emiliyan.Evgeniev\Desktop\EdeliveryProd\EDeliveryIntegrationService.svc.xml" Protocol="file" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="EDeliveryIntegrationService.xsd" MetadataType="Schema" ID="2b1377f7-66ed-4cd4-808e-36aa1fd44d96" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd1" />
+    <MetadataFile FileName="EDeliveryIntegrationService1.xsd" MetadataType="Schema" ID="ae987fe3-7035-4d8b-818c-d063d470b448" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd4" />
+    <MetadataFile FileName="EDeliveryIntegrationService2.xsd" MetadataType="Schema" ID="62106abd-9f0a-4a4a-8546-51adee48abf6" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd3" />
+    <MetadataFile FileName="EDeliveryIntegrationService.wsdl" MetadataType="Wsdl" ID="0e999b5f-2bbb-4ee6-a086-e6364211627f" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="EDeliveryIntegrationService1.wsdl" MetadataType="Wsdl" ID="0a418192-0a36-4345-95e0-db96210a135e" SourceId="1" SourceUrl="file:///C:/Users/Emiliyan.Evgeniev/Desktop/EdeliveryProd/EDeliveryIntegrationService.svc.xml" />
+    <MetadataFile FileName="EDeliveryIntegrationService3.xsd" MetadataType="Schema" ID="e9825e22-d022-4d58-bd88-649d4aa3974f" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd5" />
+    <MetadataFile FileName="EDeliveryIntegrationService4.xsd" MetadataType="Schema" ID="df0e2951-1e6b-413b-820d-76adeba108cb" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd0" />
+    <MetadataFile FileName="EDeliveryIntegrationService5.xsd" MetadataType="Schema" ID="223a8135-fc39-4f61-b9cb-b03548b04f51" SourceId="1" SourceUrl="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

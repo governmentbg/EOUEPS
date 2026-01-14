@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPayments.Web", "EPayments.Web\EPayments.Web.csproj", "{56D35769-9C36-4EB5-B3EE-4210D984FE5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPayments.Model", "EPayments.Model\EPayments.Model.csproj", "{95719963-7F57-4D51-B3F9-06FE06E113CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPayments.Common", "EPayments.Common\EPayments.Common.csproj", "{D2BEA422-44B9-4E04-8F38-D22944D97A39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPayments.Data", "EPayments.Data\EPayments.Data.csproj", "{4537DC3C-F9D5-4926-AEDB-33C199599153}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPayments.CertificateUtils", "EPayments.CertificateUtils\EPayments.CertificateUtils.csproj", "{E13B449D-2EA1-45D0-A376-DB23E44E24D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Production|Any CPU = Production|Any CPU
+		ProductionTest|Any CPU = ProductionTest|Any CPU
+		PublicTest|Any CPU = PublicTest|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Stage|Any CPU = Stage|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Production|Any CPU.Build.0 = Production|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.ProductionTest|Any CPU.ActiveCfg = Production|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.ProductionTest|Any CPU.Build.0 = Production|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.PublicTest|Any CPU.ActiveCfg = PublicTest|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.PublicTest|Any CPU.Build.0 = PublicTest|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
+		{56D35769-9C36-4EB5-B3EE-4210D984FE5E}.Stage|Any CPU.Build.0 = Stage|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Production|Any CPU.Build.0 = Production|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.ProductionTest|Any CPU.ActiveCfg = Production|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.ProductionTest|Any CPU.Build.0 = Production|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.PublicTest|Any CPU.ActiveCfg = PublicTest|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.PublicTest|Any CPU.Build.0 = PublicTest|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
+		{95719963-7F57-4D51-B3F9-06FE06E113CA}.Stage|Any CPU.Build.0 = Stage|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Production|Any CPU.Build.0 = Production|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.ProductionTest|Any CPU.ActiveCfg = Production|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.ProductionTest|Any CPU.Build.0 = Production|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.PublicTest|Any CPU.ActiveCfg = PublicTest|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.PublicTest|Any CPU.Build.0 = PublicTest|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
+		{D2BEA422-44B9-4E04-8F38-D22944D97A39}.Stage|Any CPU.Build.0 = Stage|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Production|Any CPU.Build.0 = Production|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.ProductionTest|Any CPU.ActiveCfg = Production|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.ProductionTest|Any CPU.Build.0 = Production|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.PublicTest|Any CPU.ActiveCfg = PublicTest|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.PublicTest|Any CPU.Build.0 = PublicTest|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
+		{4537DC3C-F9D5-4926-AEDB-33C199599153}.Stage|Any CPU.Build.0 = Stage|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Production|Any CPU.Build.0 = Production|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.ProductionTest|Any CPU.ActiveCfg = Production|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.ProductionTest|Any CPU.Build.0 = Production|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.PublicTest|Any CPU.ActiveCfg = PublicTest|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.PublicTest|Any CPU.Build.0 = PublicTest|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Stage|Any CPU.ActiveCfg = Stage|Any CPU
+		{E13B449D-2EA1-45D0-A376-DB23E44E24D7}.Stage|Any CPU.Build.0 = Stage|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF5ED45D-756E-4F6B-95CC-198BECF9602D}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,129 @@
+﻿@using EPayments.Common.Helpers
+@using EPayments.Model.Enums
+@using EPayments.Web.DataObjects
+
+@model PaymentRequestDO
+
+@{
+    List<SelectListItem> uinTypes = new List<SelectListItem>();
+
+    foreach (var value in (UinType[])Enum.GetValues(typeof(UinType)))
+    {
+        uinTypes.Add(new SelectListItem()
+        {
+            Value = ((int)value).ToString(),
+            Text = Formatter.EnumToDescriptionString(value)
+        });
+    }
+
+    List<SelectListItem> ObligationType = new List<SelectListItem>()
+    {
+        new SelectListItem { Value = string.Empty, Text = "- Всички " }
+    };
+
+    foreach (var obligationType in PaymentRequestDO.ObligationTypesList)
+    {
+        if (obligationType.AlgorithmId == 0 && obligationType.IsActive)
+        {
+            SelectListItem selectedListTemp = new SelectListItem()
+            {
+                Value = obligationType.ObligationTypeId.ToString(),
+                Text = obligationType.Name + " | " + obligationType.PaymentTypeCode
+            };
+
+            ObligationType.Add(selectedListTemp);
+        }
+    }
+}
+
+ @using (Html.BeginForm(MVC.EserviceAdmin.ActionNames.CreatePaymentRequest, MVC.EserviceAdmin.Name, null, FormMethod.Post))
+ {
+    <div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary()
+            <br />
+        }
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.PaymentAmount, String.Format("Сума ({0})", CurrencyHelper.GetCurrencyCode()))
+            @Html.TextBoxFor(m => m.PaymentAmount, "{0:#0.00}", new { @class = "form-control", AutoComplete = "Off" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ObligationType)
+            @Html.DropDownListFor(m => m.ObligationType, ObligationType, new { @class = "form-control chosenobligation" })
+            @*<div class="form-control">@Model.ObligationType</div>*@
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.PaymentReason)
+            @Html.TextAreaFor(m => m.PaymentReason, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.PaymentReferenceType)
+            @Html.DropDownListFor(m => m.PaymentReferenceType,
+            new List<SelectListItem>()
+            {
+                    new SelectListItem { Value = ((int)PaymentReferenceType.Others).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.Others), },
+                    new SelectListItem { Value = ((int)PaymentReferenceType.Declaration).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.Declaration), },
+                    new SelectListItem { Value = ((int)PaymentReferenceType.RevisionAct).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.RevisionAct), },
+                    new SelectListItem { Value = ((int)PaymentReferenceType.PenalDecree).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.PenalDecree),},
+                    new SelectListItem { Value = ((int)PaymentReferenceType.PaymentInAdvance).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.PaymentInAdvance), },
+                    new SelectListItem { Value = ((int)PaymentReferenceType.PartPropertyNumber).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.PartPropertyNumber), },
+                    new SelectListItem { Value = ((int)PaymentReferenceType.CompulsoryCollectionOrder).ToString(), Text = Formatter.EnumToDescriptionString(PaymentReferenceType.CompulsoryCollectionOrder), },
+            }, new { @class = "form-control chosen" })
+
+            @*@Html.TextBoxFor(m => m.PaymentReferenceType, new { @class = "form-control", AutoComplete = "Off" })*@
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.PaymentReferenceNumber)
+            @Html.TextBoxFor(m => m.PaymentReferenceNumber, new { @class = "form-control", AutoComplete = "Off" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApplicantUinTypeId)
+            @Html.DropDownListFor(m => m.ApplicantUinTypeId, uinTypes, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApplicantUin)
+            @Html.TextBoxFor(m => m.ApplicantUin, new { @class = "form-control", AutoComplete = "Off" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApplicantName)
+            @Html.TextBoxFor(m => m.ApplicantName, new { @class = "form-control", AutoComplete = "Off" })
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExpirationDateAsString)
+            <div class="col-xs-8">
+                @Html.TextBoxFor(m => m.ExpirationDateAsString, new { @class = "form-control datepicker col-lg-8 col-md-8 col-sm-12 col-xs-12", AutoComplete = "Off" })
+            </div>
+            <div class="col-xs-4">
+                @Html.DropDownListFor(m => m.Minutes, PaymentRequestDO.TimeByMinutes.Select(kv => new SelectListItem() { Value = kv.Key.ToString(), Text = kv.Value, Selected = Model.Minutes == kv.Key }), new { @class = "form-control col-lg-4 col-md-4 col-sm-12 col-xs-12" })
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.AdditionalInformation)
+            @Html.TextAreaFor(m => m.AdditionalInformation, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <input type="submit" value="Създай" class="btn blue-btn" />
+    </div>
+}

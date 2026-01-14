@@ -1,0 +1,72 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using EPayments.Common.Helpers;
+
+<div class="container main-content">
+    <div class="message-page">
+        @{
+            ViewBag.Title = "Error";
+
+            if (Model != null && Model.GetType() == typeof(CustomHandleErrorInfo))
+            {
+                CustomHandleErrorInfo errorInfo = (CustomHandleErrorInfo)Model;
+
+                if (errorInfo.ErrorCode == "101")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <h1>Липсват данни за ЕГН в електронния подпис</h1>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Account.ActionNames.Login, MVC.Account.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "102")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <h1>Не е намерен електронен подпис</h1>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Account.ActionNames.Login, MVC.Account.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "103")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <h1>Неуспешно аутентикиране с електронен подпис</h1>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Account.ActionNames.Login, MVC.Account.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "104")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <h1>Отказан достъп</h1>
+                    <p>Лицето идентифицирано чрез електронния подпис не е оторизирано за достъп.</p>
+                    <p>Моля свържете се с администорите на системата за повече информация.</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Account.ActionNames.Login, MVC.Account.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "404")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <h1>Навигационна грешка</h1>
+                    <p>Несъществуващ адрес на страница.</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.EserviceClient.ActionNames.List, MVC.EserviceClient.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Системна грешка</h1>
+                    <p>Възникнала грешка при заявка към сървъра.</p>
+                    <p>Рестартирайте браузъра и опитайте по-късно!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.EserviceClient.ActionNames.List, MVC.EserviceClient.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+            }
+            else
+            {
+                <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                <h1>Системна грешка</h1>
+                <p>Възникнала грешка при заявка към сървъра.</p>
+                <p>Рестартирайте браузъра и опитайте по-късно!</p>
+            }
+        }
+    </div>
+</div>

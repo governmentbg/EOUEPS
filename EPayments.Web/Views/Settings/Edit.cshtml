@@ -1,0 +1,46 @@
+﻿@model EPayments.Web.Models.Settings.EditVM
+@{
+    ViewBag.Title = "Настройки за известия на потребител";
+}
+@using EPayments.Web.Common;
+
+<div class="container main-content">
+    <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 text-align-center">
+        <h1>Настройки за известия на потребител</h1>
+    </div>
+
+    @using (Html.BeginForm(MVC.Settings.ActionNames.Edit, MVC.Settings.Name, null, FormMethod.Post, new { @class = "inquiry" }))
+    {
+        <div class="col-lg-8 col-md-10 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 inquiry-form">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                @Html.ValidationSummary()
+            }
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Електронна поща</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Системата да ме известява при:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(m => m.RequestNotifications)
+                        <label for="RequestNotifications">постъпване на ново заявление за плащане</label>
+                        @Html.CheckBoxFor(m => m.StatusNotifications)
+                        <label for="StatusNotifications">промяна на статус за плащане</label>
+                        @Html.CheckBoxFor(m => m.StatusObligationNotifications)
+                        <label for="StatusObligationNotifications">промяна на статус за задължение</label>
+                        @Html.CheckBoxFor(m => m.AccessCodeNotifications)
+                        <label for="AccessCodeNotifications">генериране/деактивиране на Код за плащане</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="form-group col-md-12 snd">
+                    <input type="submit" value="Запази" />
+                    @Html.ActionLink("Отказ", MVC.Settings.ActionNames.View, MVC.Settings.Name, null, new { @class = "btn big-btn grey-btn" })
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,51 @@
+﻿@model EPayments.Admin.Models.ObligationType.ObligationTypeVM
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Преглед на Типа задължения</h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+    <div class="table-filters" style="">
+        <span class="filter-toggle opened">Основни данни</span>
+        <form class="clearfix" style="background-color: white; padding-left: 0px; padding-right: 0px; display: block;">
+
+            <div class="row">
+
+                @Html.Partial(MVC.ObligationType.Views.Form, Model)
+
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn blue-btn"
+                           href="@Url.Action(MVC.ObligationType.ActionNames.Edit, MVC.ObligationType.Name, new { id = Model.ObligationTypeId })">Редактирай</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+                           href="@Url.Action(MVC.ObligationType.ActionNames.List, MVC.ObligationType.Name)">Назад</a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

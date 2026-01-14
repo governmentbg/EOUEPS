@@ -1,0 +1,326 @@
+﻿@{ ViewBag.Title = "Вход"; }
+
+
+<div class="main-content home" style="margin-top:90px;">
+    <div class="tabs-container">
+        <ul id="nav-login-reg" class="nav-tabs home-tabs collapsed">
+            <li class="nav-item btn_home_entrance active" id="#entrance"><button class="btn-tabs-item btn-l btn_entrance">ВХОД</button></li>
+            <li class="nav-item btn_home_eauproviders" id="#eauproviders"><button class="btn-tabs-item btn-l btn_eauproviders">Доставчици на EAУ</button></li>
+            <li class="nav-item btn_home_serviceproviders" id="#serviceproviders"><button class="btn-tabs-item btn-l btn_serviceproviders">Доставчици на платежни услуги</button></li>
+        </ul>
+        <!--Tabs content entrance -- ВХОД  -->
+        <div class="home-tabs-target show" id="entrance">
+            <div class="home-tabs-target-login">
+                <div class="login-panel-home content-wrapper">
+                    <div class="top-content-box">
+                        <a class="btn btn-help-info" href="Home/Help">Помощна информация &gt;</a>
+                    </div>
+                    <p class="explain" style="margin-top: 15px; margin-bottom: 65px;">
+                        Ползватели на Единната входна точка за електронни плащания в централната и местна администрация са физически и юредически лица. Юридически лица могат да платят с код за плащане.
+                    </p>
+                    <!--<a href="~/SSL/Cert.aspx" class="btn btn-primary btn-l width-100">Вход с Електронен идентификатор</a>-->
+                    @Html.ActionLink("Вход с Електронен идентификатор", MVC.Account.ActionNames.EAuth, MVC.Account.Name, null, new { @class = "btn btn-primary btn-l width-100" })
+                    @*@Html.ActionLink("Вход", MVC.Account.ActionNames.EAuth, MVC.Account.Name, null, new { @class = "btn blue-btn", style = "text-transform: none; margin-left: 10px;" })*@
+
+                    <a href="/Home/AccessByCode" class="btn btn-light btn-l width-100">Вход с код за плащане</a>
+
+                </div>
+                <div class="home-right-col content-wrapper">
+                    <h2>Единна входна точка за електронни плащания към доставчици на електронни административни услуги</h2>
+                    <p></p>
+                    <p>
+                        Единната входна точка регистрира всички електронни плащания, свързани с предоставяне на електронни административни услуги,
+                        създава електронни платежни документи и осигурява възможност за плащането им по избран от потребителите (гражданите и бизнеса) начин.
+                        Целта е на потребителите да им бъдат предложени различни възможни начини на плащане и да се автоматизира процесът по уведомяване на администрацията
+                        за тези плащания, като с това значително ще се намали времето, необходимо за предоставянето на всяка услуга и ще се избегнат грешки,
+                        предизвикани от човешка намеса.
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "service_desc" }, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+            </div>
+            <div class="home-tabs-target-info info-login">
+                <div class="home-info-col content-wrapper first">
+                    <h2>Възможности за плащания</h2>
+                    <p>
+                        Единната входна точка за електронни плащания към доставчици на електронни административни услуги предоставя възможности за
+                        различни начини на плащане, от които гражданите и бизнесът могат да изберат най удобният за тях.
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "payment_methods" }, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+                <div class="home-info-col content-wrapper second">
+                    <h2>Начини на плащане на електронни услуги</h2>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/home/your-bank.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през централен виртуален ПОС терминал
+                            <span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през централен виртуален ПОС терминал</span> - ако срещу задължението виждате бутон „Плати с карта през ЦВПОС“, чрез избора му имате възможност бързо и удобно да платите с помощта на дебитна или кредитна карта. Плащането на задължения през ЦВПОС терминал ви дава възможността да заплатите задълженията си онлайн, без да дължите такса и комисиона за трансакцията.
+                                Имате възможност да платите и множество задължения наведнъж, като ги избирате едно по едно от полетата за отметка. Множество задължения наведнъж можете да платите само с помощта на дебитна или кредитна карта, като под списъка със задължения, след като сте ги избрали, ще видите бутон  „Плати избраните задължения през ЦВПОС“."
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/vposcard.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през виртуален ПОС терминал
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през виртуален ПОС терминал</span> - ако срещу конкретното задължението липсва бутон „Плати с карта през ЦВПОС“ или желаете да заплатите използвате друг начин на плащане може да платите с дебитна или кредитна карта през ВПОС.
+                            </span>
+                        </span>
+                    </p>
+
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/icons/actions/epay.png" /></span>
+                        <span class="tooltiplink">
+                            Плащане през ePay
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">Плащане през ePay</span> - ако срещу задължението виждате бутон ePay  „Плати през ePay“, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="home-info-col content-wrapper">
+                    <h2>Предимства</h2>
+                    <p class="row">
+                        <img src="~/Content/images/bluedot.png" />Създаване на електронни платежни документи и осигуряване на възможност за
+                        плащането им по избран от потребителите начин. (гражданите и бизнеса)
+                    </p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />Плащани по различни канали за достъп и начини за извършване на плащането.</p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />Сигурност и защитеност на комуникацията.</p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />Доказателствена тежест на комуникацията.</p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />Гаранция за автентичност на обменните документи.</p>
+                </div>
+                <div class="home-info-col content-wrapper help-center">
+                    <h2>Помощен контактен център</h2>
+                    <p class="info">За информационни системи на МЕУ:</p>
+                    <p class="phone">0700 20 341</p>
+                    <p class="email"><a href="mailto:help@e-gov.bg" class="display-block">help@e-gov.bg</a></p>
+                    <p class="help-ceter-link">
+                        <a href="https://egov.bg/wps/portal/egov/helpdesk" rel="noopener" target="_blank" class="display-block">
+                            Помощен контактен център
+                        </a>
+                    </p>
+                    <p class="feedback"><a href="~/Home/Feedback">Форма за обратна възка</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!--Tabs content eauproviders -- Доставчици на ЕАУ -->
+        <div class="home-tabs-target" id="eauproviders">
+            <div class="home-tabs-target-eau">
+                <div class="login-panel-home content-wrapper">
+                    <p class="explain" style="margin: 25px 0 186px 0; font-style: normal;">
+                        Доставчици на електронни административни услуги са лицата по чл. 9, ал. 1 от закона за електронното управление
+                    </p>
+                    <a href="/Home/Developers" class="btn btn-light btn-l width-100">Информация за разработчици</a>
+                </div>
+                <div class="home-right-col content-wrapper second">
+                    <h2>Единна входна точка за електронни плащания към доставчици на електронни административни услуги</h2>
+                    <p></p>
+                    <p>
+                        Единната входна точка за електронни плащания регистрира всички електронни плащания, свързани с предоставяне на електронни административни услуги,
+                        създава електронни платежни документи и осигурява възможност за плащането им по избран от потребителите (гражданите и бизнеса) начин.
+                        Това става възможно чрез свързването на всички доставчици на електронни административни услуги (ДЕАУ) и всички доставчици на платежни услуги (ДПУ).
+                        Когато потребител заяви електронна услуга в портала на дадена администрация, в Единната входна точка се създава и регистрира електронно платежно нареждане.
+                        На всички ДПУ се предоставя възможност да изтеглят информация за текущите задължения на всеки един потребител, като по този начин ДПУ имат
+                        възможност да предложат на своите клиенти различни начини на плащане - кредитна или дебитна карта през виртуален ПОС терминал или ЦВПОС; плащане чрез ePay.
+                        След като наредените суми (такси и други плащания) постъпят по сметка на съответната администрация - доставчик на услугата, банката, обслужваща администрацията
+                        уведомява Единната входна точка автоматично по електронен път, Единната входна точка уведомява информационната система на ДЕАУ, че плащането е извършено и безпрепятствено може да се
+                        осъществи процесът по предоставяне на съответната услуга.
+                    </p>
+                </div>
+            </div>
+            <div class="home-tabs-target-info info-eau">
+                <div class="home-info-col content-wrapper first">
+                    <h2>Общи условия за присъединяване на доставчици на електронни административни услуги</h2>
+                    <p>
+                        Общи условия за присъединяване на доствчици на електронни административни услуги към
+                        Единната входна точка за електронни плащания в централната и местна администрация и изплолзване на услугата "Централен ВПОС терминал",
+                        предоставяна от Министерство на електронното управление
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.AccessRules, MVC.Home.Name, null, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+                <div class="home-info-col content-wrapper second">
+                    <h2>Начини на плащане на електронни услуги</h2>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/home/your-bank.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през централен виртуален ПОС терминал
+                            <span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през централен виртуален ПОС терминал</span> - ако срещу задължението виждате бутон „Плати с карта през ЦВПОС“, чрез избора му имате възможност бързо и удобно да платите с помощта на дебитна или кредитна карта. Плащането на задължения през ЦВПОС терминал ви дава възможността да заплатите задълженията си онлайн, без да дължите такса и комисиона за трансакцията.
+                                Имате възможност да платите и множество задължения наведнъж, като ги избирате едно по едно от полетата за отметка. Множество задължения наведнъж можете да платите само с помощта на дебитна или кредитна карта, като под списъка със задължения, след като сте ги избрали, ще видите бутон  „Плати избраните задължения през ЦВПОС“."
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/vposcard.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през виртуален ПОС терминал
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през виртуален ПОС терминал</span> - ако срещу конкретното задължението липсва бутон „Плати с карта през ЦВПОС“ или желаете да заплатите използвате друг начин на плащане може да платите с дебитна или кредитна карта през ВПОС.
+                            </span>
+                        </span>
+                    </p>
+
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/icons/actions/epay.png" /></span>
+                        <span class="tooltiplink">
+                            Плащане през ePay
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">Плащане през ePay</span> - ако срещу задължението виждате бутон ePay  „Плати през ePay“, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="home-info-col content-wrapper">
+                    <h2>
+                        Образци на заявления за присъединяване /прекратяване на достъп доставчици на електронни административни услуги
+                        към Единната входна точка за електронни плащания
+                    </h2>
+                    <p class="row"><img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/appElectronicServicePdf">Заявление за присъединяване на доставчик на електронни административни услуги</a></p>
+                    <p class="row">
+                        <img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/appelectronicserviceCVPOSpdf">
+                            Заявление за присъединяване на доставчик на електронни административни услуги към Единната входна точка за
+                            електронни плащания чрез използване на Централен Виртуален ПОС терминал
+                        </a>
+                    </p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/appelectronicserviceterminationpdf">Заявление за прекратяване присъединяването на доставчик на електронни административни услуги</a></p>
+                </div>
+                <div class="home-info-col content-wrapper help-center">
+                    <h2>Помощен контактен център</h2>
+                    <p class="info">За информационни системи на МЕУ:</p>
+                    <p class="phone">0700 20 341</p>
+                    <p class="email"><a href="mailto:help@e-gov.bg" class="display-block">help@e-gov.bg</a></p>
+                    <p class="help-ceter-link">
+                        <a href="https://egov.bg/wps/portal/egov/helpdesk" rel="noopener" target="_blank" class="display-block">
+                            Помощен контактен център
+                        </a>
+                    </p>
+                    <p class="feedback"><a href="~/Home/Feedback">Форма за обратна възка</a></p>
+                </div>
+                <div class="home-info-col content-wrapper adminstrations">
+                    <h2>Включени администрации</h2>
+                    <p>
+                        В момента в Единната входна точка за плащания са включени органи от централната и местната  администрация, предоставящи електронни административни услуги на граждани и бизнеса.
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.Departments, MVC.Home.Name, null, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+                <div class="home-info-col content-wrapper useful-links">
+                    <h2>Полезни връзки</h2>
+                    <p><a target="_blank" href="http://www.egov.bg/">+ Единен портал за достъп до електронни административни услуги</a></p>
+                    <p><a target="_blank" href="http://www.strategy.bg/">+ Портал за обществени консултации</a></p>
+                    <p><a target="_blank" href="http://opendata.government.bg/">+ Портал за отворени данни на Република България</a></p>
+                    <p><a href="/Home/Help">+ Помощна информация</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!--Tabs content serviceproviders -- Доставчици на платежни услуги -->
+        <div class="home-tabs-target" id="serviceproviders">
+            <div class="home-tabs-target-dpu">
+                <div class="login-panel-home content-wrapper first">
+                    <p class="explain" style="margin: 35px 0 197px 0; font-style:normal;">
+                        Доставчици на платежни услуги са лицата по чл. 3 ал. 1 от закона за платежните схеми
+                    </p>
+                    <a href="/Home/Developers" class="btn btn-light btn-l width-100">Информация за разработчици</a>
+                </div>
+                <div class="home-right-col content-wrapper second">
+                    <h2>Начини на плащания, осигурявани от Единната входна точка</h2>
+                    <p></p>
+                    <p>
+                        Начините на плащане зависят от администрацията, която предоставя електронната административна услуга.
+                        Предлаганите от единната входна точна за електронни плащания начини на плащане са:
+                    </p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />кредитна или дебитна карта през виртуален ПОС терминал или ЦВПОС</p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" />плащане чрез ePay</p>
+                    @*<p class="row"><img src="~/Content/images/bluedot.png" />мобилни плащания, през АТМ или др. вид, ако избраната от потребителя банка предоставя такова.</p>*@
+                    <p>
+                        Възможните начини на плащане за всяка заявена административна услуга се визуализират в поле „действия“ срещу всяко задължение.
+                    </p>
+                </div>
+            </div>
+            <div class="home-tabs-target-info info-dpu">
+                <div class="home-info-col content-wrapper first">
+                    <h2>Общи условия за присъединяване на доставчици на платежни услуги</h2>
+                    <p>
+                        Общи условия за присъединяване на доствчици на платежни услуги към
+                        Единната входна точка за електронни плащания в централната и местна администрация и изплолзване на услугата "Централен ВПОС терминал",
+                        предоставяна от Министерство на електронното управление
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.AccessRules, MVC.Home.Name, null, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+                <div class="home-info-col content-wrapper second">
+                    <h2>Начини на плащане</h2>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/home/your-bank.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през централен виртуален ПОС терминал
+                            <span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през централен виртуален ПОС терминал</span> - ако срещу задължението виждате бутон „Плати с карта през ЦВПОС“, чрез избора му имате възможност бързо и удобно да платите с помощта на дебитна или кредитна карта. Плащането на задължения през ЦВПОС терминал ви дава възможността да заплатите задълженията си онлайн, без да дължите такса и комисиона за трансакцията.
+                                Имате възможност да платите и множество задължения наведнъж, като ги избирате едно по едно от полетата за отметка. Множество задължения наведнъж можете да платите само с помощта на дебитна или кредитна карта, като под списъка със задължения, след като сте ги избрали, ще видите бутон  „Плати избраните задължения през ЦВПОС“."
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/vposcard.png" /></span>
+                        <span class="tooltiplink">
+                            С карта през виртуален ПОС терминал
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">С карта през виртуален ПОС терминал</span> - ако срещу конкретното задължението липсва бутон „Плати с карта през ЦВПОС“ или желаете да заплатите използвате друг начин на плащане може да платите с дебитна или кредитна карта през ВПОС.
+                            </span>
+                        </span>
+                    </p>
+                    <p>
+                        <span class="icon-payment"><img src="~/Content/images/icons/actions/epay.png" /></span>
+                        <span class="tooltiplink">
+                            Плащане през ePay
+                            <span span class="tooltiptext">
+                                <span style="text-decoration:underline;">Плащане през ePay</span> - ако срещу задължението виждате бутон ePay  „Плати през ePay“, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="home-info-col content-wrapper">
+                    <h2>
+                        Образци на заявления за присъединяване /прекратяване на достъп доставчици на платежни услуги
+                        към Единната входна точка за електронни плащания
+                    </h2>
+                    <p class="row"><img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/apppaymentserviceVPOSpdf">Заявление за присъединяване на доставчик на платежни услуги услуги</a></p>
+                    <p class="row">
+                        <img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/apppaymentserviceCVPOSpdf">
+                            Заявление за присъединяване на доставчик на платежни услуги към Единната входна точка за
+                            електронни плащания чрез използване на Централен Виртуален ПОС терминал
+                        </a>
+                    </p>
+                    <p class="row"><img src="~/Content/images/bluedot.png" /><a href="~/Home/DownloadFile/apppaymentserviceterminationpdf">Заявление за прекратяване присъединяването на доставчик на платежни услуги</a></p>
+                </div>
+                <div class="home-info-col content-wrapper help-center">
+                    <h2>Помощен контактен център</h2>
+                    <p class="info">За информационни системи на МЕУ:</p>
+                    <p class="phone">0700 20 341</p>
+                    <p class="email"><a href="mailto:help@e-gov.bg" class="display-block">help@e-gov.bg</a></p>
+                    <p class="help-ceter-link">
+                        <a href="https://egov.bg/wps/portal/egov/helpdesk" rel="noopener" target="_blank" class="display-block">
+                            Помощен контактен център
+                        </a>
+                    </p>
+                    <p class="feedback"><a href="~/Home/Feedback">Форма за обратна възка</a></p>
+                </div>
+                <div class="home-info-col content-wrapper payments-services">
+                    <h2>Включени доставчици на платежни услуги</h2>
+                    <p>
+                        В момента към Единната входна точка за плащания са включени част от доставчиците на платежни услуги. Те предоставят различни начини на плащане
+                    </p>
+                    @Html.ActionLink("Научи повече", MVC.Home.ActionNames.BanksInfo, MVC.Home.Name, null, new { @class = "btn btn-learnmore btn-l" })
+                </div>
+                <div class="home-info-col content-wrapper useful-links">
+                    <h2>Полезни връзки</h2>
+                    <p><a target="_blank" href="http://www.egov.bg/">+ Единен портал за достъп до електронни административни услуги</a></p>
+                    <p><a target="_blank" href="http://www.strategy.bg/">+ Портал за обществени консултации</a></p>
+                    <p><a target="_blank" href="http://opendata.government.bg/">+ Портал за отворени данни на Република България</a></p>
+                    <p><a href="~/Home/Help">+ Помощна информация</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

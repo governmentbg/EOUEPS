@@ -1,0 +1,214 @@
+﻿@model EPayments.Web.Models.Settings.ViewVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Web.Common
+@{
+    ViewBag.Title = "Настройки за известия на потребител";
+
+    string paymentRequestIdentifierColClass = "results-cell sortable" + (Model.SearchDO.SortBy == RequestAccessListColumn.PaymentRequestIdentifier ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string serviceProviderNameColClass = "results-cell sortable" + (Model.SearchDO.SortBy == RequestAccessListColumn.ServiceProvider ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string paymentReasonColClass = "results-cell sortable" + (Model.SearchDO.SortBy == RequestAccessListColumn.PaymentReason ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string accessDateColClass = "results-cell sortable" + (Model.SearchDO.SortBy == RequestAccessListColumn.AccessDate ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string accessCountColClass = "results-cell sortable" + (Model.SearchDO.SortBy == RequestAccessListColumn.AccessCount ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+}
+
+<div class="container main-content">
+    <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 text-align-center">
+        <h1>Настройки за известия на потребител</h1>
+    </div>
+
+    <form class="inquiry" action="">
+        <div class="col-lg-8 col-md-10 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 inquiry-form">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Електронна поща</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", disabled = "disabled" })
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Системата да ме известява при:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(m => m.RequestNotifications, new { disabled = "disabled" })
+                        <label for="RequestNotifications">постъпване на ново заявление за плащане</label>
+                        @Html.CheckBoxFor(m => m.StatusNotifications, new { disabled = "disabled" })
+                        <label for="StatusNotifications">промяна на статус за плащане</label>
+                        @Html.CheckBoxFor(m => m.StatusObligationNotifications, new { disabled = "disabled" })
+                        <label for="StatusObligationNotifications">промяна на статус за задължение</label>
+                        @Html.CheckBoxFor(m => m.AccessCodeNotifications, new { disabled = "disabled" })
+                        <label for="AccessCodeNotifications">генериране/деактивиране на Код за плащане</label>
+                    </div>
+                </div>
+            </div> 
+            <div class="row ">
+                <div class="form-group col-md-12 snd">
+                    @Html.ActionLink("Редактирай", MVC.Settings.ActionNames.Edit, MVC.Settings.Name, null, new { @class = "btn big-btn blue-btn" })
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+
+    <h1 style="text-align: center;">Информация за достъп до данни</h1>
+    <p style="text-align: justify; margin-bottom: 30px;">В тази секция имате възможност да видите кой е достъпвал информация за Вашите задължения и от кой интернет адрес е направено това. При съмнения за неправомерен достъп, моля да уведомите Държавна агенция „Електронно управление” или да ни пишете чрез формата за @Html.ActionLink("Обратна връзка", MVC.Home.ActionNames.Feedback, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>
+
+    <div class="clear"></div>
+
+    <hr style="border-top: 1px solid #000; margin-bottom: 30px;" />
+
+    <!-- RequestAccessList table -->
+    <div class="results-table" style="@(Model.RequestAccessList.Count() == 0 ? "border-bottom: 0px;" : "")">
+        <div class="results-thead">
+            <div class="@paymentRequestIdentifierColClass">@Html.ActionLink("Номер", MVC.Settings.ActionNames.ViewSort, MVC.Settings.Name, Model.SearchDO.ToSortRequestAccessListRouteValues(RequestAccessListColumn.PaymentRequestIdentifier), null)</div>
+            <div class="@serviceProviderNameColClass">@Html.ActionLink("Получател", MVC.Settings.ActionNames.ViewSort, MVC.Settings.Name, Model.SearchDO.ToSortRequestAccessListRouteValues(RequestAccessListColumn.ServiceProvider), null)</div>
+            <div class="@paymentReasonColClass">@Html.ActionLink("Основание за плащане", MVC.Settings.ActionNames.ViewSort, MVC.Settings.Name, Model.SearchDO.ToSortRequestAccessListRouteValues(RequestAccessListColumn.PaymentReason), null)</div>
+            <div class="@accessDateColClass" style="width: 182px;">@Html.ActionLink("Последно достъпване", MVC.Settings.ActionNames.ViewSort, MVC.Settings.Name, Model.SearchDO.ToSortRequestAccessListRouteValues(RequestAccessListColumn.AccessDate), null)</div>
+            <div class="@accessCountColClass" style="width: 160px;">@Html.ActionLink("Брой достъпвания", MVC.Settings.ActionNames.ViewSort, MVC.Settings.Name, Model.SearchDO.ToSortRequestAccessListRouteValues(RequestAccessListColumn.AccessCount), null)</div>
+            <div class="results-cell" style="text-align: center; width: 1px;">Действия</div>
+        </div>
+        @if (Model.RequestAccessList.Count() > 0)
+        {
+            foreach (var accessItem in Model.RequestAccessList)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Номер:</span>
+                        <span class="label">@accessItem.PaymentRequestIdentifier</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Получател:</span>
+                        <span class="label">@accessItem.ServiceProviderName</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Основание за плащане:</span>
+                        <span class="label">@accessItem.PaymentReason</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Последно достъпване:</span>
+                        <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(accessItem.AccessDate))</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Брой достъпвания:</span>
+                        <span class="label" style="@(accessItem.AccessCount >= 20 ? "color:red;": String.Empty)">
+                            <table>
+                                <tr>
+                                    <td class="hidden-xs hidden-sm" align="right" style="width: 30px;">@accessItem.AccessCount</td>
+                                    <td class="visible-xs visible-sm" align="right">@accessItem.AccessCount</td>
+                                    <td align="left">
+                                        <a class="btn blue-btn" style="margin-left: 10px; margin-right: 5px;" data-toggle="modal" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                           href="@Url.Action(MVC.Settings.ActionNames.RequestAccessDetails, MVC.Settings.Name, new { id = accessItem.PaymentRequestGid, dummy = Guid.NewGuid().ToString() })">Информация</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Действия:</span>
+                        <span class="label">
+                            <div class="actions">
+                                <a class="btn green-btn" data-toggle="modal" data-backdrop="static" data-target="#myModalFixed"
+                                   href="@Url.Action(MVC.Payment.ActionNames.Order, MVC.Payment.Name, new { id = accessItem.PaymentRequestGid, showDetailsForm = true, dummy = Guid.NewGuid().ToString() })">Детайли</a>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.RequestAccessList.Count() == 0)
+    {
+        <div class="results-table-empty-results">
+            Към момента вашите задължение не са достъпвани от външни системи.
+        </div>
+    }
+
+    <!-- PAGINATION -->
+    <nav class="txt-align-left">
+        @{
+    Html.RenderPartial(MVC.Shared.Views._Paging, Model.RequestAccessListPagingOptions);
+        }
+    </nav>
+
+</div>
+
+@*Modal popup html*@
+<div class="modal fade" id="myModalFixed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@*Modal popup html*@
+<div class="modal fade" id="myModalFixedAgreement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@*Modal popup script*@
+<script type="text/javascript">
+    $(function () {
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+
+        // Initalize modal dialog
+        // attach myModalFixed bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#myModalFixed');
+            $(this).attr('data-toggle', 'modal');
+            $(this).attr('data-backdrop', 'static');
+        });
+
+        $('#myModalFixed').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#myModalFixed').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixed').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        //temporaly fix -> add dummy modal-link-agreement and myModalFixedAgreement
+
+        $('body').on('click', '.modal-link-agreement', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#myModalFixedAgreement');
+            $(this).attr('data-toggle', 'modal');
+            $(this).attr('data-backdrop', 'static');
+        });
+
+        $('#myModalFixedAgreement').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#myModalFixedAgreement').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixedAgreement').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+</script>

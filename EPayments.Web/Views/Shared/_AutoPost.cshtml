@@ -1,0 +1,20 @@
+﻿@model EPayments.Web.Models.Shared.AutoPostVM
+@{
+    Layout = null;
+}
+
+<p style="text-align: center; padding-top: 50px; font-size: 20px; font-weight: bold;">Моля, изчакайте...</p>
+<img style="display: block; margin-left: auto; margin-right: auto;" src="@Links.Content.images.app_loading_gif" alt="Please wait..." />
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<body onload="document.forms[0].submit()">
+    <form action="@Model.PostUrl" method="@Model.MethodType" class="inquiry">
+        @foreach (var pair in Model.PostValues)
+        {
+            <input type="hidden" id="@pair.Key" name="@pair.Key" value="@pair.Value" />
+        }
+        <input type="submit" value="" style="display: none;" />
+    </form>
+</body>
+</html>

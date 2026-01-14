@@ -1,0 +1,1288 @@
+﻿﻿@model EPayments.Web.Models.Payments.ListVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Web.Common
+@using EPayments.Model.DataObjects
+@{
+    ViewBag.Title = "Плащания";
+
+    string pPaymentIdColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.PaymentId ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string pCreateDateColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.CreateDate ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string pExpirationDateColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.ExpirationDate ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string pServiceProviderColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.ServiceProvider ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string pPaymentReasonColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.PaymentReason ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+
+    string pAmountColClass = "results-cell sortable" + (Model.SearchDO.PSortBy == PendingPaymentColumn.Amount ? (Model.SearchDO.PSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+
+    string prPaymentIdColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.PaymentId ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string prDateColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.Date ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string prServiceProviderColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.ServiceProvider ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string prPaymentReasonColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.PaymentReason ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string prAmountColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.Amount ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string prStatusColClass = "results-cell sortable" + (Model.SearchDO.PrSortBy == ProcessedPaymentColumn.Status ? (Model.SearchDO.PrSortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+}
+
+<script type="text/javascript">
+    @if (!String.IsNullOrWhiteSpace(Model.SearchDO.Focus))
+    {
+        <text>
+        $(document).ready(function () {
+            @if (Model.SearchDO.Focus.ToLower() == Constants.ProcessedPaymentsFocusId.ToLower())
+                {
+                    <text>
+                    $('html, body').animate({
+                        scrollTop: $('@(String.Format("#{0}", Model.SearchDO.Focus))').offset().top - 50
+                    }, 0);
+                    </text>
+                }
+        });
+        </text>
+    }
+</script>
+
+
+
+<div class="container main-content">
+
+    @if (((bool?)TempData[EPayments.Web.Common.TempDataKeys.IsVposPaymentSuccessful]).HasValue)
+    {
+        <div class="@(((bool?)TempData[EPayments.Web.Common.TempDataKeys.IsVposPaymentSuccessful]).Value ? "validation-summary-errors validation-success" : "validation-summary-errors validation-error")" style="margin-top: 20px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Web.Common.TempDataKeys.VposPaymentMessage]</li>
+            </ul>
+        </div>
+    }
+
+    @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+    {
+        <h2 style="margin-top: -30px; margin-bottom: 35px; text-align: center;">Информация за задължения и начини на плащане</h2>
+    }
+    else
+    {
+        if (Model.PendingPayments.Count() > 0)
+        {
+            <h1>Задължение за плащане на @Formatter.CamelCaseEachWord(Model.PendingPayments[0].ApplicantName)</h1>
+        }
+        else if (Model.ProcessedPayments.Count() > 0)
+        {
+            <h2 style="margin-top:-20px; margin-bottom:35px; text-align:center;">Информация за задължение за плащане на @Formatter.CamelCaseEachWord(Model.ProcessedPayments[0].ApplicantName)</h2>
+        }
+        else
+        {
+            <h2 style="margin-top:-20px; margin-bottom:35px; text-align:center;">Заявката е изтекла</h2>
+        }
+    }
+
+    @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+    {
+        <p style="text-align: justify;">
+            В настоящата страница имате възможност да видите всички Ваши текущи, неплатени задължения, както и информация за всички минали плащания.
+        </p>
+        <p style="text-align: justify; margin-bottom: 5px;">За да научите повече за начините на плащания натиснете <span style="font-weight:500;">„Научи повече“</span></p>
+        <p style="text-align: justify;">Също така имате възможност чрез бутона „Генерирай Код за плащане“ да предоставите възможност на друго лице да заплати Ваше задължение или чрез бутона „Откажи задължение“ -> „Откажи“ да го откажете.</p>
+        <p style="text-align: justify;">За повече информация вижте разделите „@Html.ActionLink("Какви начин на плащане осигурява Средата?", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "payment_methods" }, new { style = "color: #0097e5; text-decoration: none" })“ и „@Html.ActionLink("Потребители и вход в системата", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "question_1_header" }, new { style = "color: #0097e5; text-decoration: none" })“ в страницата @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>
+        <div class="more">
+            <p style="text-align: justify;"><span class="icon-payment"><img src="~/Content/images/home/your-bank.png" /></span><span style="text-decoration:underline;">С карта през централен виртуален ПОС терминал</span> - ако срещу задължението виждате бутон  „Плати с карта през ЦВПОС“, чрез избора му имате възможност бързо и удобно да платите с помощта на дебитна или кредитна карта. Плащането на задължения през ЦВПОС терминал ви дава възможността да заплатите задълженията си онлайн, без да дължите такса и комисиона за трансакцията. </p>
+            <p style="text-align: justify;">Имате възможност да платите и множество задължения наведнъж, като ги избирате едно по едно от полетата за отметка. Множество задължения наведнъж можете да платите само с помощта на дебитна или кредитна карта, като под списъка със задължения, след като сте ги избрали, ще видите бутон  „Плати избраните задължения през ЦВПОС“.</p>
+            <p style="text-align: justify;"><span class="icon-payment"><img src="~/Content/images/vposcard.png" /></span><span style="text-decoration:underline;">С карта през виртуален ПОС терминал</span> - ако срещу конкретното задължението липсва бутон „Плати с карта през ЦВПОС“ или желаете да заплатите използвате друг начин на плащане може да платите с дебитна или кредитна карта през ВПОС.</p>
+            <p style="text-align: justify;"><span class="icon-payment"><img src="~/Content/images/icons/actions/platejno.png" /></span><span style="text-decoration:underline;">С платежно нареждане</span> – друг начин на плащане, който може да изберете е плащането с платежно нареждане във вашата банка. За целта моля вижте @Html.ActionLink("списъка на включените в Единната входна точка за плащания банки", MVC.Home.ActionNames.BanksInfo, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }) и начините на плащане, които те предлагат за регистрираните в системата задължения, като натиснете бутона "Други начини на плащане". Ако Вашата банка не е в този списък, можете да отворите образец на платежно нареждане чрез бутона  „Платежно нареждане“, от където може да копирате реквизитите му или да го разпечатате на хартия и подадете на място в избрана от Вас банка.</p>
+            <p style="text-align: justify;"><span class="icon-payment"><img src="~/Content/images/icons/actions/epay.png" /></span><span style="text-decoration:underline;">Плащане през ePay</span> - ако срещу задължението виждате бутон ePay „Плати през ePay“, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a></p>
+            @*<p style="text-align: justify;">Ако не е възможно плащане с карта през ЦВПОС терминал за конкретно задължение или желаете да използвате друг начин на плащане, моля, вижте @Html.ActionLink("списъка на включените в Единната входна точка за плащания банки", MVC.Home.ActionNames.BanksInfo, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }) и начините на плащане, които те предлагат за регистрираните в системата задължения, като натиснете бутона "Други начини на плащане". Ако Вашата банка не е в този списък, можете да отворите образец на платежно нареждане чрез бутона <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.platejno_png" /></span>&nbsp;„Платежно нареждане“</nobr><nobr class="hidden-lg">„Платежно“</nobr>, от където може да копирате реквизитите му или да го разпечатате на хартия и подадете на място в избрана от Вас банка.</p>*@
+            @*<p style="text-align: justify;">Ако срещу задължението виждате бутон ePay <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.epay_png" /></span>&nbsp;„Плати чрез EPAY или карта“</nobr><nobr class="hidden-lg">„Плати чрез EPAY или карта“</nobr>, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a>.</p>*@
+            @*<p style="text-align: justify;">Също така имате възможност чрез бутона <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.otorizacia_png" /></span>&nbsp;„Генерирай Код за плащане“</nobr><nobr class="hidden-lg">„Оторизирай“</nobr> да предоставите възможност на друго лице да заплати Ваше задължение или чрез бутона <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.otkaji_png" /></span>&nbsp;„Откажи задължение“</nobr><nobr class="hidden-лг">„Откажи“</nobr> да го откажете.</p>*@
+            @*<p style="text-align: justify; margin-bottom: 30px;">За повече информация вижте разделите „@Html.ActionLink("Какви начин на плащане осигурява Средата?", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "payment_methods" }, new { style = "color: #0097e5; text-decoration: none" })“ и „@Html.ActionLink("Потребители и вход в системата", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "question_1_header" }, new { style = "color: #0097e5; text-decoration: none" })“ в страницата @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>*@
+        </div>
+        <div style="text-align:right;padding-right:25px;"><button class="btn btn-info seemore">Научи повече</button></div>
+    }
+    else
+    {
+        if (Model.PendingPayments.Count() > 0)
+        {
+            @*<p style="text-align: justify;">Ако срещу задължението виждате бутон <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.karta_png" /></span>&nbsp;„Плати онлайн с карта“</nobr><nobr class="hidden-lg">„Плати с карта“</nobr>, чрез избора му имате възможност бързо и удобно да платите с помощта на дебитна или кредитна карта.</p>*@
+            @*<p style="text-align: justify;">Ако не е възможно плащане с карта за това конкретно задължение или желаете да използвате друг начин на плащане, моля, вижте @Html.ActionLink("списъка на включените в Средата банки", MVC.Home.ActionNames.BanksInfo, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }) и начините на плащане, които те предлагат за регистрираните в системата задължения. Ако използваната от Вас банка не е в този списък, можете да отворите образец на платежно нареждане чрез бутона <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.platejno_png" /></span>&nbsp;„Платежно нареждане“</nobr><nobr class="hidden-lg">„Платежно“</nobr>, от където може да копирате реквизитите му или да го разпечатате на хартия и подадете на място в избрана от Вас банка.</p>*@
+            @*<p style="text-align: justify;">Ако срещу задължението виждате бутон ePay <nobr class="hidden-xs hidden-sm hidden-md"><span class="icon-action"><img src="@Links.Content.images.icons.actions.epay_png" /></span>&nbsp;„Плати чрез EPAY или карта“</nobr><nobr class="hidden-lg">„Плати чрез EPAY или карта“</nobr>, чрез избора му имате възможност бързо и удобно да платите чрез дебитна или кредитна карта. При плащане чрез ePay се дължи такса, която се поема от задълженото лице. Размера на таксите можете да намерите на адрес: <a style="color: #0097e5; text-decoration: none" target="_blank" href="https://www.epay.bg/v3main/front?p=fee_mr">https://www.epay.bg/v3main/front?p=fee_mr</a>.</p>*@
+            @*<p style="text-align: justify; margin-bottom: 30px;">За повече информация вижте разделите „@Html.ActionLink("Какви начин на плащане осигурява Средата?", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "payment_methods" }, new { style = "color: #0097e5; text-decoration: none" })“ и „@Html.ActionLink("Потребители и вход в системата", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "question_1_header" }, new { style = "color: #0097e5; text-decoration: none" })“ в страницата @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>*@
+        }
+        else if (Model.ProcessedPayments.Count() > 0)
+        {
+            string statusText = String.Empty;
+
+            switch (Model.ProcessedPayments[0].PaymentRequestStatusId)
+            {
+                case PaymentRequestStatus.Authorized:
+                    statusText = "платено с карта";
+                    break;
+                case PaymentRequestStatus.Ordered:
+                    statusText = "платено по банков път";
+                    break;
+                case PaymentRequestStatus.Paid:
+                    statusText = "платено";
+                    break;
+                case PaymentRequestStatus.Expired:
+                    statusText = "прекратено поради изтекъл срок за плащане";
+                    break;
+                case PaymentRequestStatus.Canceled:
+                    statusText = "отказано от задълженото лице";
+                    break;
+                case PaymentRequestStatus.Suspended:
+                    statusText = "отказано от административната информационна система, която го е създала";
+                    break;
+                default:
+                    break;
+            }
+
+            <p style="text-align: justify;">Задължението на @Formatter.CamelCaseEachWord(Model.ProcessedPayments[0].ApplicantName) е @statusText.</p>
+        }
+    }
+
+    <hr style="border-top: 1px solid #000;" />
+
+    @if (Model.PendingPayments.Count() > 0 || !this.CurrentUser.IsAuthorizedByAccessCode)
+    {
+        <h2 class="table-heading" style="width: 100%;">
+            Задължения за плащане
+            @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+            {
+                <text>&nbsp;</text><small>(@(Model.PendingPaymentsPagingOptions.TotalItemCount == 0 ? "няма налични задължения" : String.Format("{0} {1}", Model.PendingPaymentsPagingOptions.TotalItemCount, Model.PendingPaymentsPagingOptions.TotalItemCount == 1 ? "неплатено задължение" : "неплатени задължения")))</small>
+            }
+        </h2>
+
+        <!-- PendingPayments table -->
+        <div class="results-table @(Model.PendingPayments.Count() > 0 ? "without-table-display" : "")" style="@(Model.PendingPayments.Count() == 0 ? "border-bottom: 0px;" : "")">
+            <div class="results-thead">
+                @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+                {
+                    <div class="results-cell" style="text-align: center; width: 1px; min-width:20px;">
+                        &nbsp;
+                        <input type="checkbox" id="selectAll" name="selectAll" />
+                        <label for="selectAll"></label>
+                    </div>
+                }
+                <div class="@pPaymentIdColClass">@Html.ActionLink("Номер", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.PaymentId), null)</div>
+                <div class="results-cell">Вид на задължението</div>
+                <div class="@pServiceProviderColClass">@Html.ActionLink("Получател", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.ServiceProvider), null)</div>
+                <div class="results-cell">Инициатор</div>
+                <div class="@pPaymentReasonColClass">@Html.ActionLink("Основание за плащане", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.PaymentReason), null)</div>
+                <div class="@pCreateDateColClass">@Html.ActionLink("Дата и час", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.CreateDate), null)</div>
+                <div class="@pExpirationDateColClass">@Html.ActionLink("Валидно до", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.ExpirationDate), null)</div>
+
+                @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                {
+                    <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                {
+                    if (CurrencyHelper.IsEuroTimePeriod)
+                    {
+                        <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                        <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                    }
+                    else
+                    {
+                        <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                        <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                    }
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                {
+                    <div class="@pAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortPendingRequestsRouteValues(PendingPaymentColumn.Amount), null)</div>
+                }
+
+                <div class="results-cell" style="text-align: center; width: 1px;">Плащане</div>
+            </div>
+            @if (Model.PendingPayments.Count() > 0)
+            {
+                foreach (var payment in Model.PendingPayments)
+                {
+                    <div class="results-row">
+                        @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+                        {
+                            <div class="results-cell with-fixed-layout-2">
+                                @if (payment.IsCvposEnabled && !payment.IsInProgress)
+                                {
+                                    var paymentPayOrder = "null";
+                                    var partidaNo = string.Empty;
+                                    if (payment.PayOrder != null)
+                                    {
+                                        paymentPayOrder = payment.PayOrder.ToString();
+                                        try
+                                        {
+                                            var addInfoJsonDecoded = Newtonsoft.Json.JsonConvert.DeserializeObject<MDT_ExtendedInfoJson>(JsonHelper.RepairBrokenAdditionalInformationJsonString(payment.AdditionalInfo));
+                                            partidaNo = @addInfoJsonDecoded.PartidaNo;
+                                        }
+                                        catch { }
+                                    }
+                                    var index_data = Model.PendingPayments.IndexOf(payment);
+                                    var onClick_data = "checkPayment(" + payment.PaymentRequestIdentifier + ", " + index_data + ", " + paymentPayOrder + ", " + payment.ObligationTypeId + ", " + payment.MaxPayOrder + ", " + payment.EserviceClientId + ")";
+                                    var htmlAttributes = (object)new { @onclick = onClick_data, data_id = payment.PaymentRequestIdentifier, index = index_data, data_obligationId = payment.ObligationTypeId, data_payOrder = payment.PayOrder, data_esId = payment.EserviceClientId, data_maxPayOrder = payment.MaxPayOrder, data_partidaNo = partidaNo };
+                                    var htmlAttributesWithDisable = (object)new { @disabled = "disabled", @onclick = onClick_data, data_id = payment.PaymentRequestIdentifier, index = index_data, data_obligationId = payment.ObligationTypeId, data_payOrder = payment.PayOrder, data_esId = payment.EserviceClientId, data_maxPayOrder = payment.MaxPayOrder, data_partidaNo = partidaNo };
+
+                                    @Html.CheckBoxFor(p =>
+                                                       Model.PendingPayments[Model.PendingPayments.IndexOf(payment)].SelectedForPayment,
+                                                       (payment.IsDisabled ? htmlAttributesWithDisable : htmlAttributes));
+                                    <label for="PendingPayments_@Model.PendingPayments.IndexOf(payment)__SelectedForPayment"></label>
+                                }
+                            </div>
+                        }
+                        <div class="results-cell with-fixed-layout-8">
+                            <span class="hidden-lg">Номер:</span>
+                            <span class="obligation-payments @(payment.PayOrder != null ? "toggle": "")">@payment.PaymentRequestIdentifier</span>
+                        </div>
+                        <div class="results-cell with-fixed-layout-10">
+                            <span class="hidden-lg">Вид на задължението:</span>
+                            <span class="label">@payment.ObligationType</span>
+                        </div>
+                        <div class="results-cell with-fixed-layout-10">
+                            <span class="hidden-lg">Получател:</span>
+                            <span class="label">@payment.ServiceProviderName</span>
+                        </div>
+                        <div class="results-cell with-fixed-layout-10">
+                            <span class="hidden-lg">Инициатор:</span>
+                            <span class="label">@payment.InitiatorName</span>
+                        </div>
+                        <div class="results-cell with-fixed-layout-15">
+                            <span class="hidden-lg">Основание:</span>
+                            <span class="label">@payment.PaymentReason</span>
+                            <!--
+                            <br />
+                            <span class="label" style="color:red;">п.плащане: @payment.PayOrder</span>
+                            -->
+                        </div>
+                        <div class="results-cell with-fixed-layout-8">
+                            <span class="hidden-lg">Дата и час:</span>
+                            <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSecondsNotLocalTime(payment.CreateDate))</span>
+                        </div>
+                        <div class="results-cell with-fixed-layout-8">
+                            <span class="hidden-lg">Валидно до:</span>
+                            <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSecondsNotLocalTime(payment.ExpirationDate))</span>
+                        </div>
+
+                        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                        {
+                            <div class="results-cell with-fixed-layout-8">
+                                @*big resolution layout - PaymentAmount*@
+                                <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 20px; margin: 0px; text-wrap-mode: nowrap;">
+                                    <span class="label">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </p>
+                                @*small resolution layout - PaymentAmount*@
+                                <span class="hidden-lg">Сума:</span>
+                                <span class="label hidden-lg">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                </span>
+                            </div>
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                        {
+                            if (CurrencyHelper.IsEuroTimePeriod)
+                            {
+                                <div class="results-cell with-fixed-layout-8">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 30px; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума:</span>
+                                    <span class="label hidden-lg">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                    </span>
+                                </div>
+                                <div class="results-cell with-fixed-layout-8">
+                                    @*big resolution layout - PaymentAmount*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 20px; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmount*@
+                                    <span class="hidden-lg">Сума:</span>
+                                    <span class="label hidden-lg">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="results-cell with-fixed-layout-8">
+                                    @*big resolution layout - PaymentAmount*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 20px; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmount*@
+                                    <span class="hidden-lg">Сума:</span>
+                                    <span class="label hidden-lg">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </div>
+                                <div class="results-cell with-fixed-layout-8">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 30px; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума:</span>
+                                    <span class="label hidden-lg">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                    </span>
+                                </div>
+                            }
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                        {
+                            <div class="results-cell with-fixed-layout-8">
+                                @*big resolution layout - PaymentAmountRequest*@
+                                <p class="hidden-xs hidden-sm hidden-md" style="text-align: right; padding-right: 30px; margin: 0px; text-wrap-mode: nowrap;">
+                                    <span class="label">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                    </span>
+                                </p>
+                                @*small resolution layout - PaymentAmountRequest*@
+                                <span class="hidden-lg">Сума:</span>
+                                <span class="label hidden-lg">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</strong>
+                                </span>
+                            </div>
+                        }
+
+                        <div class="results-cell with-fixed-layout-20">
+                            <span class="hidden-lg">Плащане:</span>
+                            <span class="label">
+                                <div class="actions">
+                                    <div class="payment-actions-section @(payment.IsDisabled ? "disabled-actions": "")">
+                                        @if (payment.IsCvposEnabled && !payment.IsInProgress)
+                                        {
+                                            <a class="icon-action hidden-xs hidden-sm hidden-md vpos-icon" data-toggle="modal" tooltip tooltip-title="Плати с карта през ЦВПОС"
+                                               data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                               href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementCvpos, MVC.Payment.Name, new { id = payment.Gid })">
+                                                <img src="@Links.Content.images.home.your_bank_png" />
+                                            </a>
+
+                                            /*
+                                            <a id="showOtherActionsButton_@Model.PendingPayments.IndexOf(payment)"
+                                               class="btn blue-btn hidden-xs hidden-sm hidden-md @(payment.PayOrder.HasValue ? "disabled-payments-mdt": "")"
+                                               style="cursor: pointer; float:none;padding-top:1px;padding-bottom:4px;"
+                                               tooltip tooltip-title="Покажи други начини на плащане" data-placement="top"
+                                               confirmation data-btnoklabel="Да, желая да платя с друг начин на плащане"
+                                               data-btncancellabel="Не, не желая да платя с друг начин на плащане"
+                                               data-btnokclass="btn btn-sm red"
+                                               data-href="javascript:showOtherActionsConfirmed('showOtherActionsButton_'+@Model.PendingPayments.IndexOf(payment), 'otherActions_'+@Model.PendingPayments.IndexOf(payment), true)"
+                                               confirm-title="Сигурни ли сте, че не искате да платите през ЦВПОС?">Други начини на плащане</a>
+                                            */
+                                        }
+
+                                        <div id="otherActions_@Model.PendingPayments.IndexOf(payment)" class="hidden-xs hidden-sm hidden-md" style="@((payment.AlgorithmId==1 || payment.AlgorithmId==2) ? "display: none" : "display: inline");">
+                                            @if (payment.IsEpayVposEnabled && !payment.IsInProgress && payment.AlgorithmId == 0)
+                                            {
+                                                <a class="icon-action hidden-xs hidden-sm hidden-md" data-toggle="modal" tooltip tooltip-title="Плати чрез EPAY или карта"
+                                                   data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementEpay, MVC.Payment.Name, new { id = payment.Gid })">
+                                                    <img src="@Links.Content.images.icons.actions.epay_png" />
+                                                </a>
+                                            }
+
+                                            @if (payment.Vpos != null && !payment.IsInProgress)
+                                            {
+                                                if (payment.Vpos == Vpos.Dsk || payment.Vpos == Vpos.DskEcomm)
+                                                {
+                                                    <a class="icon-action hidden-xs hidden-sm hidden-md" data-toggle="modal" tooltip tooltip-title="Плати онлайн с карта" data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementDsk, MVC.Payment.Name, new { id = payment.Gid })">
+                                                        <img src="@Links.Content.images.icons.actions.karta_png" />
+                                                    </a>
+                                                }
+                                                else if (payment.Vpos == Vpos.Borica)
+                                                {
+                                                    <a class="icon-action hidden-xs hidden-sm hidden-md" data-toggle="modal" tooltip tooltip-title="Плати онлайн с карта" data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementBorica, MVC.Payment.Name, new { id = payment.Gid })">
+                                                        <img src="@Links.Content.images.icons.actions.karta_png" />
+                                                    </a>
+                                                }
+                                                else if (payment.Vpos == Vpos.FiBank)
+                                                {
+                                                    <a class="icon-action hidden-xs hidden-sm hidden-md" data-toggle="modal" tooltip tooltip-title="Плати онлайн с карта" data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementFiBank, MVC.Payment.Name, new { id = payment.Gid })">
+                                                        <img src="@Links.Content.images.icons.actions.karta_png" />
+                                                    </a>
+                                                }
+                                            }
+                                            @if (payment.AlgorithmId != 0)
+                                            {
+                                                <a class="icon-action hidden-xs hidden-sm hidden-md" data-toggle="modal" tooltip data-placement="top" tooltip-title="Платежно нареждане" data-backdrop="static" data-target="#myModalFixed"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.Order, MVC.Payment.Name, new { id = payment.Gid, dummy = Guid.NewGuid().ToString() })">
+                                                    <img src="@Links.Content.images.icons.actions.platejno_png" />
+                                                </a>
+                                            }
+                                            @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+                                            {
+                                                <a class="icon-action hidden-xs hidden-sm hidden-md" tooltip data-placement="top" tooltip-title="Генерирай Код за плащане"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.Share, MVC.Payment.Name, new { id = payment.Gid })">
+                                                    <img src="@Links.Content.images.icons.actions.otorizacia_png" />
+                                                </a>
+                                            }
+                                        </div>
+
+
+                                        @*Mobile layout*@
+
+                                        @if (payment.IsCvposEnabled && !payment.IsInProgress)
+                                        {
+                                            <a class="btn darkgreen-btn icon-action hidden-lg" data-toggle="modal" data-target="#myModalFixedAgreement"
+                                               href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementCvpos, MVC.Payment.Name, new { id = payment.Gid })">Плати през ЦВПОС</a>
+                                            @*
+                                                            if (payment.AlgorithmId != 1 && payment.AlgorithmId != 2)
+                                                            {
+                                                    <a id="showOtherActionsMobileButton_@Model.PendingPayments.IndexOf(payment)"
+                                                       class="btn blue-btn hidden-lg" style="cursor: pointer; float:none"
+                                                       tooltip tooltip-title="Покажи други начини на плащане" data-placement="top"
+                                                       confirmation data-btnoklabel="Да, желая да платя с друг начин на плащане"
+                                                       data-btncancellabel="Не, не желая да платя с друг начин на плащане"
+                                                       data-btnokclass="btn btn-sm red"
+                                                       data-href="javascript:showOtherActionsConfirmed('showOtherActionsMobileButton_'+@Model.PendingPayments.IndexOf(payment),
+                                                            'otherActionsMobile_'+@Model.PendingPayments.IndexOf(payment), true)"
+                                                       confirm-title="Сигурни ли сте, че не искате да платите през ЦВПОС?">Други начини на плащане</a>
+                                                }
+                                            *@
+                                        }
+                                        <div id="otherActionsMobile_@Model.PendingPayments.IndexOf(payment)" class="hidden-lg" style="@((payment.AlgorithmId==1 || payment.AlgorithmId==2) ? "display: none" : "display: inline");">
+                                            @if (payment.IsEpayVposEnabled && !payment.IsInProgress && payment.AlgorithmId == 0)
+                                            {
+                                                <a class="btn blue-btn hidden-lg" data-toggle="modal" data-target="#myModalFixedAgreement"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementEpay, MVC.Payment.Name, new { id = payment.Gid })">
+                                                    Плати чрез EPAY или карта
+                                                </a>
+                                            }
+
+                                            @if (payment.Vpos != null && !payment.IsInProgress)
+                                            {
+                                                if (payment.Vpos == Vpos.Dsk || payment.Vpos == Vpos.DskEcomm)
+                                                {
+                                                    <a class="btn blue-btn hidden-lg" data-toggle="modal" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementDsk, MVC.Payment.Name, new { id = payment.Gid })">Плати с карта</a>
+                                                }
+                                                else if (payment.Vpos == Vpos.Borica)
+                                                {
+                                                    <a class="btn blue-btn hidden-lg" data-toggle="modal" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementBorica, MVC.Payment.Name, new { id = payment.Gid })">Плати с карта</a>
+                                                }
+                                                else if (payment.Vpos == Vpos.FiBank)
+                                                {
+                                                    <a class="btn blue-btn hidden-lg" data-toggle="modal" data-target="#myModalFixedAgreement"
+                                                       href="@Url.Action(MVC.Payment.ActionNames.TaxAgreementFiBank, MVC.Payment.Name, new { id = payment.Gid })">Плати с карта</a>
+                                                }
+                                            }
+                                            @if (payment.AlgorithmId != 0)
+                                            {
+                                                <a class="btn green-btn hidden-lg" data-toggle="modal" data-target="#myModalFixed"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.Order, MVC.Payment.Name, new { id = payment.Gid, dummy = Guid.NewGuid().ToString() })">Платежно</a>
+                                            }
+                                            @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+                                            {
+                                                <a class="btn orange-btn hidden-lg"
+                                                   href="@Url.Action(MVC.Payment.ActionNames.Share, MVC.Payment.Name, new { id = payment.Gid })">Оторизирай</a>
+
+                                            }
+                                        </div>
+
+                                    </div>
+
+                                    @if (!this.CurrentUser.IsAuthorizedByAccessCode && payment.AlgorithmId != 1)
+                                    {
+                                        <a class="icon-action hidden-xs hidden-sm hidden-md" style="cursor: pointer;" tooltip tooltip-title="Откажи задължение" data-placement="auto"
+                                           confirmation data-btnoklabel="Да, искам да откажа задължение за плащане"
+                                           data-btncancellabel="Не, не желая да откажа задължение за плащане"
+                                           data-btnokclass="btn btn-sm red" confirm-title="Сигурни ли сте, че искате да откажете заявено плащане?"
+                                           data-href="@Url.Action(MVC.Payment.ActionNames.CancelRequest, MVC.Payment.Name, new { id = payment.Gid })">
+                                            <img src="@Links.Content.images.icons.actions.otkaji_png " />
+                                        </a>
+                                    }
+
+                                    @if (!this.CurrentUser.IsAuthorizedByAccessCode && payment.AlgorithmId != 1)
+                                    {
+                                        <a class="btn grey-btn icon-action hidden-lg"
+                                           confirmation data-btnoklabel="Да, искам да откажа задължение за плащане"
+                                           data-btncancellabel="Не, не желая да откажа задължение за плащане"
+                                           data-btnokclass="btn btn-sm red"
+                                           confirm-title="Сигурни ли сте, че искате да откажете заявено плащане?"
+                                           data-href="@Url.Action(MVC.Payment.ActionNames.CancelRequest, MVC.Payment.Name, new { id = payment.Gid })">Откажи</a>
+                                    }
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+
+                    if (payment.PayOrder.HasValue && @payment.AdditionalInfo != null)
+                    {
+                        var addInfoJson = Newtonsoft.Json.JsonConvert.DeserializeObject<MDT_ExtendedInfoJson>
+                                (JsonHelper.RepairBrokenAdditionalInformationJsonString(payment.AdditionalInfo));
+
+                        <div class="details-row">
+                            <h5 class="pending-payments-warning @(payment.IsDisabled ? "shown" : "")">Налични са предходни задължения за плащане</h5>
+                            <h5>Детайли за плащането</h5>
+                            <div>
+                                Партида № : @addInfoJson.PartidaNo <br />
+                                Партида : @addInfoJson.RegisterNo @addInfoJson.PropertyAddress <br />
+                                Период : @addInfoJson.TaxPeriodYear <br />
+                                Вноска : @addInfoJson.InstNo <br />
+                                Поредно плащане : @payment.PayOrder <br />
+                                Главница : @addInfoJson.PaidInstalmentSum <br />
+                                Лихва : @addInfoJson.PaidInterestSum <br />
+                                @if (addInfoJson.regionName != null)
+                                {
+                                    <span>Район:</span> @addInfoJson.regionName <br />
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    if (payment.PayOrder.HasValue && @payment.AdditionalInfo != null)
+                    {
+
+                        var addInfoJson = Newtonsoft.Json.JsonConvert.DeserializeObject<MDT_ExtendedInfoJson>
+                            (JsonHelper.RepairBrokenAdditionalInformationJsonString(payment.AdditionalInfo));
+
+                        <div class="modal fade" id="details_@payment.PaymentRequestIdentifier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Детайли за плащането</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Партида Номер : @addInfoJson.PartidaNo <br />
+                                        Година : @addInfoJson.TaxPeriodYear <br />
+                                        Поредно плащане : @payment.PayOrder <br />
+                                        Регистрация : @addInfoJson.RegisterNo <br />
+                                        Адрес : @addInfoJson.PropertyAddress <br />
+                                        Вид : @addInfoJson.KindDebtRegName <br />
+                                        @if (addInfoJson.regionName != null)
+                                        {
+                                            <span>Район:</span> @addInfoJson.regionName <br />
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+            }
+        </div>
+
+        <div id="totalAmmount">
+            <span class="label">Сума от избраните задължения: </span>
+            <span class="label" id="labelTotalAmmount">
+                <strong></strong>
+            </span>
+
+            <a id="cvpos" class="icon-action hidden-xs hidden-sm hidden-md" style="cursor: pointer;" data-toggle="modal" tooltip tooltip-title="Плати избраните задължения през ЦВПОС"
+               data-placement="top" data-backdrop="static" data-target="#myModalFixedAgreement">
+                <img src="@Links.Content.images.home.your_bank_png" />
+            </a>
+        </div>
+
+        if (Model.PendingPayments.Count() == 0)
+        {
+            <div class="results-table-empty-results">
+                Към момента в системата няма регистрирани Ваши задължения, очакващи плащане.
+            </div>
+        }
+
+
+    }
+
+    @if (Model.ProcessedPayments.Count() > 0 || !this.CurrentUser.IsAuthorizedByAccessCode)
+    {
+        <h2 id="processedPayments" class="table-heading" style="width: 100%;">
+            Последни движения
+            @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+            {
+                <text>&nbsp;</text><small>(@(Model.ProcessedPaymentsPagingOptions.TotalItemCount == 0 ? "няма налични документи" : String.Format("{0} {1}", Model.ProcessedPaymentsPagingOptions.TotalItemCount, Model.ProcessedPaymentsPagingOptions.TotalItemCount == 1 ? "документ" : "документа")))</small>
+            }
+        </h2>
+
+        <!-- FILTERS -->
+        <div class="table-filters">
+            @if (!this.CurrentUser.IsAuthorizedByAccessCode)
+            {
+                <span class="@(TempData[TempDataKeys.SearchPerformed] != null || Model.SearchDO.ShowFilters ? "filter-toggle opened" : "filter-toggle")">Търсене</span>
+            }
+            @using (Html.BeginForm(MVC.Payment.ActionNames.ListSearch, MVC.Payment.Name, null, FormMethod.Post, new { @class = "clearfix", style = TempData[TempDataKeys.SearchPerformed] != null || Model.SearchDO.ShowFilters ? "display: block;" : "display: none;" }))
+            {
+                @Html.HiddenFor(m => m.SearchDO.PPage)
+                @Html.HiddenFor(m => m.SearchDO.PSortBy)
+                @Html.HiddenFor(m => m.SearchDO.PSortDesc)
+
+                @Html.HiddenFor(m => m.SearchDO.PrSortBy)
+                @Html.HiddenFor(m => m.SearchDO.PrSortDesc)
+
+                <div class="row" style="">
+                    <div class="col-lg-10 col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Номер</label>
+                                            @Html.TextBoxFor(m => m.SearchDO.PrId, new { @class = "form-control no" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Дата от</label>
+                                                    @Html.TextBoxFor(m => m.SearchDO.PrDateFrom, new { @class = "form-control datepicker" })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Дата до</label>
+                                                    @Html.TextBoxFor(m => m.SearchDO.PrDateTo, new { @class = "form-control datepicker" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                                            {
+                                                <label>Сума от (BGN)</label>
+                                            }
+                                            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                                            {
+                                                if (CurrencyHelper.IsEuroTimePeriod)
+                                                {
+                                                    <label>Сума от (&euro;)</label>
+                                                }
+                                                else
+                                                {
+                                                    <label>Сума от (BGN)</label>
+                                                }
+                                            }
+                                            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                                            {
+                                                <label>Сума от (BGN)</label>
+                                            }
+
+                                            @Html.TextBoxFor(m => m.SearchDO.PrAmountFrom, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                                            {
+                                                <label>Сума до (BGN)</label>
+                                            }
+                                            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                                            {
+                                                if (CurrencyHelper.IsEuroTimePeriod)
+                                                {
+                                                    <label>Сума до (&euro;)</label>
+                                                }
+                                                else
+                                                {
+                                                    <label>Сума до (BGN)</label>
+                                                }
+                                            }
+                                            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                                            {
+                                                <label>Сума до (&euro;)</label>
+                                            }
+
+                                            @Html.TextBoxFor(m => m.SearchDO.PrAmountTo, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Статус на задължение</label>
+                                            @Html.DropDownListFor(m => m.SearchDO.PrStatus,
+                                                      new List<SelectListItem>()
+                                                      {
+                                                    new SelectListItem { Value = string.Empty, Text = "- Всички статуси -"},
+                                                    new SelectListItem { Value = ((int)PaymentRequestStatus.Authorized).ToString(), Text = Formatter.EnumToDescriptionString(PaymentRequestStatus.Authorized), },
+                                                    new SelectListItem { Value = ((int)PaymentRequestStatus.Ordered).ToString(), Text = Formatter.EnumToDescriptionString(PaymentRequestStatus.Ordered), },
+                                                    new SelectListItem { Value = ((int)PaymentRequestStatus.Paid).ToString(), Text = Formatter.EnumToDescriptionString(PaymentRequestStatus.Paid), },
+                                                    new SelectListItem { Value = ((int)PaymentRequestStatus.Canceled).ToString(), Text = Formatter.EnumToDescriptionString(PaymentRequestStatus.Canceled), },
+                                                    new SelectListItem { Value = ((int)PaymentRequestStatus.Suspended).ToString(), Text = Formatter.EnumToDescriptionString(PaymentRequestStatus.Suspended), },
+      }, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Получател</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.PrProvider, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Основание за плащане</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.PrReason, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <input class="btn blue-btn" type="submit" value="Търси">
+                        <span class="reset" style="color: #0097e5; text-decoration: none">Изчисти</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- ProcessedPayments table -->
+        <div class="results-table" style="@(Model.ProcessedPayments.Count() == 0 ? "border-bottom: 0px;" : "")">
+            <div class="results-thead">
+                <div class="@prPaymentIdColClass">@Html.ActionLink("Номер", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.PaymentId), null)</div>
+                <div class="results-cell">Вид на задължението</div>
+                <div class="@prServiceProviderColClass">@Html.ActionLink("Получател", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.ServiceProvider), null)</div>
+                <div class="results-cell">Инициатор</div>
+                <div class="@prPaymentReasonColClass">@Html.ActionLink("Основание за плащане", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.PaymentReason), null)</div>
+                <div class="@prDateColClass">@Html.ActionLink("Дата и час", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Date), null)</div>
+
+                @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                {
+                    <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                {
+                    if (CurrencyHelper.IsEuroTimePeriod)
+                    {
+                        <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                        <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                    }
+                    else
+                    {
+                        <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, ЛВ", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                        <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                    }
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                {
+                    <div class="@prAmountColClass" style="text-align: center;">@Html.ActionLink("Сума, EUR", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Amount), null)</div>
+                }
+
+                <div class="@prStatusColClass">@Html.ActionLink("Статус", MVC.Payment.ActionNames.ListSort, MVC.Payment.Name, Model.SearchDO.ToSortProcessedRequestsRouteValues(ProcessedPaymentColumn.Status), null)</div>
+                <div class="results-cell" style="text-align: center;  width: 1px;">Плащане</div>
+            </div>
+
+            @if (Model.ProcessedPayments.Count() > 0)
+            {
+                foreach (var payment in Model.ProcessedPayments)
+                {
+                    <div class="results-row">
+                        <div class="results-cell">
+                            <span class="hidden-lg">Номер:</span>
+                            <span class="label">@payment.PaymentRequestIdentifier</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Вид на задължението:</span>
+                            <span class="label">@payment.ObligationType</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Получател:</span>
+                            <span class="label">@payment.ServiceProviderName</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Инициатор:</span>
+                            <span class="label">@payment.InitiatorName</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Основание за плащане:</span>
+                            <span class="label">@payment.PaymentReason</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Дата и час:</span>
+                            <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSecondsNotLocalTime(payment.TransactionDate))</span>
+                        </div>
+
+                        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                        {
+                            <div class="results-cell">
+                                @*big resolution layout - PaymentAmountRequest*@
+                                <p class="hidden-xs hidden-sm hidden-md" style="text-align: center; margin: 0px; text-wrap-mode: nowrap;">
+                                    <span class="label">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </p>
+                                @*small resolution layout - PaymentAmountRequest*@
+                                <span class="hidden-lg">Сума, ЛВ</span>
+                                <span class="label hidden-lg">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                </span>
+                            </div>
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                        {
+                            if (CurrencyHelper.IsEuroTimePeriod)
+                            {
+                                <div class="results-cell">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align:center; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума, </span>
+                                    <span class="label hidden-lg">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                    </span>
+                                </div>
+                                <div class="results-cell">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: center; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума, ЛВ</span>
+                                    <span class="label hidden-lg">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="results-cell">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align: center; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума, ЛВ</span>
+                                    <span class="label hidden-lg">
+                                        <strong>@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmountRequest, payment.CreateDate) лв.</strong>
+                                    </span>
+                                </div>
+                                <div class="results-cell">
+                                    @*big resolution layout - PaymentAmountRequest*@
+                                    <p class="hidden-xs hidden-sm hidden-md" style="text-align:center; margin: 0px; text-wrap-mode: nowrap;">
+                                        <span class="label">
+                                            <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                        </span>
+                                    </p>
+                                    @*small resolution layout - PaymentAmountRequest*@
+                                    <span class="hidden-lg">Сума, </span>
+                                    <span class="label hidden-lg">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                    </span>
+                                </div>
+                            }
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                        {
+                            <div class="results-cell">
+                                @*big resolution layout - PaymentAmountRequest*@
+                                <p class="hidden-xs hidden-sm hidden-md" style="text-align:center; margin: 0px; text-wrap-mode: nowrap;">
+                                    <span class="label">
+                                        <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                    </span>
+                                </p>
+                                @*small resolution layout - PaymentAmountRequest*@
+                                <span class="hidden-lg">Сума, </span>
+                                <span class="label hidden-lg">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmountRequest, payment.CreateDate)</strong>
+                                </span>
+                            </div>
+                        }
+
+                        <div class="results-cell">
+                            <span class="hidden-lg">Статус:</span>
+                            <span class="label">@(EPayments.Common.Helpers.Formatter.EnumToDescriptionString(payment.PaymentRequestStatusId))</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Плащане:</span>
+                            <span class="label">
+                                @{
+                                    if (payment.PaymentRequestStatusId == EPayments.Model.Enums.PaymentRequestStatus.Paid ||
+                                        payment.PaymentRequestStatusId == EPayments.Model.Enums.PaymentRequestStatus.Authorized ||
+                                        payment.PaymentRequestStatusId == EPayments.Model.Enums.PaymentRequestStatus.Ordered)
+                                    {
+                                        <a class="btn green-btn" data-toggle="modal" data-backdrop="static" data-target="#myModalFixed"
+                                           href="@Url.Action(MVC.Payment.ActionNames.Details, MVC.Payment.Name, new { id = payment.Gid, dummy = Guid.NewGuid().ToString() })">Детайли</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn green-btn" data-toggle="modal" data-backdrop="static" data-target="#myModalFixed"
+                                           href="@Url.Action(MVC.Payment.ActionNames.Order, MVC.Payment.Name, new { id = payment.Gid, dummy = Guid.NewGuid().ToString() })">Детайли</a>
+                                    }
+                                }
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        if (Model.ProcessedPayments.Count() == 0)
+        {
+            <div class="results-table-empty-results">
+                @(TempData[TempDataKeys.SearchPerformed] != null || Model.SearchDO.ShowFilters ? "Няма намерени резултати. Моля, опитайте пак като промените критериите за търсене." : "В системата няма регистрирани Ваши задължения, платени чрез Средата за електронни плащания.")
+            </div>
+        }
+
+        <!-- PAGINATION -->
+        <nav class="txt-align-left">
+            @{
+                Html.RenderPartial(MVC.Shared.Views._Paging, Model.ProcessedPaymentsPagingOptions);
+            }
+        </nav>
+        <div class="payment-actions pull-right">
+            <a href="@Url.Action(MVC.Payment.ActionNames.PaymentRequestsExportAsExcel, MVC.Payment.Name, Model.SearchDO.ToSortAllProcessedRequestsRouteValues(Model.SearchDO.PrSortBy, Model.SearchDO.PrSortDesc))"
+               target="_blank" class="download-excel"
+               title="Изтегли всички резултати в Excel"></a>
+            <a href="@Url.Action(MVC.Payment.ActionNames.PaymentRequestsExportAsPdf, MVC.Payment.Name, Model.SearchDO.ToSortAllProcessedRequestsRouteValues(Model.SearchDO.PrSortBy, Model.SearchDO.PrSortDesc))"
+               target="_blank" class="download-pdf"
+               title="Изтегли всички резултати в PDF"></a>
+        </div>
+    }
+
+</div>
+
+@*Modal popup html*@
+<div class="modal fade" id="myModalFixed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@*Modal popup html*@
+<div class="modal fade" id="myModalFixedAgreement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@*Modal popup script*@
+<script type="text/javascript">
+    function showOtherActionsConfirmed(showOtherActionsButtonName, otherActionsName, show) {
+        let jQueryshowOtherActionsButtonName = "#" + showOtherActionsButtonName;
+        let jQueryshowOtherActionsName = "#" + otherActionsName;
+
+        if (show) {
+            $(jQueryshowOtherActionsButtonName).hide();
+            $(jQueryshowOtherActionsName).show();
+            $(jQueryshowOtherActionsName).attr("style", "display: inline");
+        }
+        else {
+            $(jQueryshowOtherActionsButtonName).show();
+            $(jQueryshowOtherActionsName).hide();
+        }
+    }
+    $(function () {
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+
+        // Initalize modal dialog
+        // attach myModalFixed bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#myModalFixed');
+            $(this).attr('data-toggle', 'modal');
+            $(this).attr('data-backdrop', 'static');
+        });
+
+        $("#selectAll").change(function () {
+            var hasInProcessPayments = $(".results-row .results-cell:contains('В процес на обработка')").length > 0;
+            if ($("#selectAll").is(':checked')) {
+                $('input[type=checkbox]').each(function () {
+                    var index = $(this).attr('index');
+                    let name = "PendingPayments_" + index + "__SelectedForPayment";
+                    let jQueryName = "#" + name;
+                    if ((!hasInProcessPayments || !$(this).prop('disabled')) && !$(this).is(':checked')) {
+                        $(this).prop('checked', true);
+                        $(jQueryName).change();
+                        if ($(this).prop('disabled')) {
+                            $(this).prop('disabled', false);
+                            DisableOrEnablePaymentActions(this);
+                            ShowOrHideWarningMessageForPendingPayments(this);
+                        }
+                    }
+                });
+            }
+            else {
+                $('input[type=checkbox]').each(function () {
+                    if ((!hasInProcessPayments || !$(this).prop('disabled'))) {
+                        $(this).prop('checked', false);
+                        var index = $(this).attr('index');
+                        $("#PendingPayments_" + index + "__SelectedForPayment").change();
+                        if (model.DisabledItems.length > 0) {
+                            for (var i = 0; i < model.DisabledItems.length; i++) {
+                                if (model.DisabledItems[i] == $(this).attr('data-id')) {
+                                    if (!$(this).prop('disabled')) {
+                                        $(this).prop('disabled', true);
+                                        DisableOrEnablePaymentActions(this);
+                                        ShowOrHideWarningMessageForPendingPayments(this);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+
+        $('#myModalFixed').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#myModalFixed').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixed').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        //temporaly fix -> add dummy modal-link-agreement and myModalFixedAgreement
+
+        $('body').on('click', '.modal-link-agreement', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#myModalFixedAgreement');
+            $(this).attr('data-toggle', 'modal');
+            $(this).attr('data-backdrop', 'static');
+        });
+
+        $('#myModalFixedAgreement').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#myModalFixedAgreement').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixedAgreement').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+            $(this).find('.modal-content').empty();
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+        var numberOfSelected = 0;
+        var model = @Html.Raw(Json.Encode(Model));
+        var gids = [];
+
+        $('#cvpos').on('click', function () {
+            var gidValues = "";
+            for (var i = 0; i < gids.length; i++) {
+                gidValues += "&gids=" + gids[i];
+            }
+
+            this.href = "/Payment/TaxAgreementCvposMultiple?" + gidValues;
+        });
+
+        $('#totalAmmount').hide();
+
+        let rate = @CurrencyHelper.BgnToEuroRate.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        let currencyMode = '@CurrencyHelper.CurrencyMode.ToString().ToUpper()';
+        let isEuroTimePeriod = '@CurrencyHelper.IsEuroTimePeriod.ToString().ToUpper()' == 'TRUE';
+
+        model.TotalAmmountInBgn = 0;
+        model.TotalAmmountInEuro = 0;
+        model.TotalAmmount = 0;
+
+        for (var i = 0; i < model.PendingPayments.length; i++) {
+            let index = i;
+            let name = "PendingPayments_" + i + "__SelectedForPayment";
+            let jQueryName = "#" + name;
+            $(jQueryName).change(function ()
+            {
+                if ($(jQueryName).is(':checked'))
+                {
+                    model.TotalAmmountInEuro += model.PendingPayments[index].PaymentAmountInEuro;
+
+                    model.TotalAmmountInBgn += model.PendingPayments[index].PaymentAmountInBgn;
+
+                    gids.push(model.PendingPayments[index].Gid);
+
+                    numberOfSelected++;
+                }
+                else
+                {
+                    model.TotalAmmountInEuro -= model.PendingPayments[index].PaymentAmountInEuro;
+
+                    model.TotalAmmountInBgn -= model.PendingPayments[index].PaymentAmountInBgn;
+
+                    gids = gids.filter(function (gid)
+                    {
+                        return gid !== model.PendingPayments[index].Gid;
+                    });
+
+                    numberOfSelected--;
+                }
+
+                if (currencyMode == 'BGN') {
+                    $('#labelTotalAmmount').html(model.TotalAmmountInBgn.toFixed(2) + " лв. ");
+
+                } else if (currencyMode == 'DUAL') {
+
+                    if (isEuroTimePeriod) {
+                        $('#labelTotalAmmount').html(model.TotalAmmountInEuro.toFixed(2) + " &euro; / " + model.TotalAmmountInBgn.toFixed(2) + ' лв. ');
+                    } else {
+                        $('#labelTotalAmmount').html(model.TotalAmmountInBgn.toFixed(2) + " лв. / " + model.TotalAmmountInEuro.toFixed(2) + ' &euro; ');
+                    }
+
+                } else if (currencyMode == 'EUR') {
+                    $('#labelTotalAmmount').html(model.TotalAmmountInEuro.toFixed(2) + ' &euro; ');
+                }
+
+                if (model.TotalAmmountInBgn > 0.001 || model.TotalAmmountInEuro > 0.001) {
+                    $('#totalAmmount').show();
+                    $('a.icon-action').not('#cvpos').addClass("anchorDisabled");
+                    if (numberOfSelected == 1)
+                    //show only selected row anchor
+                    { }
+                }
+                else {
+                    $('#totalAmmount').hide();
+                    $('a.icon-action').removeClass("anchorDisabled");
+                    model.TotalAmmountInBgn = 0;
+                    model.TotalAmmountInEuro = 0;
+                    model.TotalAmmount = 0;
+                }
+
+            });
+        }
+    });
+
+
+    function checkPayment(paymentRequestIdentifier, index, payOrder, obligationTypeId, maxPayOrder, esId) {
+        if (payOrder == null)
+        {
+            return;
+        }
+        $("#selectAll").prop('checked', false);
+
+        if ($("#PendingPayments_" + index + "__SelectedForPayment").prop("checked")) {
+            if (payOrder !== maxPayOrder) {
+                var partidaNo = $("#PendingPayments_" + index + "__SelectedForPayment").attr('data-partidaNo');
+                var areAllSamePayOrdersChecked = AreAllEnabledPaymentsWithSamePayOrderChecked(partidaNo, payOrder, obligationTypeId, esId);
+                if (areAllSamePayOrdersChecked) {
+                    AjaxCallToCheckPaymentOnDeMark(paymentRequestIdentifier);
+                }
+            } else {
+                AjaxCallToCheckPaymentOnDeMark(paymentRequestIdentifier);
+            }
+        }
+        else
+        {
+            $.ajax({
+                url: '/Payment/CheckPaymentOnDeMark?paymentRequestIdentifier=' + paymentRequestIdentifier,
+                type: 'GET',
+                success: function (prToBePay) {
+                    if (prToBePay.length > 0) {
+                        $('input[type=checkbox]').each(function () {
+                                for (var i = 0; i < prToBePay.length; i++) {
+                                    if (prToBePay[i] == $(this).attr('data-id')) {
+                                        if (!$(this).prop('disabled')) {
+                                            $(this).prop('disabled', true);
+                                            var index = $(this).attr('index');
+                                            if (this.checked) {
+                                                $(this).prop('checked', false);
+                                                $("#PendingPayments_" + index + "__SelectedForPayment").change();
+                                            }
+
+                                            DisableOrEnablePaymentActions(this);
+                                            ShowOrHideWarningMessageForPendingPayments(this);
+                                        }
+                                    }
+                                }
+                        });
+                    }
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        }
+    }
+
+    function AjaxCallToCheckPaymentOnDeMark(paymentRequestIdentifier) {
+        $.ajax({
+            url: '/Payment/CheckItemRelatedPayments?paymentRequestIdentifier=' + paymentRequestIdentifier,
+            type: 'GET',
+            success: function (prToBePay) {
+                if (prToBePay != null && prToBePay.length > 0) {
+                    $('input[type=checkbox]').each(function () {
+                        for (var i = 0; i < prToBePay.length; i++) {
+
+
+
+                            if (prToBePay[i] == $(this).attr('data-id')) {
+                                $(this).removeAttr("disabled")
+                                DisableOrEnablePaymentActions(this);
+                                ShowOrHideWarningMessageForPendingPayments(this);
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function AreAllEnabledPaymentsWithSamePayOrderChecked(partidaNo, payOrder, obligationTypeId, esId) {
+        var areChecked = true;
+
+        $(`input[type=checkbox][data-payorder=${payOrder}][data-obligationid=${obligationTypeId}][data-esId=${esId}]`).each(function () {
+            if (!this.checked) {
+                return areChecked = false;
+            }
+        });
+
+        return areChecked;
+    }
+
+    function DisableOrEnablePaymentActions(element) {
+        var currentRowElement = $(element).parent().parent()[0];
+        var actionsElement = currentRowElement.getElementsByClassName('payment-actions-section');
+        $(actionsElement).toggleClass("disabled-actions")
+        $(actionsElement).change();
+    }
+
+    function ShowOrHideWarningMessageForPendingPayments(element) {
+        var currentRowElement = $(element).parent().parent()[0];
+        var nextElement = $(currentRowElement).next('.details-row')[0];
+        var warningMsg = $(nextElement).children().first()[0];
+        $(warningMsg).toggleClass('shown');
+        $(warningMsg).change();
+    }
+</script>

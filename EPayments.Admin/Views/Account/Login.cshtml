@@ -1,0 +1,35 @@
+﻿<div class="container main-content account-login">
+
+    <h1 style="text-align: center; margin-top: 40px;">Административен достъп</h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+    <p style="text-align: center; max-width: 700px; margin: 0 auto;">За да достъпите системата трябва да сте оторизирани от администраторите и да използвате електронене подпис (КЕП) съдържащ ЕГН, за да се идентифицирате пред системата.</p>
+
+    <div class="row">
+        <div class="form-group col-lg-4 col-md-4">
+        </div>
+        <div class="form-group col-lg-4 col-md-4">
+            <label style="display: block;">&nbsp;</label>
+            <a style="width: 100%; text-align: center; height: 38px; padding-top: 8px;" class="btn blue-btn"
+               href="@Url.Action(MVC.Account.ActionNames.EAuth, MVC.Account.Name)">ВХОД С ЕЛ. ИДЕНТИФИКАТОР</a>
+        </div>
+        <div class="form-group col-lg-4 col-md-4">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    string eserviceClientId = (string)Model.GetValue("EserviceClientId", StringComparison.InvariantCultureIgnoreCase);
+    string eserviceClientAisName = (string)Model.GetValue("EserviceClientAisName", StringComparison.InvariantCultureIgnoreCase);
+    string certificateName = (string)Model.GetValue("CertificateName", StringComparison.InvariantCultureIgnoreCase);
+    string certificateValidTo = (string)Model.GetValue("CertificateValidTo", StringComparison.InvariantCultureIgnoreCase);
+    bool isRequestSignCertificate = (bool)Model.GetValue("IsRequestSignCertificate", StringComparison.InvariantCultureIgnoreCase);
+}
+
+
+<p style="margin-bottom: 15px;">Системно съобщение от "Средата за електронни плащания".</p>
+<p style="margin-bottom: 15px;">Наближава датата на изтичане на БОРИКА сертификата за подписване на VPOS заявките от страна на @(isRequestSignCertificate ? "средата за електронни плащания" : "БОРИКА").</p>
+<p style="margin-bottom: 15px;">Моля, свържете се с БОРИКА за бъде преиздаден.</p>
+<p style="margin-bottom: 15px;">Данни за сертификата:</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">- EserviceClientId:</strong> @eserviceClientId</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">- АИС:</strong> @eserviceClientAisName</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">- Име на сертификата:</strong> @certificateName</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">- Валиден до:</strong> @certificateValidTo</p>
+

@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[PaymentRequestIdentifiers](
+	[PaymentRequestIdentifierId] [int] IDENTITY(1,1) NOT NULL,
+	[Date] [datetime2](7) NOT NULL,
+	[Counter] [int] NOT NULL,
+ CONSTRAINT [PK_PaymentRequestIdentifiers] PRIMARY KEY CLUSTERED 
+(
+	[PaymentRequestIdentifierId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [UQ_PaymentRequestIdentifiers_Date_Counter] UNIQUE NONCLUSTERED 
+(
+	[Date] ASC,
+	[Counter] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]

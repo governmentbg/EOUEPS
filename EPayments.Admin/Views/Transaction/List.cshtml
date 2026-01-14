@@ -1,0 +1,399 @@
+﻿@using EPayments.Admin.Models.Transactions
+@using EPayments.Common.Helpers
+@using EPayments.Model.Enums
+
+@model TransactionVM
+
+@{
+    ViewBag.Title = "Справка на транзакции през ЦВПОС";
+
+    string defaultClass = "results-cell sortable";
+    string ascClass = " sort-asc";
+    string descClass = " sort-desc";
+
+    string ttOrderClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.Order ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttAmountClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.Amount ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttFeeClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.Fee ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttCommissionClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.Commission ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttTransactionDateClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.TransactionDate ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttCardClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.Card ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttSettlementDateClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.SettlementDate ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+    string ttStatusClass = defaultClass + (Model.SearchDO.TtSortBy == TransactionColumn.StatusMessage ? (Model.SearchDO.TtSortDesc ? descClass : ascClass) : String.Empty);
+
+
+    string ttOrderName = "Номер на транзакцията";
+    string ttAmountBgnName = "Сума, ЛВ";
+    string ttAmountEuroName = "Сума, EUR";
+    string ttFeeBgnName = "Такса, ЛВ";
+    string ttFeeEuroName = "Такса, EUR";
+    string ttCommissionBgnName = "Комисионна, ЛВ";
+    string ttCommissionEuroName = "Комисионна, EUR";
+    string ttTransactionDateName = "Дата на транзакцията";
+    string ttCardName = "Номер на карта";
+    string ttSettlementDateName = "Дата на стълмент";
+    string ttStatusMessage = "Съобщение от Борика";
+
+    List<SelectListItem> CreateSelectedItems(Type type, Enum selectedValue)
+    {
+        List<SelectListItem> selectListItems = new List<SelectListItem>() { new SelectListItem() { Value = string.Empty, Text = "--Всички--" } };
+
+        var values = Enum.GetValues(type);
+
+        foreach (Enum currentValue in values)
+        {
+            selectListItems.Add(new SelectListItem() { Value = currentValue.ToString(), Text = Formatter.EnumToDescriptionString(currentValue), Selected = Enum.Equals(currentValue, selectedValue) });
+        }
+
+        return selectListItems;
+    }
+}
+
+<div class="container main-content">
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+    <h2 id="oldPayments" class="table-heading" style="width: 100%;">Справка на транзакции през ЦВПОС</h2>
+    <div class="table-filters">
+        <span class="filter-toggle opened">Търсене</span>
+
+        @using (Html.BeginForm(MVC.Transaction.ActionNames.List, MVC.Transaction.Name, null, FormMethod.Get, new { @class = "clearfix", style = "display: block;" }))
+        {
+            @Html.HiddenFor(m => m.SearchDO.TtSortBy)
+            @Html.HiddenFor(m => m.SearchDO.TtSortDesc)
+            <div class="row" style="">
+                <div class="col-lg-10 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Дата от</label>
+                                        @Html.TextBoxFor(m => m.SearchDO.TtDateFrom, new { @class = "form-control datepicker", autocomplete = "off" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Дата до</label>
+                                        @Html.TextBoxFor(m => m.SearchDO.TtDateTo, new { @class = "form-control datepicker", autocomplete = "off" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Статус на транзакцията</label>
+                                        @Html.DropDownListFor(m => m.SearchDO.TtTransactionStatus,
+                                        CreateSelectedItems(typeof(TransactionStatus), Model.SearchDO.TtTransactionStatus),
+                                        new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <input class="btn blue-btn" type="submit" value="Търси">
+                    <span class="reset" style="color: #0097e5; text-decoration: none">Изчисти</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="results-table" style="@(Model.Transactions.Count == 0 ? "border-bottom: 0px;" : "") table-layout: fixed">
+        <div class="results-thead">
+            <div class="@ttOrderClass">@Html.ActionLink(ttOrderName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Order), null)</div>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <div class="@ttAmountClass">@Html.ActionLink(ttAmountBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                <div class="@ttFeeClass">@Html.ActionLink(ttFeeBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <div class="@ttAmountClass">@Html.ActionLink(ttAmountEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                    <div class="@ttAmountClass">@Html.ActionLink(ttAmountBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                    <div class="@ttFeeClass">@Html.ActionLink(ttFeeEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                    <div class="@ttFeeClass">@Html.ActionLink(ttFeeBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                    <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+                    <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+                }
+                else
+                {
+                    <div class="@ttAmountClass">@Html.ActionLink(ttAmountBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                    <div class="@ttAmountClass">@Html.ActionLink(ttAmountEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                    <div class="@ttFeeClass">@Html.ActionLink(ttFeeBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                    <div class="@ttFeeClass">@Html.ActionLink(ttFeeEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                    <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionBgnName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+                    <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <div class="@ttAmountClass">@Html.ActionLink(ttAmountEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Amount), null)</div>
+                <div class="@ttFeeClass">@Html.ActionLink(ttFeeEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Fee), new { style = "position: relative;" })</div>
+                <div class="@ttCommissionClass">@Html.ActionLink(ttCommissionEuroName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Commission), null)</div>
+            }
+
+            <div class="@ttTransactionDateClass">@Html.ActionLink(ttTransactionDateName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.TransactionDate), new { style = "position: relative;" })</div>
+            <div class="@ttCardClass">@Html.ActionLink(ttCardName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.Card), new { style = "position: relative;" })</div>
+            <div class="@ttSettlementDateClass">@Html.ActionLink(ttSettlementDateName, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.SettlementDate), new { style = "position: relative;" })</div>
+            <div class="@ttStatusClass">@Html.ActionLink(ttStatusMessage, MVC.Transaction.ActionNames.List, MVC.Transaction.Name, Model.SearchDO.ToSortRequestsRouteValues(TransactionColumn.StatusMessage), new { style = "position: relative;" })</div>
+            <div class="results-cell">Действия</div>
+        </div>
+
+        @if (Model.Transactions != null && Model.Transactions.Count > 0)
+        {
+            foreach (var transaction in Model.Transactions)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(ttOrderName):</span>
+                        <span class="results-cell-no-status-histories">@transaction.Order</span>
+                    </div>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttAmountBgnName):</span>
+                            <span class="label">
+                                <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Amount, transaction.TransactionDate) лв.</strong>
+                            </span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttFeeBgnName):</span>
+                            <span class="label">
+                                <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                            </span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttCommissionBgnName):</span>
+                            <span class="label">
+                                <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                            </span>
+                        </div>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttAmountEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Amount, transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttAmountBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Amount, transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttFeeEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttFeeBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttCommissionEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttCommissionBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttAmountBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Amount, transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttAmountEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Amount, transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttFeeBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttFeeEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttCommissionBgnName):</span>
+                                <span class="label">
+                                    <strong>@CurrencyHelper.GetBgnValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate) лв.</strong>
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(ttCommissionEuroName):</span>
+                                <span class="label">
+                                    <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                                </span>
+                            </div>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttAmountEuroName):</span>
+                            <span class="label">
+                                <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Amount, transaction.TransactionDate)</strong>
+                            </span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttFeeEuroName):</span>
+                            <span class="label">
+                                <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Fee.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                            </span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(ttCommissionEuroName):</span>
+                            <span class="label">
+                                <strong>&euro; @CurrencyHelper.GetEuroValueFormated(transaction.Commission.GetValueOrDefault(), transaction.TransactionDate)</strong>
+                            </span>
+                        </div>
+                    }
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(ttTransactionDateName):</span>
+                        <span class="label">@(transaction.TransactionDate.ToString("dd.MM.yyyy, HH:mm"))</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(ttCardName):</span>
+                        <span class="label">@transaction.Card</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(ttSettlementDateName):</span>
+                        <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(transaction.SettlementDate))</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(ttStatusMessage):</span>
+                        <span class="label">@(transaction.StatusMessage)</span>
+                    </div>
+                    <div class="results-cell">
+                        @Html.ActionLink("Преглед", MVC.Transaction.ActionNames.Payments, MVC.Transaction.Name, new { transactionId = transaction.BoricaTransactionId }, new { @class = "btn blue-btn" })
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    @if (Model.Transactions == null || Model.Transactions.Count == 0)
+    {
+        <div class="results-table-empty-results">
+            Няма намерени резултати. Моля, опитайте пак като промените критериите за търсене.
+        </div>
+    }
+    <nav class="txt-align-left">
+        @{
+            Html.RenderPartial(MVC.Shared.Views._Paging, Model.RequestsPagingOptions);
+        }
+    </nav>
+    <nav class="txt-align-right">
+        <span class="label">Общо сума за всички транзакции (не само видимите): </span>
+        <span class="label" id="labelTotalAmmount">
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro * CurrencyHelper.BgnToEuroRate) лв.</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro * CurrencyHelper.BgnToEuroRate) лв. или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro)</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <strong>&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro)</strong>
+
+            }
+
+
+        </span>
+    </nav>
+    <nav class="txt-align-right">
+        <span class="label">Общо такси за всички транзакции (не само видимите): </span>
+        <span class="label" id="labelTotalAmmount">
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro * CurrencyHelper.BgnToEuroRate) лв.</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro * CurrencyHelper.BgnToEuroRate) лв. или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro)</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <strong>&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro)</strong>
+            }
+
+        </span>
+    </nav>
+    <nav class="txt-align-right">
+        <span class="label">Общо комисионни за всички транзакции (не само видимите): </span>
+        <span class="label" id="labelTotalAmmount">
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro * CurrencyHelper.BgnToEuroRate) лв.</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                <strong>@Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro * CurrencyHelper.BgnToEuroRate) лв. или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro)</strong>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <strong>&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro)</strong>
+            }
+
+        </span>
+    </nav>
+    @if (Model.Transactions != null && Model.Transactions.Count > 0)
+    {
+        <div class="payment-actions pull-right">
+            <a href="@Url.Action(MVC.Transaction.ActionNames.DownloadExcel, MVC.Transaction.Name, Model.SearchDO.ToSortAllRequestsRouteValues(Model.SearchDO.TtSortBy, Model.SearchDO.TtSortDesc))"
+               class="download-excel" target="_blank"
+               title="Изтегли всички резултати в ексел">
+            </a>
+            <a href="@Url.Action(MVC.Transaction.ActionNames.DownloadPdf, MVC.Transaction.Name, Model.SearchDO.ToSortAllRequestsRouteValues(Model.SearchDO.TtSortBy, Model.SearchDO.TtSortDesc))"
+               class="download-pdf" target="_blank"
+               title="Изтегли всички резултати в PDF">
+            </a>
+        </div>
+    }
+</div>

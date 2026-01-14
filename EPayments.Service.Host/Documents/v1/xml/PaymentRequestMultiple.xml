@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PaymentRequestMultiple xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ereg.egov.bg/segment/R-10049">
+	<!--Value of DocumentTypeURI is dummy. The real values for the element will be provided when document is registerd in RIO register.-->
+    <DocumentTypeURI>
+        <RegisterIndex xmlns="http://ereg.egov.bg/segment/0009-000022">000001</RegisterIndex>
+        <BatchNumber xmlns="http://ereg.egov.bg/segment/0009-000022">0010</BatchNumber>
+    </DocumentTypeURI>
+	<DocumentTypeName>Заявка за плащане (многоредова)</DocumentTypeName>
+    <PaymentCode>442100</PaymentCode>
+    <Currency>BGN</Currency>
+    <PaymentAmount>410.00</PaymentAmount>
+	<ElectronicServiceProviderBasicData>
+		<EntityBasicData xmlns="http://ereg.egov.bg/segment/0009-000002">
+			<Name xmlns="http://ereg.egov.bg/segment/0009-000013">Столична община - Район „Лозенец”</Name>
+			<Identifier xmlns="http://ereg.egov.bg/segment/0009-000013">0006963270564</Identifier>
+		</EntityBasicData>
+		<ElectronicServiceProviderType xmlns="http://ereg.egov.bg/segment/0009-000002">0006-000031</ElectronicServiceProviderType>
+	</ElectronicServiceProviderBasicData>	
+    <ElectronicServiceProviderBankAccount>
+        <BIC xmlns="http://ereg.egov.bg/segment/R-10010">SOMBBGSF</BIC>
+        <IBAN xmlns="http://ereg.egov.bg/segment/R-10010">BG05SOMB91308427577644</IBAN>
+        <EntityBasicData xmlns="http://ereg.egov.bg/segment/R-10010">
+            <Name xmlns="http://ereg.egov.bg/segment/0009-000013">ОБЩИНСКА БАНКА АД</Name>
+        </EntityBasicData>
+    </ElectronicServiceProviderBankAccount>
+    <ElectronicServiceRecipient>
+		<Entity xmlns="http://ereg.egov.bg/segment/0009-000015">
+			<Name xmlns="http://ereg.egov.bg/segment/0009-000013">НИК-ФИ ООД</Name>
+			<Identifier xmlns="http://ereg.egov.bg/segment/0009-000013">130025035</Identifier>
+		</Entity>
+    </ElectronicServiceRecipient>
+	<CreditTransferOrders>
+		<CreditTransferOrder>
+			<PaymentCode>442100</PaymentCode>
+			<PaymentReason>Данък недвижими имоти</PaymentReason>
+			<CreditTransferAmount>300.00</CreditTransferAmount>
+			<PaymentReference>
+				<PaymentReferenceType xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceType>
+				<PaymentReferenceNumber xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceNumber>
+				<PaymentReferenceDate xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceDate>
+			</PaymentReference>
+			<PaymentPeriod>
+				<PaymentPeriodFromDate xmlns="http://ereg.egov.bg/segment/R-10024">2014-01-01</PaymentPeriodFromDate>
+				<PaymentPeriodToDate xmlns="http://ereg.egov.bg/segment/R-10024">2014-12-31</PaymentPeriodToDate>
+			</PaymentPeriod>		
+		</CreditTransferOrder>
+		<CreditTransferOrder>
+			<PaymentCode>442400</PaymentCode>
+			<PaymentReason>	Такса за битови отпадъци</PaymentReason>
+			<CreditTransferAmount>110.00</CreditTransferAmount>
+			<PaymentReference>
+				<PaymentReferenceType xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceType>
+				<PaymentReferenceNumber xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceNumber>
+				<PaymentReferenceDate xmlns="http://ereg.egov.bg/segment/R-10018"></PaymentReferenceDate>
+			</PaymentReference>
+			<PaymentPeriod>
+				<PaymentPeriodFromDate xmlns="http://ereg.egov.bg/segment/R-10024">2014-01-01</PaymentPeriodFromDate>
+				<PaymentPeriodToDate xmlns="http://ereg.egov.bg/segment/R-10024">2014-12-31</PaymentPeriodToDate>
+			</PaymentPeriod>		
+		</CreditTransferOrder>		
+	</CreditTransferOrders>
+    <PaymentRequestExpirationDate>2015-07-23T11:45:43.7924222+03:00</PaymentRequestExpirationDate>
+    <AdditionalInformationInPaymentRequest>Additional information</AdditionalInformationInPaymentRequest>
+    <SUNAUServiceURI>M12.1</SUNAUServiceURI>
+    <ElectronicAdministrativeServiceSupplierUriRA>ServiceSupplierUri</ElectronicAdministrativeServiceSupplierUriRA>
+    <ElectronicAdministrativeServiceNotificationURL>https://egov.bg/munsof/pushpayment</ElectronicAdministrativeServiceNotificationURL>
+</PaymentRequestMultiple>

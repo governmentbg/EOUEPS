@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://ereg.egov.bg/segment/R-10055" xmlns="http://ereg.egov.bg/segment/R-10055"
+ 
+ 	xmlns:dtn="http://ereg.egov.bg/value/0008-000007"
+    xmlns:dtu="http://ereg.egov.bg/segment/0009-000003"
+
+    xmlns:prid="http://ereg.egov.bg/value/R-10042"
+    xmlns:prrt="http://ereg.egov.bg/value/R-10044"
+    
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    
+    elementFormDefault="qualified">
+	<xsd:import namespace="http://ereg.egov.bg/value/0008-000007"/>
+    <xsd:import namespace="http://ereg.egov.bg/segment/0009-000003"/>
+    <xsd:import namespace="http://ereg.egov.bg/value/R-10042" />
+    <xsd:import namespace="http://ereg.egov.bg/value/R-10044" />
+
+    <xsd:element name="PaymentRequestAcceptedReceipt" type="PaymentRequestAcceptedReceipt" />
+    
+	<xsd:complexType name="PaymentRequestAcceptedReceipt">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="bg">Съобщение, че заявката за плащане се приема</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DocumentTypeURI" type="dtu:DocumentTypeURI" minOccurs="0"/>
+            <xsd:element name="DocumentTypeName" type="dtn:DocumentTypeName" minOccurs="0"/>
+			<xsd:element name="PaymentRequestID" type="prid:PaymentRequestID" minOccurs="0" />
+            <xsd:element name="PaymentRequestRegistrationTime" type="prrt:PaymentRequestRegistrationTime" minOccurs="0" />           
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

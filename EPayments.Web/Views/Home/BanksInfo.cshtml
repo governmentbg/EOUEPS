@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Включени банки към средата";
+}
+
+<div class="container main-content">
+    <h1>Банки, включени в Средата за електронни плащания</h1>
+    <p style="text-align: justify;">Доставчиците на платежни услуги се включват в Средата за електронни плащания по свое желание и при техническата готовност за това. Настоящият списък се поддържа с цел осигуряване на актуална и точна информация относно доставчиците на платежни услуги, включени в Средата за електронни плащания. При настъпване на промени, списъкът се актуализира своевременно.</p>
+    <p style="text-align: justify;">Условията и редът за включване на доставчиците на платежни услуги са предвидени в Правилата за включване на доставчици на платежни услуги и са публикувани в раздел @Html.ActionLink("Правила за включване към Средата за електронни плащания", MVC.Home.ActionNames.AccessRules, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>
+    <p style="text-align: justify; margin-bottom: 30px;">Ако имате въпроси, може да ни пишете в страницата за @Html.ActionLink("Обратна връзка", MVC.Home.ActionNames.Feedback, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }) на портала, а ние ще се опитаме да Ви отговорим максимално бързо и подробно.</p>
+    <div class="administracia banks">
+        <div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank04_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">Банка ДСК</strong>
+                <p>Посредством виртуалния ПОС терминал на Банка ДСК, системата предоставя на гражданите и бизнеса възможност за:</p>
+                <ul class="ticks">
+                    <li>плащане с кредитни и дебитни карти на Visa, Visa Electron, Maestro и MasterCard чрез виртуален ПОС терминал в интернет;</li>
+                </ul>
+                <p>Повече информация относно начините на плащане и работното време на офисите, може да намерите на интернет страницата на банката: <a href="http://www.dskbank.bg" target="_blank">www.dskbank.bg</a></p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank02_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">Първа инвестиционна банка</strong>
+                <p>Посредством виртуалния ПОС терминал на Първа инвестиционна банка, системата предоставя на гражданите и бизнеса възможност за плащане чрез:</p>
+                <ul class="ticks">
+                    <li>кредитни и дебитни карти на Visa, Visa Electron, Maestro и MasterCard чрез виртуален ПОС терминал в интернет;</li>
+                </ul>
+                <p>Повече информация относно начините на плащане и работното време на офисите, може да намерите на интернет страницата на банката: <a href="http://www.fibank.bg" target="_blank">www.fibank.bg</a></p>
+            </div>
+        </div>
+        <div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank01_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">УниКредит Булбанк</strong>
+                <p>Посредством виртуалния ПОС терминал на УниКредит Булбанк (БОРИКА), системата предоставя на гражданите и бизнеса възможност за:</p>
+                <ul class="ticks">
+                    <li>плащане с кредитни и дебитни карти на Visa, Visa Electron, Maestro и MasterCard чрез виртуален ПОС терминал в интернет;</li>
+                </ul>
+                <p>Повече информация, може да намерите на интернет страницата на банката: <a href="http://www.unicreditbulbank.bg " target="_blank">www.unicreditbulbank.bg </a></p>
+            </div>
+        </div>
+        @*<div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank05_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">Райфайзен Банк</strong>
+                <p>Предстои включване на банката</p>
+            </div>
+        </div>*@
+        @*<div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank06_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">Пощенска Банка</strong>
+                <p>Предстои включване на банката</p>
+            </div>
+        </div>*@
+        @*<div class="item">
+            <div class="logo">
+                <img src="@Links.Content.images.banks.bank07_jpg" alt="" />
+            </div>
+            <div class="desc">
+                <strong class="title">СИБАНК</strong>
+                <p>Предстои включване на банката</p>
+            </div>
+        </div>*@
+    </div>
+</div>

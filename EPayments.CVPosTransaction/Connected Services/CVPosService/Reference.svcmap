@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b409f6f3-4a6b-4bd7-b6b4-63d6dae12312" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="C:\Users\svetla.hristova\source\repos\Feature\TransactionServiceBorika\EPayments.CVPosTransaction\WSDL\NapWS.wsdl" Protocol="file" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="NapWS.xsd" MetadataType="Schema" ID="79ae0119-7b6d-4aa7-baaf-2c5747291d9e" SourceId="1" SourceUrl="file:///C:/Users/svetla.hristova/source/repos/Feature/TransactionServiceBorika/EPayments.CVPosTransaction/WSDL/NapWS.xsd" />
+    <MetadataFile FileName="NapWS.wsdl" MetadataType="Wsdl" ID="45798fde-8eda-4fa8-9b8c-062fa6a8a5e3" SourceId="1" SourceUrl="file:///C:/Users/svetla.hristova/source/repos/Feature/TransactionServiceBorika/EPayments.CVPosTransaction/WSDL/NapWS.wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

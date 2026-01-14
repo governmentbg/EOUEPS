@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PaymentRequestUnacceptedReceipt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ereg.egov.bg/segment/R-10052">
+    <DocumentTypeURI>
+        <RegisterIndex xmlns="http://ereg.egov.bg/segment/0009-000022">000001</RegisterIndex>
+        <BatchNumber xmlns="http://ereg.egov.bg/segment/0009-000022">0010</BatchNumber>
+    </DocumentTypeURI>
+    <DocumentTypeName>Съобщение, че заявката за плащане не се приема</DocumentTypeName>
+    <PaymentRequestErrors>
+        <PaymentRequestError>
+            <TermName xmlns="http://ereg.egov.bg/segment/R-10036">error1</TermName>
+        </PaymentRequestError>
+        <PaymentRequestError>
+            <TermName xmlns="http://ereg.egov.bg/segment/R-10036">error2</TermName>
+        </PaymentRequestError>
+    </PaymentRequestErrors>
+    <PaymentRequestValidationTime>2015-08-26T15:17:09.218564+03:00</PaymentRequestValidationTime>
+    <PaymentRequest>
+        <DocumentTypeURI xmlns="http://ereg.egov.bg/segment/R-10046">
+            <RegisterIndex xmlns="http://ereg.egov.bg/segment/0009-000022">000001</RegisterIndex>
+            <BatchNumber xmlns="http://ereg.egov.bg/segment/0009-000022">0010</BatchNumber>
+        </DocumentTypeURI>
+        <DocumentTypeName xmlns="http://ereg.egov.bg/segment/R-10046">Заявка за плащане</DocumentTypeName>
+        <PaymentCode xmlns="http://ereg.egov.bg/segment/R-10046">1</PaymentCode>
+        <Currency xmlns="http://ereg.egov.bg/segment/R-10046">BGN</Currency>
+        <PaymentAmount xmlns="http://ereg.egov.bg/segment/R-10046">40</PaymentAmount>
+        <ElectronicServiceProviderBasicData xmlns="http://ereg.egov.bg/segment/R-10046">
+            <EntityBasicData xmlns="http://ereg.egov.bg/segment/0009-000002">
+                <Name xmlns="http://ereg.egov.bg/segment/0009-000013">Български институт по метрология</Name>
+                <Identifier xmlns="http://ereg.egov.bg/segment/0009-000013">175092070</Identifier>
+            </EntityBasicData>
+            <ElectronicServiceProviderType xmlns="http://ereg.egov.bg/segment/0009-000002">0006-000031</ElectronicServiceProviderType>
+        </ElectronicServiceProviderBasicData>
+        <ElectronicServiceProviderBankAccount xmlns="http://ereg.egov.bg/segment/R-10046">
+            <BIC xmlns="http://ereg.egov.bg/segment/R-10010">BNBGBGSD</BIC>
+            <IBAN xmlns="http://ereg.egov.bg/segment/R-10010">BG88BNBG96613100152701</IBAN>
+            <EntityBasicData xmlns="http://ereg.egov.bg/segment/R-10010">
+                <Name xmlns="http://ereg.egov.bg/segment/0009-000013">Банка БНБ</Name>
+            </EntityBasicData>
+        </ElectronicServiceProviderBankAccount>
+        <ElectronicServiceRecipient xmlns="http://ereg.egov.bg/segment/R-10046">
+            <Entity xmlns="http://ereg.egov.bg/segment/0009-000015">
+                <Name xmlns="http://ereg.egov.bg/segment/0009-000013">НИК-ФИ ООД</Name>
+                <Identifier xmlns="http://ereg.egov.bg/segment/0009-000013">130025035</Identifier>
+            </Entity>
+        </ElectronicServiceRecipient>
+        <PaymentReason xmlns="http://ereg.egov.bg/segment/R-10046">Такса за едминистративна услуга</PaymentReason>
+        <PaymentReference xmlns="http://ereg.egov.bg/segment/R-10046">
+            <PaymentReferenceType xmlns="http://ereg.egov.bg/segment/R-10018">9</PaymentReferenceType>
+            <PaymentReferenceNumber xmlns="http://ereg.egov.bg/segment/R-10018">000029-00027</PaymentReferenceNumber>
+            <PaymentReferenceDate xmlns="http://ereg.egov.bg/segment/R-10018">2015-07-16</PaymentReferenceDate>
+        </PaymentReference>
+        <PaymentPeriod xmlns="http://ereg.egov.bg/segment/R-10046">
+            <PaymentPeriodFromDate xmlns="http://ereg.egov.bg/segment/R-10024">2015-07-16</PaymentPeriodFromDate>
+            <PaymentPeriodToDate xmlns="http://ereg.egov.bg/segment/R-10024">2015-07-16</PaymentPeriodToDate>
+        </PaymentPeriod>
+        <PaymentRequestExpirationDate xmlns="http://ereg.egov.bg/segment/R-10046">2015-07-23T11:45:43.7924222+03:00</PaymentRequestExpirationDate>
+        <AdditionalInformationInPaymentRequest xmlns="http://ereg.egov.bg/segment/R-10046">Additional information</AdditionalInformationInPaymentRequest>
+        <SUNAUServiceURI xmlns="http://ereg.egov.bg/segment/R-10046">M12.1</SUNAUServiceURI>
+        <ElectronicAdministrativeServiceSupplierUriRA xmlns="http://ereg.egov.bg/segment/R-10046">ServiceSupplierUri</ElectronicAdministrativeServiceSupplierUriRA>
+        <ElectronicAdministrativeServiceNotificationURL xmlns="http://ereg.egov.bg/segment/R-10046">https://bim.bg/pushpayment</ElectronicAdministrativeServiceNotificationURL>
+    </PaymentRequest>
+</PaymentRequestUnacceptedReceipt>

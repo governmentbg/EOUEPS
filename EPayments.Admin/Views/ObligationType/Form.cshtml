@@ -1,0 +1,45 @@
+﻿@model EPayments.Admin.Models.ObligationType.ObligationTypeVM
+@using EPayments.Admin.Models.ObligationType
+
+@{
+    Html.EnableClientValidation(false);
+
+    IDictionary<string, object> formControlHtmlAttributes = new Dictionary<string, object>();
+    formControlHtmlAttributes.Add("class", "form-control");
+
+    IDictionary<string, object> formControlToUpperHtmlAttributes = new Dictionary<string, object>();
+    formControlToUpperHtmlAttributes.Add("class", "form-control");
+    formControlToUpperHtmlAttributes.Add("style", "text-transform: uppercase;");
+
+    if (Model.Mode == FormMode.View)
+    {
+        formControlHtmlAttributes.Add("disabled", "disabled");
+        formControlToUpperHtmlAttributes.Add("disabled", "disabled");
+    }
+}
+
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.ObligationTypeId)
+
+@for (int i = 0; i < Model.ObligationTypeSelectList.Count; i++)
+{
+    @Html.HiddenFor(m => m.ObligationTypeSelectList[i].Value)
+    @Html.HiddenFor(m => m.ObligationTypeSelectList[i].Text)
+}
+
+
+<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Име на типа задължение</label>
+        @Html.TextBoxFor(d => d.Name, formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Статус активност</label>
+        @Html.DropDownListFor(m => m.IsActive, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<ActiveStatus>(true), formControlHtmlAttributes)
+    </div>
+</div>
+
+

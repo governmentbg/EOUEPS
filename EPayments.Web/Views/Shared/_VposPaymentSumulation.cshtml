@@ -1,0 +1,31 @@
+﻿@model Tuple<Guid, Guid?, string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+
+    <p>
+        ***ТЕСТОВА СРЕДА***<br />
+        ФОРМАТА Е НАПРАВЕНА С ЦЕЛ ДА СИМУЛИРА УСПЕШНО И НЕУСПЕШНО ПЛАЩАНЕ С КАРТА.<br />
+        В ПРОДУКЦИОННА СРЕДА ТУК ЩЕ СЕ ОТВАРЯ ФОРМА НА VPOS ТЕРМИНАЛ ЗА ВЪВЕЖДАНЕ НА ДАННИ НА КАРТА.
+    </p>
+
+    <p>
+        @Html.ActionLink("Симулирай УСПЕШНО плащане", MVC.Vpos.ActionNames.SimulateVposPayment, MVC.Vpos.Name,
+            new { gid = Model.Item1, vposRedirectGid = Model.Item2, paymentRequestIdentifier = Model.Item3, success = true },
+            new { style = "color: green; text-decoration: none;" })
+    </p>
+
+    <p>
+    @Html.ActionLink("Симулирай НЕУСПЕШНО плащане", MVC.Vpos.ActionNames.SimulateVposPayment, MVC.Vpos.Name,
+        new { gid = Model.Item1, vposRedirectGid = Model.Item2, paymentRequestIdentifier = Model.Item3, success = false },
+        new { style = "color: red; text-decoration: none;" })
+    </p>
+</body>
+</html>

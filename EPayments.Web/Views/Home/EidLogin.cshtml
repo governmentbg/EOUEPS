@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        @Scripts.Render("~/bundles/jquery")
+    </head>
+    <body>
+        <div id="parent">
+            <div id="EIDcontainer"></div>
+        </div>
+    </body>
+    @Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none;" })
+</html>
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        var child = document.getElementById("EIDcontainer");
+        var parent = child.parentNode;
+
+        var newFrame = document.createElement("iframe");
+        newFrame.setAttribute("src", '@Url.Action(MVC.Account.ActionNames.EidSubmitForm, MVC.Account.Name)');
+        //newFrame.setAttribute("target", "_blank");
+        newFrame.setAttribute("width", "220");
+        newFrame.setAttribute("height", "160");
+        newFrame.setAttribute("frameborder", "0");
+        newFrame.setAttribute("scrolling", "no");
+        newFrame.setAttribute("title", "Login");
+
+        //$('#EIDcontainer').replaceWith($(newFrame))
+        parent.replaceChild(newFrame, child);
+    }
+</script>

@@ -1,0 +1,188 @@
+﻿@model EPayments.Admin.Models.EserviceClient.ListVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@{
+    string aisNameColClass = "results-cell sortable" + (Model.SearchDO.SortBy == EserviceListColumn.AisName ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string departmentNameColClass = "results-cell sortable" + (Model.SearchDO.SortBy == EserviceListColumn.DepartmentName ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string accountBankColClass = "results-cell sortable" + (Model.SearchDO.SortBy == EserviceListColumn.AccountBank ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string vposClientNameColClass = "results-cell sortable" + (Model.SearchDO.SortBy == EserviceListColumn.VposClientName ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string isActiveColClass = "results-cell sortable" + (Model.SearchDO.SortBy == EserviceListColumn.IsActive ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+}
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Присъединени АИС клиенти</h1>
+
+    @if (Model.BoricaWarnings.Any())
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                @foreach (var warning in Model.BoricaWarnings)
+                {
+                    <li style="padding-left: 40px;">
+                        @warning.Value
+                        <a class="icon-action" style="cursor: pointer; float: right;" tooltip tooltip-title="Скрий предупреждението" data-placement="auto"
+                           confirmation data-btnoklabel="Да"
+                           data-btncancellabel="Не"
+                           data-btnokclass="btn btn-sm red" confirm-title="Сигурни ли сте, че искате да скриете предупреждението?"
+                           data-href="@Url.Action(MVC.EserviceClient.ActionNames.HideVposBoricaWarning, MVC.EserviceClient.Name, new { id = warning.Key })">
+                            <img src="@Links.Content.images.icons.actions.otkaji_png " width="16" height="16" />
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+    <div class="table-filters" style="">
+        <span class="filter-toggle opened">Търсене</span>
+
+        @using (Html.BeginForm(MVC.EserviceClient.ActionNames.ListSearch, MVC.EserviceClient.Name, null, FormMethod.Post, new { @class = "clearfix", style = "display: block;" }))
+        {
+            @Html.HiddenFor(m => m.SearchDO.SortBy)
+            @Html.HiddenFor(m => m.SearchDO.SortDesc)
+
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Име на АИС</label>
+                                @Html.TextBoxFor(m => m.SearchDO.AisName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Администрация</label>
+                                @Html.TextBoxFor(m => m.SearchDO.DepartmentName, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>ВПОС терминал</label>
+                                <select name="SearchDO.VposClientId" class="form-control" id="SearchDO_VposClientId">
+                                    <option value="" @(!Model.SearchDO.VposClientId.HasValue ? "selected" : "")>--Всички--</option>
+                                    <option value="4" @(Model.SearchDO.VposClientId == 4 ? "selected" : "")>ДСК</option>
+                                    <option value="3" @(Model.SearchDO.VposClientId == 3 ? "selected" : "")>ПИБ</option>
+                                    <option value="2" @(Model.SearchDO.VposClientId == 2 ? "selected" : "")>БОРИКА</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Статус активност</label>
+                                <select name="SearchDO.IsActiveId" class="form-control" id="SearchDO_IsActiveId">
+                                    <option value="" @(!Model.SearchDO.IsActiveId.HasValue ? "selected" : "")>--Всички--</option>
+                                    <option value="1" @(Model.SearchDO.IsActiveId == 1 ? "selected" : "")>Активен</option>
+                                    <option value="2" @(Model.SearchDO.IsActiveId == 2 ? "selected" : "")>Неактивен</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        @*<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">*@
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <input class="btn blue-btn" type="submit" value="Търси" style="max-width: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- TransactionRecords table -->
+    <div class="results-table" style="@(Model.EserviceRecords == null || Model.EserviceRecords.Count() == 0 ? "border-bottom: 0px;" : "")">
+        <div class="results-thead">
+
+            <div class="@aisNameColClass">@Html.ActionLink("Име на АИС", MVC.EserviceClient.ActionNames.ListSort, MVC.EserviceClient.Name, Model.SearchDO.ToSortRouteValues(EserviceListColumn.AisName), null)</div>
+            <div class="@departmentNameColClass">@Html.ActionLink("Администрация", MVC.EserviceClient.ActionNames.ListSort, MVC.EserviceClient.Name, Model.SearchDO.ToSortRouteValues(EserviceListColumn.DepartmentName), null)</div>
+            <div class="@accountBankColClass">@Html.ActionLink("Банка", MVC.EserviceClient.ActionNames.ListSort, MVC.EserviceClient.Name, Model.SearchDO.ToSortRouteValues(EserviceListColumn.AccountBank), null)</div>
+            <div class="@vposClientNameColClass">@Html.ActionLink("ВПОС", MVC.EserviceClient.ActionNames.ListSort, MVC.EserviceClient.Name, Model.SearchDO.ToSortRouteValues(EserviceListColumn.VposClientName), null)</div>
+            <div class="@isActiveColClass">@Html.ActionLink("Статус", MVC.EserviceClient.ActionNames.ListSort, MVC.EserviceClient.Name, Model.SearchDO.ToSortRouteValues(EserviceListColumn.IsActive), null)</div>
+            <div class="results-cell"><span>Действия</span></div>
+        </div>
+        @if (Model.EserviceRecords != null && Model.EserviceRecords.Count() > 0)
+        {
+            foreach (var record in Model.EserviceRecords)
+            {
+                <div class="results-row">
+                    <div class="results-cell" style="vertical-align: top;">
+                        <span class="hidden-lg">Име на АИС:</span>
+                        <span class="label">@record.AisName</span>
+                    </div>
+                    <div class="results-cell" style="vertical-align: top;">
+                        <span class="hidden-lg">Администрация:</span>
+                        <span class="label">@record.DepartmentName</span>
+                    </div>
+                    <div class="results-cell" style="vertical-align: top;">
+                        <span class="hidden-lg">Банка:</span>
+                        <span class="label">@record.AccountBank</span>
+                    </div>
+                    <div class="@(String.Format("results-cell{0}", !record.VposClientId.HasValue ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                        <span class="hidden-lg">ВПОС:</span>
+                        <span class="label">@record.GetVposDisplayName()</span>
+                    </div>
+                    <div class="results-cell" style="vertical-align: top;">
+                        <span class="hidden-lg">Статус:</span>
+                        <span class="label">@(record.IsActive ? "Активен" : "Неактивен")</span>
+                    </div>
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">Действия:</span>
+                        <span class="label">
+                            <div class="actions">
+
+                                <a style="float:right; margin-left:4px; height: 28px; padding-top: 2px; padding-top: 2px;" class="btn blue-btn"
+                                   href="@Url.Action(MVC.EserviceClient.ActionNames.View, MVC.EserviceClient.Name, new { id = record.EserviceClientId })">Преглед</a>
+
+                            </div>
+
+                        </span>
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.EserviceRecords == null || Model.EserviceRecords.Count() == 0)
+    {
+        <div class="results-table-empty-results">
+            Няма присъединени АИС клиенти, отговарящи на вашето търсене.
+        </div>
+    }
+
+    <!-- PAGINATION -->
+    <nav class="txt-align-left" style="margin-left: 8px;">
+        @{
+            Html.RenderPartial(MVC.Shared.Views._Paging, Model.EserviceRecordsPagingOptions);
+        }
+
+        <a style="float:right; margin-left:4px; height: 28px; margin-right: 8px;" class="btn green-btn"
+           href="@Url.Action(MVC.EserviceClient.ActionNames.Create, MVC.EserviceClient.Name)">Добави нов клиент</a>
+
+    </nav>
+
+</div>

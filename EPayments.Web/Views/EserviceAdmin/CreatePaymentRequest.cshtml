@@ -1,0 +1,16 @@
+﻿@using EPayments.Web.Models.EserviceAdmin
+
+@model PaymentRequestVM
+
+<div class="container main-content">
+    <h2>@Model.Title</h2>
+
+    @Html.Partial(MVC.EserviceAdmin.Views.PaymentRequestDOForm, Model.PaymentRequest)
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+        <div class="form-group">
+            <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+               href="@Url.Action(MVC.EserviceAdmin.Actions.ActionNames.PaymentRequests, MVC.EserviceAdmin.Name)">@Model.BackButtonText</a>
+        </div>
+    </div>
+</div>

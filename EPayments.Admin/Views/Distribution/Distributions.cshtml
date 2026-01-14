@@ -1,0 +1,280 @@
+﻿@using EPayments.Admin.Models.Distributions
+@using EPayments.Data.ViewObjects.Admin
+@using EPayments.Common.Helpers
+
+@model DistributionRevenueVM
+
+@{
+    ViewBag.Title = "Справка разпределения";
+
+    string defaultClass = "results-cell";
+    string sortAsyncClass = " sortable sort-asc";
+    string sortDescClass = " sortable sort-desc";
+
+    string createAtTitle = "Справката е генерирана на";
+    string distributedDateTitle = "Справката е разпределена на";
+    string isDistributedTitle = "Дали е разпределено";
+    string refidTitle = "refid";
+    string totalSumBgnTitle = "Обща сума, ЛВ";
+    string totalSumEuroTitle = "Обща сума, EUR";
+    string distributionTypeTitle = "Вид на разпределението";
+    string actionTitle = "Действия";
+    string fileNameTitle = "Изтегли форма за БНБ";
+
+    string yes = "Да";
+    string no = "Не";
+
+    string createAtClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.CreatedAt ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string distributedDateClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.DistributedDate ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string isDistributedClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.IsDistributed ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string refidClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.Refid ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string totalSumClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.TotalSum ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string distributionTypeClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.DistributionType ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string fileNameClass = defaultClass + (Model.SearchDO.SortBy == DistributionRevenueSortEnum.FileName ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+
+    ICollection<SelectListItem> CreateDropDown(IEnumerable<DistribtutionTypeVO> distributions)
+    {
+        List<SelectListItem> selectListItems = new List<SelectListItem>()
+{
+            new SelectListItem() { Value = string.Empty, Text = "--Всички--" }
+        };
+
+        if (distributions.Any())
+        {
+            foreach (var distribution in distributions)
+            {
+                selectListItems.Add(new SelectListItem() { Value = distribution.DistributionTypeId.ToString(), Text = distribution.Name });
+            }
+        }
+
+        return selectListItems;
+    }
+}
+
+<div class="container main-content">
+    <h1 id="processedPayments" class="table-heading" style="width: 100%;">
+        @(ViewBag.Title)&nbsp;<small>(@(Model.RequestsPagingOptions.TotalItemCount == 0 ? "няма налични справки за разпределения" : String.Format("{0} {1}", Model.RequestsPagingOptions.TotalItemCount, Model.RequestsPagingOptions.TotalItemCount == 1 ? "справка" : "справки")))</small>
+    </h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+    <!-- FILTERS -->
+    <div class="table-filters">
+        <span class="filter-toggle opened">Търсене</span>
+
+        @using (Html.BeginForm(MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, null, FormMethod.Get, new { @class = "clearfix", style = "display: block;" }))
+        {
+            @Html.HiddenFor(m => m.SearchDO.SortBy)
+            @Html.HiddenFor(m => m.SearchDO.SortDesc)
+
+            <div class="row" style="">
+                <div class="col-lg-10 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Дата от</label>
+                                                @Html.TextBoxFor(m => m.SearchDO.StartDate, new { @class = "form-control datepicker", autocomplete = "off" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Дата до</label>
+                                                @Html.TextBoxFor(m => m.SearchDO.EndDate, new { @class = "form-control datepicker", autocomplete = "off" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group">
+                                                <label>Вид на разпределение</label>
+                                                @Html.DropDownListFor(m => m.SearchDO.DistributionType,
+                                                CreateDropDown(Model.DistribtutionTypes)
+                                                , new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>refid</label>
+                                                @Html.TextBoxFor(m => m.SearchDO.DistributionRevenueId, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-12">
+                    <input class="btn blue-btn" type="submit" value="Търси">
+                    <span class="reset btn" style="color: #0097e5; text-decoration: none">Изчисти</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- ProcessedPayments table -->
+    <div class="results-table" style="@(Model.DistributionRevenues.Count == 0 ? "border-bottom: 0px;" : "")">
+        <div class="results-thead">
+            <div class="@createAtClass">@Html.ActionLink(createAtTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.CreatedAt), null)</div>
+            <div class="@distributedDateClass">@Html.ActionLink(distributedDateTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.DistributedDate), null)</div>
+            <div class="@isDistributedClass">@Html.ActionLink(isDistributedTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.IsDistributed), null)</div>
+            <div class="@refidClass">@Html.ActionLink(refidTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.Refid), null)</div>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <div class="@totalSumClass">@Html.ActionLink(totalSumBgnTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <div class="@totalSumClass">@Html.ActionLink(totalSumEuroTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+                    <div class="@totalSumClass">@Html.ActionLink(totalSumBgnTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+                }
+                else
+                {
+                    <div class="@totalSumClass">@Html.ActionLink(totalSumBgnTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+                    <div class="@totalSumClass">@Html.ActionLink(totalSumEuroTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <div class="@totalSumClass">@Html.ActionLink(totalSumEuroTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.TotalSum), null)</div>
+            }
+
+
+            <div class="@distributionTypeClass">@Html.ActionLink(distributionTypeTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.DistributionType), null)</div>
+            <div class="@fileNameClass">@Html.ActionLink(fileNameTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, Model.SearchDO.ToDistributionSourtRouteValues(DistributionRevenueSortEnum.FileName), null)</div>
+            <div class="results-cell">@Html.ActionLink(actionTitle, MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name, null, null)</div>
+        </div>
+
+        @if (Model.DistributionRevenues.Count > 0)
+        {
+            foreach (var distribution in Model.DistributionRevenues)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">(@createAtTitle):</span>
+                        <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(distribution.CreatedAt))</span>
+                    </div>
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(distributedDateTitle):</span>
+                        <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(distribution.DistributedDate))</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(isDistributedTitle):</span>
+                        <span class="label">@(distribution.IsDistributed == true ? yes : no)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(refidTitle):</span>
+                        <span class="label">@(distribution.DistributionRevenueId)</span>
+                    </div>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(totalSumBgnTitle):</span>
+                            <span class="label">
+                                @CurrencyHelper.GetBgnValueFormated(distribution.TotalSum, distribution.CreatedAt) лв.
+                            </span>
+                        </div>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(totalSumEuroTitle):</span>
+                                <span class="label">
+                                    &euro; @CurrencyHelper.GetEuroValueFormated(distribution.TotalSum, distribution.CreatedAt)
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(totalSumBgnTitle):</span>
+                                <span class="label">
+                                    @CurrencyHelper.GetBgnValueFormated(distribution.TotalSum, distribution.CreatedAt) лв.
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(totalSumBgnTitle):</span>
+                                <span class="label">
+                                    @CurrencyHelper.GetBgnValueFormated(distribution.TotalSum, distribution.CreatedAt) лв.
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(totalSumEuroTitle):</span>
+                                <span class="label">
+                                    &euro; @CurrencyHelper.GetEuroValueFormated(distribution.TotalSum, distribution.CreatedAt)
+                                </span>
+                            </div>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(totalSumEuroTitle):</span>
+                            <span class="label">
+                                &euro; @CurrencyHelper.GetEuroValueFormated(distribution.TotalSum, distribution.CreatedAt)
+                            </span>
+                        </div>
+                    }
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(distributionTypeTitle):</span>
+                        <span class="label">@(Model.DistribtutionTypes.FirstOrDefault(dt => dt.DistributionTypeId == distribution.DistributionType)?.Name ?? string.Empty)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(fileNameTitle):</span>
+                        @*<span class="label">@(distribution.FileName)</span>*@
+                        <a href=@(Url.Action(MVC.Distribution.ActionNames.GetFile, MVC.Distribution.Name, new { id = distribution.DistributionRevenueId })) class="btn blue-btn">@(fileNameTitle)</a>
+                    </div>
+                    <div class="results-cell">
+                        <a href=@(Url.Action(MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, new { id = distribution.DistributionRevenueId })) class="btn blue-btn">Преглед на задълженията</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.DistributionRevenues.Count == 0)
+    {
+        <div class="results-table-empty-results">
+            Няма намерени резултати. Моля, опитайте пак като промените критериите за търсене.
+        </div>
+    }
+
+    <!-- PAGINATION -->
+    <nav class="txt-align-left">
+        @{
+            Html.RenderPartial(MVC.Shared.Views._Paging, Model.RequestsPagingOptions);
+        }
+    </nav>
+</div>

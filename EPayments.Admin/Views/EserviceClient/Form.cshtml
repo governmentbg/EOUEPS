@@ -1,0 +1,181 @@
+﻿
+@using EPayments.Admin.Models.EserviceClient
+
+@model EPayments.Admin.Models.EserviceClient.EServiceClientVM
+
+@{
+    Html.EnableClientValidation(false);
+
+    IDictionary<string, object> formControlHtmlAttributes = new Dictionary<string, object>();
+    formControlHtmlAttributes.Add("class", "form-control");
+
+    IDictionary<string, object> formControlToUpperHtmlAttributes = new Dictionary<string, object>();
+    formControlToUpperHtmlAttributes.Add("class", "form-control");
+    formControlToUpperHtmlAttributes.Add("style", "text-transform: uppercase;");
+
+    if (Model.Mode == FormMode.View)
+    {
+        formControlHtmlAttributes.Add("disabled", "disabled");
+        formControlToUpperHtmlAttributes.Add("disabled", "disabled");
+    }
+}
+
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.EserviceClientId)
+@Html.HiddenFor(m => m.ClientId)
+@Html.HiddenFor(m => m.SecretKey)
+@Html.HiddenFor(m => m.VposClientId)
+
+@if (Model.Mode == FormMode.View)
+{
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Име на АИС</label>
+            @Html.TextBoxFor(m => m.AisName, formControlHtmlAttributes)
+        </div>
+    </div>
+
+    <div id="existingDepartment" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Администрация</label>
+            @Html.DropDownListFor(m => m.DepartmentId, Model.DepartmentSelectList, formControlHtmlAttributes)
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Име на АИС</label>
+            @Html.TextBoxFor(m => m.AisName, formControlHtmlAttributes)
+        </div>
+    </div>
+
+    <div id="existingDepartment" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Избор на администрация</label>
+            @Html.DropDownListFor(m => m.DepartmentId, Model.DepartmentSelectList.OrderBy(d => d.Text), formControlHtmlAttributes)
+        </div>
+    </div>
+}
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Обслужваща банка</label>
+        @Html.TextBoxFor(m => m.AccountBank, formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>BIC код на обсл. банка</label>
+        @Html.TextBoxFor(m => m.AccountBIC, formControlToUpperHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>IBAN на обслужваща сметка</label>
+        @Html.TextBoxFor(m => m.AccountIBAN, formControlToUpperHtmlAttributes)
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Статус активност</label>
+        @Html.DropDownListFor(m => m.IsActiveBoolNom, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<ActiveStatus>(false), formControlHtmlAttributes)
+    </div>
+</div>
+
+@*<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Избор на вид на задължение</label>
+        @Html.DropDownListFor(m => m.ObligationTypeId, Model.ObligationTypes.OrderBy(d => d.Text), formControlHtmlAttributes)
+    </div>
+</div>*@
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Вид на разпределение</label>
+        @Html.DropDownListFor(d => d.DistributionType, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<DistributionType>(false), formControlHtmlAttributes)
+    </div>
+</div>
+
+@*<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Бюджетен Код</label>
+        @Html.TextBoxFor(m => m.BudgetCode, formControlToUpperHtmlAttributes)
+    </div>
+</div>*@
+
+@if (Model.Mode != FormMode.Create)
+{
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Агрегация към по-високо ниво</label>
+            @Html.DropDownListFor(d => d.AggregateToParent, EPayments.Common.Helpers.EnumHelper.GetEnumSelectListItems<BoolNom>(false), formControlHtmlAttributes)
+        </div>
+    </div>
+
+    <div id="existingDepartment" class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Първостепенен разпоредител</label>
+            @Html.DropDownListFor(d => d.ParentId, Model.EServiceClientSelectList, formControlHtmlAttributes)
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(m => m.AggregateToParent, new { Value = (int)BoolNom.No });
+}
+
+<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Електронно връчване</label>
+        @Html.DropDownListFor(m => m.DeliveryAdministrationGuid, Model.DeliveryAdministrationList, new { @class = "form-control chosen" })
+    </div>
+</div>
+
+@if (Model.Mode == FormMode.View)
+{
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Интеграционен АИС идентификатор</label>
+
+            <a style="float: right;" class="btnClipboard" data-clipboard-target="#txtClientId">
+                <img src="@Links.Content.images.icons.copy_to_clipboard_png" style="margin-right: 4px; margin-bottom: 4px;" />копирай
+            </a>
+
+            @Html.TextBoxFor(m => m.ClientId, new { @class = "form-control", @readonly = "readonly", id = "txtClientId" })
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Интеграционен АИС ключ</label>
+
+            <a style="float: right;" class="btnClipboard" data-clipboard-target="#txtSecretKey">
+                <img src="@Links.Content.images.icons.copy_to_clipboard_png" style="margin-right: 4px; margin-bottom: 4px;" />копирай
+            </a>
+
+            @Html.TextBoxFor(m => m.SecretKey, new { @class = "form-control", @readonly = "readonly", id = "txtSecretKey" })
+        </div>
+    </div>
+}
+
+<div class="col-xs-12">
+    <div class="col-sm-3 col-xs-12">
+        <div class="form-group">
+            <label for="@(nameof(Model.IsEpayVposEnabled))">Поддръжка на EPAY ВПОС</label>
+            @Html.CheckBoxFor(m => m.IsEpayVposEnabled, formControlHtmlAttributes)
+            <label for="@(nameof(Model.IsEpayVposEnabled))"></label>
+        </div>
+    </div>
+    <div class="col-sm-3 col-xs-12">
+        <div class="form-group">
+            <label for="@(nameof(Model.IsBoricaVposEnabled))">Поддръжка на Борика ЦВПОС</label>
+            @Html.CheckBoxFor(m => m.IsBoricaVposEnabled, formControlHtmlAttributes)
+            <label for="@(nameof(Model.IsBoricaVposEnabled))"></label>
+        </div>
+    </div>
+</div>

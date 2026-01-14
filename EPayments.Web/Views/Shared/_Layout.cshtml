@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="revision" content="@EPayments.Common.Helpers.GitRevisionHelper.GetRevision()">
+    <meta name="version" content="@EPayments.Common.Helpers.AssemblyHelper.GetAssemblyVersion()">
+    <title>Единна входна точка за електронни плащания за централната и местната администрация - @ViewBag.Title</title>
+    <link href='https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap' rel='stylesheet' type='text/css'>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/upxjs")
+    @Scripts.Render("~/bundles/homejs")
+    <!--[if lt IE 9]>
+      <script src="Scripts/html5shiv.js"></script>
+      <script src="Scripts/respond.min.js"></script>
+    <![endif]-->
+    <!-- Matomo -->
+
+    <script>
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://analytics.egov.bg/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '10']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+
+    <!-- End Matomo Code -->
+</head>
+<body id="content">
+
+    <input type="hidden" id="CurrencyMode" value="@Html.Raw(EPayments.Common.Helpers.CurrencyHelper.CurrencyMode.ToString().ToUpper())" />
+    <input type="hidden" id="BgnToEuroRate" value="@Html.Raw(EPayments.Common.Helpers.CurrencyHelper.BgnToEuroRate.ToString(System.Globalization.CultureInfo.InvariantCulture))" />
+    <input type="hidden" id="EuroAcceptanceDate" value="@Html.Raw(EPayments.Common.Helpers.CurrencyHelper.EuroAcceptanceDate.ToString("yyyy-MM-dd"))" />
+    <input type="hidden" id="IsEuroTimePeriod" value="@Html.Raw(EPayments.Common.Helpers.CurrencyHelper.IsEuroTimePeriod.ToString().ToLower())" />
+
+    @if (EPayments.Common.AppSettings.EPaymentsWeb_EnableGoogleAnalyticsLogging)
+    {
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-61694850-3', 'auto');
+            ga('send', 'pageview');
+        </script>
+    }
+
+    <!-- HEADER -->
+    <header>
+        <!--<div class="container clearfix">-->
+        <div class="container header-wrapper">
+            <div class="logo-wrapper">
+                <a class="logo" href="/" title="">
+                    @*<img src="@Links.Content.images.gerb_gif" alt="" />*@
+                    <img src="~/Content/images/logo.svg" height="95" class="icon-lion-form" alt="" />
+                </a>
+                <div class="title">
+                    <a href="/"><strong>Единна входна точка за електронни плащания за<br /> централната и местната администрация</strong></a>
+                    <a href="/"><span>Министерство на електронното управление</span></a>
+                </div>
+            </div>
+
+            @if (Request.IsAuthenticated)
+            {
+                <div class="right_controls_wrapper">
+                    <div class="right_controls clearfix">
+
+                        @if (this.CurrentUser.EserviceAdminId.HasValue)
+                        {@*@Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { @class = "goback visible-xs" })
+                                @Html.ActionLink("Настройки", MVC.EserviceAdmin.ActionNames.Settings, MVC.EserviceAdmin.Name, null, new { @class = "settings visible-xs" })*@ }
+                    else if (!this.CurrentUser.EserviceAdminId.HasValue && !this.CurrentUser.IsAuthorizedByAccessCode)
+                    {
+                        @Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { @class = "goback visible-xs" })
+                        @Html.ActionLink("Настройки", MVC.Settings.ActionNames.Index, MVC.Settings.Name, null, new { @class = "settings visible-xs" })}
+
+                        <a class="logout" data-href="@Url.Action(this.CurrentUser.EserviceAdminId.HasValue ? MVC.Account.ActionNames.LogoutEserviceAdminUser : MVC.Account.ActionNames.Logout, MVC.Account.Name, null)" data-toggle="confirmation" data-placement="left" data-btnoklabel="Да, искам" data-btnokclass="btn btn-sm red" data-btncancellabel="Отказ" title="Сигурни ли сте, че искате да излезете?">Изход</a>
+
+                        @if (this.CurrentUser.EserviceAdminId.HasValue)
+                        {@*@Html.ActionLink("Настройки", MVC.EserviceAdmin.ActionNames.Settings, MVC.EserviceAdmin.Name, null, new { @class = "settings hidden-xs" })*@ }
+                    else if (!this.CurrentUser.EserviceAdminId.HasValue && !this.CurrentUser.IsAuthorizedByAccessCode)
+                    {
+                        @Html.ActionLink("Настройки", MVC.Settings.ActionNames.Index, MVC.Settings.Name, null, new { @class = "settings hidden-xs" })}
+
+                        @if (!(((string)ViewContext.RouteData.Values["controller"]).ToLower() == "home" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "index") &&
+                             !(((string)ViewContext.RouteData.Values["controller"]).ToLower() == "payment" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "list") &&
+                             !(((string)ViewContext.RouteData.Values["controller"]).ToLower() == "eserviceadmin" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "transactionlist") &&
+                             !this.CurrentUser.EserviceAdminId.HasValue)
+                        {
+                            @Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { @class = "goback hidden-xs" })}
+                        @if (!String.IsNullOrWhiteSpace(CurrentUser.Name))
+                        {
+                            <div class="user">
+                                @if (!String.IsNullOrWhiteSpace(CurrentUser.EserviceAdminDepartment))
+                                {
+                                    <strong style="font-weight: bold;">@CurrentUser.EserviceAdminDepartment.ToUpper()</strong>}
+                                <strong>@CurrentUser.Name</strong>
+                            </div>}
+                    </div>
+                </div>
+            }
+            else
+            {
+                bool hideAccessButtons = ((string)ViewContext.RouteData.Values["controller"]).ToLower() == "home" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "accessbyeserviceadmin";
+
+                <div class="login clearfix">
+                    @if (hideAccessButtons)
+                    {
+                        @Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { @class = "goback", style = "border-right: 0px;" }) }
+                    else
+                    {
+                        if (!(((string)ViewContext.RouteData.Values["controller"]).ToLower() == "home" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "index") &&
+                            !(((string)ViewContext.RouteData.Values["controller"]).ToLower() == "payment" && ((string)ViewContext.RouteData.Values["action"]).ToLower() == "list"))
+                        {
+                            @Html.ActionLink("Назад", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { @class = "goback" }) } @*<a href="#" class="btn-el-id" data-toggle="modal" data-target="#myModal" data-backdrop="static" >Вход с ел. идентификатор</a>*@ @*<a href="@Url.Action(MVC.Home.ActionNames.AccessByCode, MVC.Home.Name, null)" class="btn-pay-cod hidden-md hidden-lg hidden-xl" style="padding: 3px 10px;">Вход с код за плащане</a>*@ @*<div class="login_info hidden-xs hidden-sm" style="padding: 7px 10px;">
+                                <span>
+                                    @Html.ActionLink("Вход с код за плащане", MVC.Home.ActionNames.AccessByCode, MVC.Home.Name, null, new { @class = "btn-pay-cod" })
+                                </span>
+                                </div>*@}
+                </div>
+            }
+
+        </div>
+
+        <!--</div>-->
+    </header>
+    <!-- -->
+    <!-- CONTENT -->
+    <div class="wpthemeContainer">
+        <div class="gradient-decor"></div>
+        <div class="wpthemeInner">
+            @RenderBody()
+        </div>
+    </div>
+    <!-- -->
+    <!-- FOOTER LINKS -->
+    <!--Chceck if home page is open-->
+    @if (string.Compare(Request.Url.LocalPath.ToLower(), "/index.cshtml") == 0 || string.Compare(Request.Url.LocalPath, "/") == 0
+        || string.Compare(Request.Url.LocalPath.ToLower(), "/home") == 0 || string.Compare(Request.Url.LocalPath.ToLower(), "/eforms") == 0
+        || string.Compare(Request.Url.LocalPath.ToLower(), "/home/accessbyeserviceadmin") == 0)
+    {
+        <div class="container-fluid footer-links">
+            @*<span class="gototop">
+                    <img src="@Links.Content.images.icons.chevron_up_png" alt="Горе">
+                    Горе
+                </span>*@
+            <div class="band-section-wrapper">
+                <div class="section-wrapper-list">
+                    <div class="title">EGOV.BG</div>
+                    <ul>
+                        <li><a href="https://egov.bg/wps/portal/egov/uslugi">Административни услуги</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/dostavchitsi na uslugi">Институциите на Република България</a></li>
+                        <li> <a href="https://egov.bg/wps/portal/egov/aktualno">Актуално</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/polezni-vrazki">Полезни връзки</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/statistika">Статистическа информация</a></li>
+                    </ul>
+                </div>
+                <div class="section-wrapper-list">
+                    <div class="title">Общи условия и политики</div>
+                    <ul>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/access-policy">Политика за достъпност</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/privacy-policy">Политика за поверителност</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/terms-and-conditions">Условия за ползване</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/sitemap">Карта на сайта</a></li>
+                    </ul>
+                </div>
+                <div class="section-wrapper-list">
+                    <div class="title">Министерство на електронното управление</div>
+                    <ul>
+                        <li><a href="https://egov.government.bg" target="_blank">Официална интернет страница на министерството</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/interoperability" target="_blank">Оперативна съвместимост</a></li>
+                        <li><a href="https://unifiedmodel.egov.bg/wps/portal/home/" target="_blank">Единен модел</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/helpdesk" target="_blank">Помощен контактен център</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- -->
+    <!-- FOOTER -->
+    <footer>
+        <div class="wrapper">
+            <div class="flex-between content-wrapper">
+                <div>
+                    <p class="explain">
+                        ПРОЕКТ: „Надграждане на съществуващите и изграждане на нови централни системи за електронното правителство с оглед на усъвършенстване на информационно-комуникационната среда за по-добро административно обслужване на гражданите и бизнеса“
+                    </p>
+                    <p class="small">© 2018 Министерство на електронното управление</p>
+                </div>
+                <img src="~/Content/images/footer-flags.png">
+            </div>
+        </div>
+    </footer>
+    <!-- -->
+    <!-- MODAL -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="max-width: 600px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Вход в системата</h4>
+                </div>
+                <div class="modal-body" style="text-align: justify;">
+                    <p>За вход в системата се използва Квалифициран електронен подпис (КЕП), съдържащ информация за Вашия Единен граждански номер (ЕГН) или Личен номер на чужденец (ЛНЧ).</p>
+                    <p><img src="@Links.Content.images.login_jpg" align="left" alt="" />Моля, уверете се, че устройството с електронния Ви подпис е поставено в компютъра. Ако не е поставено, поставете го и тогава продължете.</p>
+                    <p>За повече информация относно видовете и доставчиците на електронни подписи, вижте раздел @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "question_1.1" }, new { style = "color: #0097e5; text-decoration: none" }).</p>
+                </div>
+                <div class="modal-footer">
+
+                    @if (EPayments.Common.AppSettings.EPaymentsWeb_UseFakeCertificate)
+                    {
+                        <a class="btn blue-btn" style="text-transform: none;" href="~/SSL/Cert.aspx" title="">Вход</a> }
+                    else
+                    {
+                        if (EPayments.Common.AppSettings.EPaymentsWeb_UseEAuthForLogin)
+                        {
+                            @Html.ActionLink("Вход", MVC.Account.ActionNames.EAuth, MVC.Account.Name, null, new { @class = "btn blue-btn", style = "text-transform: none; margin-left: 10px;" }) }
+                        else
+                        {
+                            <a class="btn blue-btn" style="text-transform: none;" href="~/SSL/Cert.aspx" title="">Вход</a>}
+                    }
+                    <a class="btn grey-btn" style="text-transform: none; margin-left: 10px;" data-dismiss="modal">Откажи</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<f>
+  <h refid="1" timestamp="2021-05-17T19:01:14" sender="177098809" sendername="ДАЕУ" receiver="BNBOnline" />
+  <a acc="BG93BNBG96613000142701" bic="BNBGBGSD" cur="BGN" do="1049.23">
+    <d doc="ПНВБ" nok="1" ipol="ИС Електронно свидетелство за " iban="BG94RZBB91551060362319" bic="STSABGSF" cur="BGN" su="1049.23" o1="Разпределение" o2="Разпределение" vpn="003500">
+      <bud vd="9" nd="1" dd="2021-05-17" />
+    </d>
+  </a>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>VdoiYTEagG2ri90HjGM2WJBTPYU=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>S5dFsovOsnDHjI7+ErP9zV/qYoJFNES2PfJqJ1N7F8Il0JcMaNFYciUx/2yCotjVONHlt+OnXVqosro85sjZFqqidkI0eJhTJ8AL3sLhWZfZ3mR2kIg8sPSqbRCPgzWUKagVxADm0W+OJRC8F7zOBeSZ8r+P8g6HOPRnSyelg2LJ/r9NzideUACXQvRJ4ZyJ3WXsMH0P+pMc64gHremKX7aVESUJKWO6g5Dj097NNzkWCAQ/THwCYhr9pIqwscmkEGccM6bllga+KBugDbk5QIORsBuFU8ZknkWrWPOPP+WjrvX9MGidyrYThTWb+N76d/m0zRSKix+SdCgH9ly7DA==</SignatureValue>
+  </Signature>
+</f>

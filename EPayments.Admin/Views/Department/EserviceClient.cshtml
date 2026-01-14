@@ -1,0 +1,61 @@
+﻿@using EPayments.Admin.Models.EserviceClient
+@using EPayments.Admin.Controllers
+
+@model EserviceVM
+
+@{
+    string noParent = "--Първостепенен разпоредител--";
+    string modelIdAsString = Model.EserviceClientId.ToString();
+
+    HashSet<SelectListItem> eServiceClients = (HashSet<SelectListItem>)ViewData[DepartmentController.AisKey];
+}
+
+<tr class="table-row">
+    <td class="results-cell">
+        @if (Model.Children != null && Model.Children.Count > 0)
+        {
+            <span class="toggle expander aisclients"></span>
+        }
+    </td>
+    <td class="results-cell">@Model.AisName</td>
+    <td class="results-cell">
+        @if (Model.Children == null || Model.Children.Count == 0)
+        {
+            @Html.Partial(MVC.Department.Views.HierarchicalForm,
+                new HierarchicalFormVM()
+                { EserviceClinetId = Model.EserviceClientId, TargetId = Model.ParentId },
+                ViewData)
+        }
+        else
+        {
+            @((eServiceClients.FirstOrDefault(ec => string.Equals(ec.Value, Model.ParentId.ToString()))?.Text) ?? noParent);
+        }
+    </td>
+    <td class="results-cell">
+        <a style="float:right; margin-left:4px; height: 28px; padding-top: 2px; padding-top: 2px;" class="btn blue-btn"
+           href="@Url.Action(MVC.EserviceClient.ActionNames.View, MVC.EserviceClient.Name, new { id = Model.EserviceClientId })">Преглед</a>
+    </td>
+</tr>
+@if (Model.Children != null && Model.Children.Count > 0)
+{
+    <tr style="display: none;">
+        <td></td>
+        <td colspan="3">
+            <table class="results-table">
+                <tr class="results-thead">
+                    <th class="results-cell first-cell"></th>
+                    <th class="results-cell">Име на АИС</th>
+                    <th class="results-cell">Разпоредител</th>
+                    <th class="results-cell">Действия</th>
+                </tr>
+                @if (Model.Children != null && Model.Children.Count > 0)
+                {
+                    foreach (EserviceVM child in Model.Children)
+                    {
+                        @Html.Partial(MVC.Department.Views.EserviceClient, child, ViewData);
+                    }
+                }
+            </table>
+        </td>
+    </tr>
+}

@@ -1,0 +1,13 @@
+﻿@model EPayments.Web.Models.Shared.PagingVM
+@using EPayments.Web.Mvc.Pager;
+
+@Html.Pager(Model.TotalItemCount, Model.PageSize, Model.CurrentPageIndex, Model.ActionName, Model.ControllerName,
+    new PagerOptions()
+    {
+        PageIndexParameterName = Model.PageIndexParameterName,
+        ShowDisabledPagerItems = false,
+        AlwaysShowFirstLastPageNumber = true,
+        ShowPrevNext = true,
+        ShowFirstLast = true,
+    },
+    null, Model.RouteValues, null)

@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[GlobalValues](
+	[GlobalValueId] [int] IDENTITY(1,1) NOT NULL,
+	[Key] [nvarchar](200) NOT NULL,
+	[Value] [nvarchar](max) NULL,
+	[ModifyDate] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_GlobalValues] PRIMARY KEY CLUSTERED 
+(
+	[GlobalValueId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]

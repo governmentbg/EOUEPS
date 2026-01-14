@@ -1,0 +1,261 @@
+﻿@model EPayments.Web.Models.EserviceAdmin.TransactionListPrintHtmlVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Data.ViewObjects.Web
+@using EPayments.Web.Common;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        /*START NOTES*/
+        ul.start-notes {
+            list-style-type: none;
+            padding-left: 0;
+            font-style: italic;
+        }
+
+            ul.start-notes li {
+            }
+
+        /*TABLE*/
+        div.table-wrapper {
+            margin-bottom: 50px;
+        }
+
+        p.table-header {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 5px;
+            border-width: 2px;
+            border-style: solid;
+            color: #333;
+            background-color: #FFF;
+            border-color: #333;
+        }
+
+            td.header-cell {
+                font-weight: bold;
+                color: #333;
+                background-color: #E9E9E9;
+                border-color: #333;
+            }
+
+            td.bold-cell {
+                font-weight: bold;
+            }
+
+            td.number-cell {
+                text-align: right;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+        /*END NOTES*/
+        ul.end-notes {
+            list-style-type: none;
+            padding-left: 0;
+            font-style: italic;
+        }
+
+            ul.end-notes li {
+            }
+    </style>
+</head>
+<body>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Дата
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Сума
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Документ
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Задължено лице
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Основание
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Наредител
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Плащане
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Статус
+                </td>
+
+            </tr>
+
+            @foreach (var transaction in Model.Records)
+            {
+                <tr>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @(transaction.TransactionAccountingDate.HasValue ? Formatter.DateToBgFormatWithoutYearSuffix(transaction.TransactionAccountingDate) : String.Empty)
+                    </td>
+
+                    <td class=""
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        <nobr>
+                            @(transaction.TransactionAmount.HasValue
+                                ? CurrencyHelper.GetValueForDisplayUsingCurrencyMode(transaction.TransactionAmount.Value, transaction.TransactionDate.GetValueOrDefault())
+                                : string.Empty)
+                        </nobr>
+                    </td>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @{
+                            if (!String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && !transaction.InfoDocumentDate.HasValue)
+                            {
+                                <nobr>@transaction.InfoDocumentNumber</nobr>
+                            }
+                            else if (String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && transaction.InfoDocumentDate.HasValue)
+                            {
+                                <nobr>@Formatter.DateToBgFormatWithoutYearSuffix(transaction.InfoDocumentDate.Value)</nobr>
+                            }
+                            else if (!String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && transaction.InfoDocumentDate.HasValue)
+                            {
+                                <nobr>@transaction.InfoDocumentNumber</nobr>
+                                        <br>
+                                        <nobr>@Formatter.DateToBgFormatWithoutYearSuffix(transaction.InfoDocumentDate.Value)</nobr>
+                            }
+                        }
+                    </td>
+
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @{
+                            if (!String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                            {
+                                @transaction.InfoDebtorBulstatEgnLnch
+                            }
+                            else if (String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && !String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                            {
+                                @transaction.InfoDebtorName
+                            }
+                            else if (!String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && !String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                            {
+                                @transaction.InfoDebtorBulstatEgnLnch
+                                <br>
+                                @transaction.InfoDebtorName
+                            }
+                        }
+                    </td>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @(!String.IsNullOrWhiteSpace(transaction.InfoPaymentReason) ? transaction.InfoPaymentReason : String.Empty)
+                    </td>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @{
+                            if (!String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                            {
+                                @transaction.InfoSenderIban
+                            }
+                            else if (String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && !String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                            {
+                                @transaction.InfoSenderName
+                            }
+                            else if (!String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && !String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                            {
+                                @transaction.InfoSenderIban
+                                <br>
+                                @transaction.InfoSenderName
+                            }
+                        }
+                    </td>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @(transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.BankOrder ? "По банка" :
+                              (transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.POS ? "POS" :
+                              (transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.VPOS ? "VPOS" : String.Empty)))
+                    </td>
+
+                    <td class=" "
+                        style="width:px"
+                        rowspan="1"
+                        colspan="1">
+                        @Formatter.EnumToDescriptionString(transaction.TransactionRecordRefStatusId)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
+
+
+@if (Model.PrintResult)
+{
+    <script type="text/javascript">
+        setTimeout(function () {
+            print();
+        }, 100);
+    </script>
+}
+

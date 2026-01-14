@@ -1,0 +1,103 @@
+﻿@model EPayments.Web.Models.Shared.OrderVM
+@{
+    ViewBag.Title = !Model.ShowDetailsForm ? "Платежно нареждане" : "Детайли";
+    if (!Model.IsInternalAccess)
+    {
+        Layout = MVC.Shared.Views._EmptyLayout;
+    }
+}
+
+@if (!Model.IsInternalAccess)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var submitForm = function (selector) {
+                $(selector).submit();
+                setInterval(function () {
+                    if (navigator.appName == 'Microsoft Internet Explorer') {
+                        var ua = navigator.userAgent;
+                        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                        if (re.exec(ua) != null) {
+                            var ieVersion = parseFloat(RegExp.$1);
+                            if (ieVersion < 11) {
+                                $(selector).submit();
+                            }
+                        }
+                    }
+                }, 2000);
+            }
+
+
+            $("#downloadPdfOrderLink").on("click", function (e) {
+                e.preventDefault();
+                submitForm('#downloadPdfOrderForm');
+            });
+
+            $("#printOrderLink").on("click", function (e) {
+                e.preventDefault();
+                submitForm('#printOrderForm');
+            });
+        });
+    </script>
+}
+
+<div class="modal-header">
+    @if (Model.IsInternalAccess)
+    {
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+    }
+    <h4 class="modal-title" id="myModalLabel">@(!Model.ShowDetailsForm ? "Платежно нареждане" : "Детайли")</h4>
+</div>
+<div class="modal-body" style="@(!Model.IsInternalAccess ? "margin-left: 5px;" : String.Empty)">
+    @Html.Partial(MVC.Shared.Views._OrderPrint, Model)
+</div>
+
+<div class="payment-actions clearfix" style="@(!Model.IsInternalAccess ? "padding-bottom: 40px;" : String.Empty)">
+    @if (Model.IsInternalAccess)
+    {
+        if (!Model.IsEserviceAdminAccess)
+        {
+            @Html.ActionLink("Изтегли в PDF", MVC.Payment.ActionNames.DownloadPdfOrder, MVC.Payment.Name, new { id = Model.Gid }, new { @class = "download-pdf", target = "_blank" })
+        }
+        else
+        {
+            @Html.ActionLink("Изтегли в PDF", MVC.EserviceAdmin.ActionNames.DownloadPdfOrder, MVC.EserviceAdmin.Name, new { id = Model.Gid }, new { @class = "download-pdf", target = "_blank" })
+        }
+        <div class="right" data-toggle="popover" data-placement="left" title="" data-content="Моля, не отпечатвайте на хартия този документ, освен ако наистина е необходимо!" data-trigger="hover">
+            @if (!Model.IsEserviceAdminAccess)
+            {
+                @Html.ActionLink("Печат", MVC.Payment.ActionNames.PrintOrder, MVC.Payment.Name, new { id = Model.Gid }, new { @class = "print", target = "_blank" })
+            }
+            else
+            {
+                @Html.ActionLink("Печат", MVC.EserviceAdmin.ActionNames.PrintOrder, MVC.EserviceAdmin.Name, new { id = Model.Gid }, new { @class = "print", target = "_blank" })
+            }
+            <img src="@Links.Content.images.icons.ico_tree_gif" />
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm(MVC.Ais.ActionNames.DownloadPdfOrder, MVC.Ais.Name, null, FormMethod.Post, new { id = "downloadPdfOrderForm", target = "_blank" }))
+        {
+            @Html.Hidden("clientId", Model.ExternalRequestDO.ClientId)
+            @Html.Hidden("hmac", Model.ExternalRequestDO.Hmac)
+            @Html.Hidden("data", Model.ExternalRequestDO.Data)
+        }
+        
+        using (Html.BeginForm(MVC.Ais.ActionNames.PrintOrder, MVC.Ais.Name, null, FormMethod.Post, new { id = "printOrderForm", target = "_blank" }))
+        {
+            @Html.Hidden("clientId", Model.ExternalRequestDO.ClientId)
+            @Html.Hidden("hmac", Model.ExternalRequestDO.Hmac)
+            @Html.Hidden("data", Model.ExternalRequestDO.Data)
+        }
+        
+        <a href="#" id="downloadPdfOrderLink" class="download-pdf">Изтегли в PDF</a>
+        <div class="right" data-toggle="popover" data-placement="left" title="" data-content="Моля, не отпечатвайте на хартия този документ, освен ако наистина е необходимо!" data-trigger="hover">
+            <a href="#" id="printOrderLink" class="print">Печат</a>
+            <img src="@Links.Content.images.icons.ico_tree_gif" />
+        </div>
+    }
+</div>
+
+

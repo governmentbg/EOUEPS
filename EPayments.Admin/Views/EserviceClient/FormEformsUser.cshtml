@@ -1,0 +1,61 @@
+﻿@model EPayments.Admin.Models.EserviceClient.EformsUserVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Admin.Models.EserviceClient
+
+@{
+    Html.EnableClientValidation(false);
+
+    IDictionary<string, object> formControlHtmlAttributes = new Dictionary<string, object>();
+    formControlHtmlAttributes.Add("class", "form-control");
+
+    if (Model.Mode == FormMode.View)
+    {
+        formControlHtmlAttributes.Add("disabled", "disabled");
+    }
+}
+
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.EserviceAdminUserId)
+@Html.HiddenFor(m => m.EserviceClientId)
+
+@Html.HiddenFor(m => m.AisName)
+@Html.HiddenFor(m => m.DepartmentName)
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Име на АИС</label>
+        @Html.TextBoxFor(m => m.AisName, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Администрация</label>
+        @Html.TextBoxFor(m => m.DepartmentName, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>
+
+<div class="@(Model.Mode == FormMode.Create ? "col-lg-4 col-md-4 col-sm-12 col-xs-12" : "col-lg-6 col-md-6 col-sm-12 col-xs-12")">
+    <div class="form-group">
+        <label>Име</label>
+        @Html.TextBoxFor(m => m.Name, formControlHtmlAttributes)
+    </div>
+</div>
+
+<div class="@(Model.Mode == FormMode.Create ? "col-lg-4 col-md-4 col-sm-12 col-xs-12" : "col-lg-6 col-md-6 col-sm-12 col-xs-12")">
+    <div class="form-group">
+        <label>Потребителско име</label>
+        @Html.TextBoxFor(m => m.Username, formControlHtmlAttributes)
+    </div>
+</div>
+
+@if (Model.Mode == FormMode.Create)
+{
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Парола за достъп</label>
+            @Html.TextBoxFor(m => m.Password, formControlHtmlAttributes)
+        </div>
+    </div>
+}

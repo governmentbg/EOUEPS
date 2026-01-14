@@ -1,0 +1,52 @@
+﻿@model EPayments.Web.Models.Home.AccessByEserviceAdminVM
+@{
+    ViewBag.Title = "Административен достъп";
+}
+@using EPayments.Web.Common;
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#ValidationImage").val('');
+        });
+</script>
+
+<div class="container main-content">
+
+    <h2 style="text-align: center; padding-bottom: 30px;">Административен достъп за АИС клиенти на Е-Форми</h2>
+
+    @*<p style="text-align: justify;">Средата за електронни плащания е посредник при обмена на съобщения между доставчиците на електрони административни услуги (администрациите) и доставчиците на платежни услуги. Всяка администрация има възможност за собствен профил, от който може да извършва някои настройки и да получава специфична допълнителна информация. Достъпът до този профил се създава по заявка от конкретната администрация и е ограничен по IP адрес, електронен сертификат и други специални методи за сигурност.</p>
+    <p style="text-align: justify;">Ако сте администрация, която е включена в Средата, притежавате административен профил с регистриран сертификат и вече сте оторизирани за достъп, може за влезете в системата от тук.</p>*@
+
+    <div class="code-login">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="margin-top: 30px;">
+                @Html.ValidationSummary()
+            </div>
+        }
+
+        @using (Html.BeginForm(MVC.Home.ActionNames.AccessByEserviceAdmin, MVC.Home.Name, null, FormMethod.Post, new { id = "accessByCode_form", @class = "inquiry" }))
+        {
+            <div class="row">
+                <div class="form-group col-lg-3 col-md-6">
+                    <label><nobr>Потребителско име</nobr></label>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", name = "code", @maxlength = "100" })
+                </div>
+                <div class="form-group col-lg-3 col-md-6">
+                    <label><nobr>Парола:</nobr></label>
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", name = "code", @maxlength = "100" })
+                </div>
+                <div class="form-group col-lg-3 col-md-6" cptch>
+                    <label style="display: block;"><nobr>Код за сигурност</nobr></label>
+                    @Html.TextBox("ValidationImage", null, new { @class = "form-control", name = "number", @autocomplete = "off", @maxlength = "5", style= "text-transform: uppercase; display: inline-block; width: 48%;" })
+                    @Html.CaptchaImage(CaptchaDifficultyLevel.Medium, 42, 215, "validationImage", "display: inline-block; width: 48%; vertical-align: top;")
+                </div>
+                <div class="form-group col-lg-3 col-md-6">
+                    <label style="display: block;">&nbsp;</label>
+                    <input class="btn blue-btn big-btn" type="submit" value="Вход за администрации" style="width: 100%;"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>

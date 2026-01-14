@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="eProfileType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Person" />
+      <xs:enumeration value="LegalPerson" />
+      <xs:enumeration value="Institution" />
+      <xs:enumeration value="Administrator" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eProfileType" nillable="true" type="tns:eProfileType" />
+  <xs:simpleType name="eVerificationInfoType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Certificate" />
+      <xs:enumeration value="EID" />
+      <xs:enumeration value="AdministrativeAct" />
+      <xs:enumeration value="NOIToken" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eVerificationInfoType" nillable="true" type="tns:eVerificationInfoType" />
+  <xs:simpleType name="eRevokationResult">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK" />
+      <xs:enumeration value="Revoked" />
+      <xs:enumeration value="CanNotDetermine" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eRevokationResult" nillable="true" type="tns:eRevokationResult" />
+  <xs:simpleType name="eVerificationResult">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Success" />
+      <xs:enumeration value="InvalidFile" />
+      <xs:enumeration value="NoSignatureFound" />
+      <xs:enumeration value="DetachedSignature" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eVerificationResult" nillable="true" type="tns:eVerificationResult" />
+  <xs:simpleType name="eSortColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Status" />
+      <xs:enumeration value="ReceiverName" />
+      <xs:enumeration value="Title" />
+      <xs:enumeration value="SenderName" />
+      <xs:enumeration value="DateSent" />
+      <xs:enumeration value="DateReceived" />
+      <xs:enumeration value="RegIndex" />
+      <xs:enumeration value="DocKind" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eSortColumn" nillable="true" type="tns:eSortColumn" />
+  <xs:simpleType name="eSortOrder">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Asc" />
+      <xs:enumeration value="Desc" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eSortOrder" nillable="true" type="tns:eSortOrder" />
+  <xs:simpleType name="eInstitutionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="StateAdministraation" />
+      <xs:enumeration value="SocialOrganisations" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="eInstitutionType" nillable="true" type="tns:eInstitutionType" />
+</xs:schema>

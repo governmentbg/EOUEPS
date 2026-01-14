@@ -1,0 +1,34 @@
+﻿@using EPayments.Admin.Models.EserviceClient
+@using EPayments.Admin.Controllers
+
+@model HierarchicalFormVM
+
+@{
+    string idAsString = Model.EserviceClinetId.ToString();
+    string targetIdAsString = Model.TargetId.ToString();
+    string noParent = "--Първостепенен разпоредител--";
+
+    HashSet<SelectListItem> options = (HashSet<SelectListItem>)ViewData[DepartmentController.AisKey];
+
+
+    HashSet<SelectListItem> currentOptions = new HashSet<SelectListItem>();
+    currentOptions.Add(new SelectListItem() { Value = "", Text = noParent, Selected = Model.TargetId == null });
+
+    foreach (SelectListItem option in options)
+    {
+        if (!string.Equals(option.Value, idAsString))
+        {
+            currentOptions.Add(new SelectListItem() { Value = option.Value, Text = option.Text, Selected = string.Equals(option.Value, targetIdAsString) });
+        }
+    }
+}
+
+@using (Html.BeginForm(MVC.Department.ActionNames.HierarchicalStructure, MVC.Department.Name, FormMethod.Post, new { @class = "clearfix", style = "display: block;" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.TargetId)
+        @Html.DropDownListFor(m => m.TargetId, currentOptions, new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(m => m.EserviceClinetId)
+    <input type="submit" class="btn blue-btn" value="Премести" />
+}

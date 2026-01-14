@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://egov.bg/bes/ws/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://egov.bg/bes/ws/auditlog/v1" name="BGeGovEventsServices" targetNamespace="http://egov.bg/bes/ws/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://egov.bg/bes/ws/auditlog/v1" targetNamespace="http://egov.bg/bes/ws/auditlog/v1" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://egov.bg/bes/ws/v1" />
+      <xs:element name="EAServiceLCEvent" type="tns:EAServiceLCEventType" />
+      <xs:element name="EventSubscription" type="tns:EventSubscription" />
+      <xs:element name="GovernanceEvent" type="tns:GovernanceEventType" />
+      <xs:element name="PersonalDataAccessAttempt" type="tns:PersonalDataAccessAttemptType" />
+      <xs:element name="RegisterEvent" type="tns:RegisterEventType" />
+      <xs:element name="RegisterGovernanceEvent" type="tns:RegisterGovernanceEventType" />
+      <xs:element name="RegisterPDAccessAttempt" type="tns:RegisterPDAccessAttemptType" />
+      <xs:element name="RequestedServiceType" type="tns:RequestedServiceType" />
+      <xs:element name="ServiceRequesterISType" type="tns:ServiceRequesterISType" />
+      <xs:element name="SubscriberType" type="tns:SubscriberType" />
+      <xs:complexType name="RegisterEventType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" ref="tns:EAServiceLCEvent" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="EAServiceLCEventType">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:EventType">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="AuthnReqID" type="xs:string" />
+              <xs:element minOccurs="0" name="AuthnRespID" type="xs:string" />
+              <xs:element minOccurs="0" name="DocumentRegId" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="EventType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element name="EventTime" type="xs:dateTime" />
+          <xs:element name="EventType" type="tns:EventTypeEnum" />
+          <xs:element minOccurs="0" name="EventType2" type="xs:string" />
+          <xs:element name="RequestedService" type="tns:RequestedServiceType" />
+          <xs:element name="InformationSystemOID" type="xs:string" />
+          <xs:element name="EventDescription" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RequestedServiceType">
+        <xs:sequence>
+          <xs:element name="ServiceOID" type="xs:string" />
+          <xs:element name="SPOID" type="xs:string" />
+          <xs:element minOccurs="0" name="SPName" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceName" type="xs:string" />
+          <xs:element minOccurs="0" name="AuthnRequesterOID" type="xs:string" />
+          <xs:element minOccurs="0" name="AdminiOID" type="xs:string" />
+          <xs:element minOccurs="0" name="AdminLegalName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PersonalDataAccessAttemptType">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:EventType">
+            <xs:sequence>
+              <xs:element name="PersonalDataDescription" type="xs:string" />
+              <xs:element name="SubjectID" type="xs:string" />
+              <xs:element minOccurs="0" name="InformationSystem" type="tns:ServiceRequesterISType" />
+              <xs:element name="AccessedData" type="xs:string" />
+              <xs:element minOccurs="0" name="Employee" type="tns:AdmEmployeeType" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ServiceRequesterISType">
+        <xs:sequence>
+          <xs:element name="RequesterIsOID" type="xs:string" />
+          <xs:element name="ISName" type="xs:string" />
+          <xs:element name="AdminOID" type="xs:string" />
+          <xs:element name="AdminName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AdmEmployeeType">
+        <xs:sequence>
+          <xs:element name="personalID" type="xs:string" />
+          <xs:element name="personalIDType" type="tns:PersonIdTypeEnum" />
+          <xs:element name="personNames" type="xs:string" />
+          <xs:element name="currentPosition" type="xs:string" />
+          <xs:element name="parentAdministrationOID" type="xs:string" />
+          <xs:element name="parentAdministrationLegalName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="EventSubscription">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="creationTime" type="xs:string" />
+            <xs:element name="status" type="tns:SubscriptionStatusEnum" />
+            <xs:element name="notificationChannel" type="xs:string" />
+            <xs:element name="emailAddress" type="xs:string" />
+            <xs:element name="subscriber" type="tns:SubscriberType" />
+            <xs:element name="eventType" type="tns:EventTypeEnum" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GovernanceEventType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:long" />
+          <xs:element name="EventTime" type="xs:dateTime" />
+          <xs:element name="EventType" type="tns:EventTypeEnum" />
+          <xs:element name="ResourceOID" type="xs:string" />
+          <xs:element name="InformationSystemOID" type="xs:string" />
+          <xs:element minOccurs="0" name="EventDescription" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RegisterPDAccessAttemptType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" ref="tns:PersonalDataAccessAttempt" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubscriberType">
+        <xs:sequence>
+          <xs:element name="admOID" type="xs:string" />
+          <xs:element name="subscriber" type="xs:string" />
+          <xs:element name="reason" type="xs:string" />
+          <xs:element name="notificationAddress" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RegisterGovernanceEventType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" ref="tns:GovernanceEvent" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="EventTypeEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ROID_OID_CREATED" />
+          <xs:enumeration value="ROID_OID_UPDATED" />
+          <xs:enumeration value="ROID_OID_DELETED" />
+          <xs:enumeration value="RRES_ADMINISTRATION_CREATED" />
+          <xs:enumeration value="RRES_ADMINISTRATION_UPDATED" />
+          <xs:enumeration value="RRES_ADMINISTRATION_DELETED" />
+          <xs:enumeration value="RRES_IS_CREATED" />
+          <xs:enumeration value="RRES_IS_UPDATED" />
+          <xs:enumeration value="RRES_IS_DELETED" />
+          <xs:enumeration value="RRES_SERVICE_CREATED" />
+          <xs:enumeration value="RRES_SERVICE_UPDATED" />
+          <xs:enumeration value="RRES_SERVICE_DELETED" />
+          <xs:enumeration value="PERSONAL_DATA_ACCESS_ATTEMPT" />
+          <xs:enumeration value="PORTAL_ESERVICE_REQUESTED" />
+          <xs:enumeration value="PORTAL_AUTHN_REQUEST_SENT" />
+          <xs:enumeration value="PORTAL_AUTHN_RESPONSE_REDIRECTED" />
+          <xs:enumeration value="AUTHN_DENIED" />
+          <xs:enumeration value="AUTHN_ATTRBQUERY_SENT" />
+          <xs:enumeration value="AUTHN_ATTR_RECEIVED" />
+          <xs:enumeration value="AUTHN_RESPONSE_SENT" />
+          <xs:enumeration value="AUTHN_REQUEST_RECEIVED" />
+          <xs:enumeration value="AUTHN_SUCESSFUL" />
+          <xs:enumeration value="AUTHOR_REQUEST_SENT" />
+          <xs:enumeration value="AUTHOR_DENIED" />
+          <xs:enumeration value="AUTHOR_SUCCEEDED" />
+          <xs:enumeration value="AIS_AUTHN_RECEIVED" />
+          <xs:enumeration value="AIS_ESERVICE_VALIDATION_FAILED" />
+          <xs:enumeration value="AIS_ESERVICE_VALIDATION_SUCCEEDED" />
+          <xs:enumeration value="AIS_EPAYMENT_REQUEST_SENT" />
+          <xs:enumeration value="AIS_ESERVICE_DENIED" />
+          <xs:enumeration value="AIS_ESERVICE_STARTED" />
+          <xs:enumeration value="AIS_ESERVICE_RESULT_READY" />
+          <xs:enumeration value="AIS_ESERVICE_RESULT_REGISTRATION_SENT" />
+          <xs:enumeration value="AIS_ESERVICE_DOCUMENT_REGISTERED" />
+          <xs:enumeration value="AIS_ESERVICE_CANCELED_BY_USER" />
+          <xs:enumeration value="EPAYMENT_PAYMENT_REQUEST_RECEIVED" />
+          <xs:enumeration value="EPAYMENT_PAYMENT_REQUEST_DENIED" />
+          <xs:enumeration value="EPAYMENT_PAYMENT_VPOS_AUTHORIZED" />
+          <xs:enumeration value="EPAYMENT_PAYMENT_ORDERED" />
+          <xs:enumeration value="EPAYMENT_PAYMENT_PAID" />
+          <xs:enumeration value="EDELIVERY_DOCUMENT_RECEIVED" />
+          <xs:enumeration value="EDELIVERY_DOCUMENT_REGISTERED" />
+          <xs:enumeration value="EDELIVERY_DOCUMENT_REGISTRATION_DENIED" />
+          <xs:enumeration value="EDELIVERY_NOTIFICATION_SENT" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="PersonIdTypeEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ЕГН" />
+          <xs:enumeration value="ЛНЧ" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="SubscriptionStatusEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NEW" />
+          <xs:enumeration value="ACTIVE" />
+          <xs:enumeration value="DEACTIVATED" />
+          <xs:enumeration value="CANCELED" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="RegisterEvent">
+    <wsdl:part name="parameters" element="ns1:RegisterEvent" />
+  </wsdl:message>
+  <wsdl:portType name="RegisterEventSOAPPort">
+    <wsdl:operation name="RegisterEvent">
+      <wsdl:input name="RegisterEvent" message="tns:RegisterEvent" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BGeGovEventsServicesSoapBinding" type="tns:RegisterEventSOAPPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RegisterEvent">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="RegisterEvent">
+        <soap:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BGeGovEventsServices">
+    <wsdl:port name="RegisterEventSOAPPortImplPort" binding="tns:BGeGovEventsServicesSoapBinding">
+      <soap:address location="https://auditlog.egov.bg:9446/auditLog/RegisterEventSOAPPort" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

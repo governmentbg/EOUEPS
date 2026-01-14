@@ -1,0 +1,60 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    string applicantName = (string)Model.GetValue("ApplicantName", StringComparison.InvariantCultureIgnoreCase);
+    string accessCode = (string)Model.GetValue("AccessCode", StringComparison.InvariantCultureIgnoreCase);
+    string paymentRequestIdentifier = (string)Model.GetValue("PaymentRequestIdentifier", StringComparison.InvariantCultureIgnoreCase);
+    string serviceProviderName = (string)Model.GetValue("ServiceProviderName", StringComparison.InvariantCultureIgnoreCase);
+    string paymentReason = (string)Model.GetValue("PaymentReason", StringComparison.InvariantCultureIgnoreCase);
+    string paymentAmount = (string)Model.GetValue("PaymentAmount", StringComparison.InvariantCultureIgnoreCase);
+    string accessByCodeUrl = (string)Model.GetValue("AccessByCodeUrl", StringComparison.InvariantCultureIgnoreCase);
+    string portalUrl = (string)Model.GetValue("PortalUrl", StringComparison.InvariantCultureIgnoreCase);
+    string feedbackUrl = (string)Model.GetValue("FeedbackUrl", StringComparison.InvariantCultureIgnoreCase);
+}
+
+<p style="margin-bottom: 15px;">
+    Здравейте,
+    <br />
+    В <strong style="color: #444444;">Средата за електронни плащания към доставчици на електронни административни услуги</strong> беше генериран и изпратен на Вашата електронна поща Код за плащане на задължение на <strong style="color: #444444;">@applicantName</strong>.
+</p>
+<p style="margin-bottom: 15px;">
+    Код за плащане: <strong style="color: #444444;">@accessCode</strong>
+</p>
+<p style="margin-bottom: 15px;">
+    Хипервръзка за достъп с Код за плащане:
+    <br />
+    <a href="@accessByCodeUrl">@accessByCodeUrl</a>
+</p>
+
+<p style="margin-bottom: 15px;">
+    Информация за задължението:
+    <table style="border:1px solid;border-collapse:collapse;">
+        <tr>
+            <td align="right" style="border:1px solid; padding-left: 10px; padding-right: 10px;">Задължение номер:</td>
+            <td align="left" style="border:1px solid; padding-left: 10px; padding-right: 10px;"><strong style="color: #444444;">@paymentRequestIdentifier</strong></td>
+        </tr>
+        <tr>
+            <td align="right" style="border:1px solid; padding-left: 10px; padding-right: 10px;">Получател:</td>
+            <td align="left" style="border:1px solid; padding-left: 10px; padding-right: 10px;"><strong style="color: #444444;">@serviceProviderName</strong></td>
+        </tr>
+        <tr>
+            <td align="right" style="border:1px solid; padding-left: 10px; padding-right: 10px;">Основание:</td>
+            <td align="left" style="border:1px solid; padding-left: 10px; padding-right: 10px;"><strong style="color: #444444;">@paymentReason</strong></td>
+        </tr>
+        <tr>
+            <td align="right" style="border:1px solid; padding-left: 10px; padding-right: 10px;">Сума:</td>
+            <td align="left" style="border:1px solid; padding-left: 10px; padding-right: 10px;"><strong style="color: #444444;">@paymentAmount</strong></td>
+        </tr>
+    </table>
+</p>
+<p style="margin-bottom: 15px;">Допълнителна информация за задължението и начините на плащането му може да намерите в <a href="@portalUrl">Портала на Средата за електронни плащания</a>.
+<p style="margin-bottom: 15px;">Настоящото съобщение е заявено за получаване от Вас чрез настройките на системата.</p>
+<p style="margin-bottom: 15px;">Ако в бъдеще не желаете да получавате съобщения от системата или желаете да бъде извършена промяна във връзка с изпращането им – например да получавате съобщения на друг електронен адрес, е необходимо да влезете в <a href="@portalUrl">Портала на Средата за електронни плащания</a> и от менюто „Настройки“ да направите съответните промени.</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    Поздрави, <br />
+    Екипът на Единната среда за електронни разплащания
+</p>
+<p style="font-size: 13px; margin-top: 0px;">
+    Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.<br />
+    При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на <a href="@portalUrl">Портала на Средата за електронни плащания</a> или формата за <a href="@feedbackUrl">Обратна връзка</a>.
+</p>

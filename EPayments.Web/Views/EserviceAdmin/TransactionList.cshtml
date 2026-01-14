@@ -1,0 +1,443 @@
+﻿@model EPayments.Web.Models.EserviceAdmin.TransactionListVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@{
+    ViewBag.Title = "Данни за постъпили плащания";
+
+    string transactionAccountingDateColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.TransactionAccountingDate ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string transactionAmountColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.TransactionAmount ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string infoDocumentNumberDateColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.InfoDocumentNumberDate ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string infoSenderNameIbanColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.InfoSenderIbanName ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string infoDebtorBulstatEgnLnchNameColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.InfoDebtorBulstatEgnLnchName ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string transactionRecordPaymentMethodColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.TransactionRecordPaymentMethod ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+    string transactionRecordRefStatusColClass = "results-cell sortable" + (Model.SearchDO.SortBy == TransactionListColumn.TransactionRecordRefStatus ? (Model.SearchDO.SortDesc ? " sort-desc" : " sort-asc") : String.Empty);
+}
+
+<div class="container main-content">
+
+    <h1>Данни за постъпили плащания</h1>
+
+    <p style="text-align: justify;">
+        Към профила на Министерство на правосъдието в системата се изпраща информация за постъпили плащания от следните доставчици на платежни услуги и съответните сметки към тях:
+        <ul class="ticks">
+            @foreach (var item in Model.BankAndIbanDictionary)
+            {
+                <li><b>@item.Key</b> (IBAN: @String.Join("; ", item.Value))</li>
+            }
+        </ul>
+    </p>
+    <p style="text-align: justify;">С помощта на функционалността за търсене по-долу имате възможност да филтрирате по различни критерии постъпилите в сметките плащания. Чрез бутона <nobr><span class="icon-action"><img src="@Links.Content.images.icons.actions.platejno_png" /></span></nobr> може да видите предварително електронно генерираното и изпратено от Министерство на правосъдието задължение на лице към системата.</p>
+    @*<p style="text-align: justify;">Когато задълженото лице е посочило грешен номер на документ в платежно нареждане, чрез бутона <nobr><span class="icon-action"><img src="@Links.Content.images.icons.actions.otorizacia_png" /></span></nobr> може да го коригирате така, че то да бъде свързано с коректното електронно задължение.</p>*@
+
+    <hr style="border-top: 1px solid #000;"/>
+
+    <h2 class="table-heading" style="width: 100%;">
+        Извършени транзакции&nbsp;
+        <small>
+            (@(Model.TransactionRecordsPagingOptions.TotalItemCount == 0 ?
+            "няма налични транзакции" :
+            String.Format("{0} {1} на обща стойност {2}",
+                Model.TransactionRecordsPagingOptions.TotalItemCount,
+                Model.TransactionRecordsPagingOptions.TotalItemCount == 1 ? "транзакция" : "транзакции",
+                CurrencyHelper.GetValueForDisplayUsingCurrencyMode(Model.TotalAmount, Model.TransactionRecords[0].InfoDocumentDate ?? DateTime.UtcNow)))
+        </small>
+    </h2>
+
+    <!-- NEW FILTERS  -->
+    <div class="table-filters">
+        <span class="filter-toggle opened">Търсене</span>
+
+            @using (Html.BeginForm(MVC.EserviceAdmin.ActionNames.TransactionListSearch, MVC.EserviceAdmin.Name, null, FormMethod.Post, new { @class = "clearfix", style = "display: block;" }))
+            {
+                @Html.HiddenFor(m => m.SearchDO.SortBy)
+                @Html.HiddenFor(m => m.SearchDO.SortDesc)
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Сметка на получател</label>
+                                    @Html.DropDownListFor(m => m.SearchDO.EserviceBankAccountId, Model.BankAccounts, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>От дата</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.TransactionAccountingDateFrom, new { @class = "form-control datepicker" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>До дата</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.TransactionAccountingDateTo, new { @class = "form-control datepicker" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Сума (от…)</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.TransactionAmountFrom, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Сума (…до)</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.TransactionAmountTo, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Сметка на наредител</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoSenderIban, new { @class = "form-control", maxlength = "22" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Име на наредител</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoSenderName, new { @class = "form-control", maxlength = "50" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Дата на док. (от)</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoDocumentDateFrom, new { @class = "form-control datepicker" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Дата на док. (до)</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoDocumentDateTo, new { @class = "form-control datepicker" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Задължено лице</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoDebtorName, new { @class = "form-control", maxlength = "50" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label style="white-space: nowrap;">ЕИК / ЕГН / ЛНЧ (зад. лице)</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoDebtorBulstatEgnLnch, new { @class = "form-control", onkeyup = "validateInp(this);", maxlength = "10" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>№ на документ</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoDocumentNumber, new { @class = "form-control", maxlength = "12" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Основание</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoPaymentReason, new { @class = "form-control no", maxlength = "100" })
+                                </div>
+                            </div>
+                            
+
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Плащане</label>
+                                    <select name="SearchDO.TransactionRecordPaymentMethod" class="form-control" id="SearchDO_TransactionRecordPaymentMethod" data-val="true" data-val-number="The field TransactionRecordRefStatus must be a number.">
+                                        <option value="" @(!Model.SearchDO.TransactionRecordPaymentMethod.HasValue ? "selected" : "")>Всички</option>
+                                        <option value="1" @(Model.SearchDO.TransactionRecordPaymentMethod == 1 ? "selected" : "")>По банков път</option>
+                                        <option value="2" @(Model.SearchDO.TransactionRecordPaymentMethod == 2 ? "selected" : "")>Физически ПОС</option>
+                                        <option value="3" @(Model.SearchDO.TransactionRecordPaymentMethod == 3 ? "selected" : "")>Виртуален ПОС</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Статус</label>
+                                    <select name="SearchDO.TransactionRecordRefStatus" class="form-control" id="SearchDO_TransactionRecordRefStatus" data-val="true" data-val-number="The field TransactionRecordRefStatus must be a number.">
+                                        <option value="" @(!Model.SearchDO.TransactionRecordRefStatus.HasValue ? "selected" : "")>Всички плащания</option>
+                                        <option value="-1" @(Model.SearchDO.TransactionRecordRefStatus == -1 ? "selected" : "")>Всички ел. заявени</option>
+                                        <option value="2" @(Model.SearchDO.TransactionRecordRefStatus == 2 ? "selected" : "") style="color:green;">Платено задължение</option>
+                                        <option value="4" @(Model.SearchDO.TransactionRecordRefStatus == 4 ? "selected" : "") style="color:blue;">Надплатена сума</option>
+                                        <option value="3" @(Model.SearchDO.TransactionRecordRefStatus == 3 ? "selected" : "") style="color:red;">Недостатъчна сума</option>
+                                        <option value="1" @(Model.SearchDO.TransactionRecordRefStatus == 1 ? "selected" : "")>Други плащания</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Авт. код</label>
+                                    @Html.TextBoxFor(m => m.SearchDO.InfoAC1AuthorizationCode, new { @class = "form-control", maxlength = "6" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 hidden-sm hidden-xs">
+                                <div class="form-group">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <input class="btn blue-btn" type="submit" value="Търси">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+    </div>
+
+    @if (Model.SearchDO.EserviceBankAccountId.HasValue)
+    {
+
+        <!-- TransactionRecords table -->
+        <div class="results-table" style="@(Model.TransactionRecords == null || Model.TransactionRecords.Count() == 0 ? "border-bottom: 0px;" : "")">
+            <div class="results-thead">
+
+                <div class="@transactionAccountingDateColClass">@Html.ActionLink("Дата", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.TransactionAccountingDate), null)</div>
+                <div class="@transactionAmountColClass">@Html.ActionLink("Сума", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.TransactionAmount), null)</div>
+                <div class="@infoDocumentNumberDateColClass">@Html.ActionLink("Документ", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.InfoDocumentNumberDate), null)</div>
+                <div class="@infoDebtorBulstatEgnLnchNameColClass">@Html.ActionLink("Задължено лице", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.InfoDebtorBulstatEgnLnchName), null)</div>
+                <div class="results-cell"><span>Основание</span></div>
+                <div class="@infoSenderNameIbanColClass">@Html.ActionLink("Наредител", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.InfoSenderIbanName), null)</div>
+                <div class="@transactionRecordPaymentMethodColClass">@Html.ActionLink("Плащане", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.TransactionRecordPaymentMethod), null)</div>
+                <div class="@transactionRecordRefStatusColClass">@Html.ActionLink("Статус", MVC.EserviceAdmin.ActionNames.TransactionListSort, MVC.EserviceAdmin.Name, Model.SearchDO.ToSortRouteValues(TransactionListColumn.TransactionRecordRefStatus), null)</div>
+                <div class="results-cell"><span>Действия</span></div>
+            </div>
+            @if (Model.TransactionRecords != null && Model.TransactionRecords.Count() > 0)
+            {
+                foreach (var transaction in Model.TransactionRecords)
+                {
+                    <div class="results-row">
+                        <div class="@(String.Format("results-cell{0}", !transaction.TransactionAccountingDate.HasValue ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Дата:</span>
+                            <span class="label"><nobr>@(Formatter.DateToBgFormatWithoutYearSuffix(transaction.TransactionAccountingDate))</nobr></span>
+                        </div>
+                        <div class="@(String.Format("results-cell{0}", !transaction.TransactionAmount.HasValue ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Сума:</span>
+                            <span class="label"><nobr>@(Formatter.DecimalToTwoDecimalPlacesFormat(transaction.TransactionAmount)) лв.</nobr></span>
+                        </div>
+                        <div class="@(String.Format("results-cell{0}", String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && !transaction.InfoDocumentDate.HasValue ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Документ:</span>
+                            <span class="label">
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && !transaction.InfoDocumentDate.HasValue)
+                                    {
+                                        <nobr>@transaction.InfoDocumentNumber</nobr>
+                                    }
+                                    else if (String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && transaction.InfoDocumentDate.HasValue)
+                                    {
+                                        <nobr>@Formatter.DateToBgFormatWithoutYearSuffix(transaction.InfoDocumentDate.Value)</nobr>
+                                    }
+                                    else if (!String.IsNullOrWhiteSpace(transaction.InfoDocumentNumber) && transaction.InfoDocumentDate.HasValue)
+                                    {
+                                        <nobr>@transaction.InfoDocumentNumber</nobr>
+                                        <br>
+                                        <nobr>@Formatter.DateToBgFormatWithoutYearSuffix(transaction.InfoDocumentDate.Value)</nobr>
+                                    }
+                                }
+                            </span>
+                        </div>
+                        <div class="@(String.Format("results-cell{0}", String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && String.IsNullOrWhiteSpace(transaction.InfoDebtorName) ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Задължено лице:</span>
+                            <span class="label">
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                                    {
+                                        @transaction.InfoDebtorBulstatEgnLnch
+                                    }
+                                    else if (String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && !String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                                    {
+                                        @transaction.InfoDebtorName
+                                    }
+                                    else if (!String.IsNullOrWhiteSpace(transaction.InfoDebtorBulstatEgnLnch) && !String.IsNullOrWhiteSpace(transaction.InfoDebtorName))
+                                    {
+                                        @transaction.InfoDebtorBulstatEgnLnch
+                                        <br>
+                                        @transaction.InfoDebtorName
+                                    }
+                                }
+                            </span>
+                        </div>
+                        <div class="@(String.Format("results-cell{0}", String.IsNullOrWhiteSpace(transaction.InfoPaymentReason) ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Основание:</span>
+                            <span class="label">@transaction.InfoPaymentReason</span>
+                        </div>
+                        <div class="@(String.Format("results-cell{0}", String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && String.IsNullOrWhiteSpace(transaction.InfoSenderName) ? " hidden-xs hidden-sm hidden-md " : String.Empty))" style="vertical-align: top;">
+                            <span class="hidden-lg">Наредител:</span>
+                            <span class="label break-word">
+                                @{
+                                    if (!String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                                    {
+                                        @transaction.InfoSenderIban
+                                    }
+                                    else if (String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && !String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                                    {
+                                        @transaction.InfoSenderName
+                                    }
+                                    else if (!String.IsNullOrWhiteSpace(transaction.InfoSenderIban) && !String.IsNullOrWhiteSpace(transaction.InfoSenderName))
+                                    {
+                                        @transaction.InfoSenderIban
+                                        <br>
+                                        @transaction.InfoSenderName
+                                    }
+                                }
+                            </span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Вид плащане:</span>
+                            <span class="label">
+                            @(transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.BankOrder ? "По банка" :
+                              (transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.POS ? "POS" :
+                              (transaction.TransactionRecordPaymentMethodId == TransactionRecordPaymentMethod.VPOS ? "VPOS" : String.Empty)))
+                            </span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Статус:</span>
+                            @{ string statusColor = null;
+                                if (transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedSuccessfully) { statusColor = "green;"; }
+                                else if (transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedOverpaidAmount) { statusColor = "blue;"; }
+                                else if (transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedInsufficientAmount) { statusColor = "red;"; }
+                            }
+                            <span class="label" style="padding-bottom: 5px; @(statusColor != null ? "color: " + statusColor : "")">@Formatter.EnumToDescriptionString(transaction.TransactionRecordRefStatusId)</span>
+                        </div>
+                        <div class="results-cell">
+                            <span class="hidden-lg">Действия:</span>
+                            <span class="label">
+                                <div class="actions">
+
+                                        @if (transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedSuccessfully ||
+                                             transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedInsufficientAmount ||
+                                             transaction.TransactionRecordRefStatusId == TransactionRecordRefStatus.ReferencedOverpaidAmount)
+                                        {
+                                            <a data-toggle="modal" data-backdrop="static" data-target="#myModalFixed" tooltip tooltip-title="Ел. генерирано задължение"
+                                               href="@Url.Action(MVC.EserviceAdmin.ActionNames.TransactionReferencedPayment, MVC.EserviceAdmin.Name, new { id = transaction.PaymentRequestGid, dummy = Guid.NewGuid().ToString()})">
+                                                <span class="icon-action"><img style="height: 28px; max-width: 28px; width: 28px;" src="@Links.Content.images.icons.actions.platejno_png" /></span>
+                                            </a>
+                                        }
+
+                                    <a style="float:none; margin-left:4px; height: 28px; padding-top: 2px; padding-top: 2px;" class="btn green-btn" data-toggle="modal" data-backdrop="static" data-target="#myModalFixedDetails" tooltip tooltip-title="Детайли за плащане"
+                                       href="@Url.Action(MVC.EserviceAdmin.ActionNames.TransactionDetails, MVC.EserviceAdmin.Name, new { id = transaction.TransactionRecordId, dummy = Guid.NewGuid().ToString() })">Детайли</a>
+
+                                    </div>
+
+                            </span>
+                        </div>
+
+                    </div>
+                }
+            }
+        </div>
+
+        if (Model.TransactionRecords == null || Model.TransactionRecords.Count() == 0)
+        {
+            <div class="results-table-empty-results">
+                Към момента в системата няма заредени транзакции, отговарящи на вашето търсене.
+            </div>
+        }
+
+        <!-- PAGINATION -->
+        <nav class="txt-align-left">
+            @{
+                Html.RenderPartial(MVC.Shared.Views._Paging, Model.TransactionRecordsPagingOptions);
+
+                if (Model.TransactionRecords != null && Model.TransactionRecords.Count() > 0)
+                {
+                    <div class="data-export">
+                        <span>Експорт на данните</span>
+
+                        @Html.ActionLink("Excel", MVC.EserviceAdmin.ActionNames.TransactionListExportExcel, MVC.EserviceAdmin.Name, Model.SearchDO.ToRouteValues(), new { target = "_blank", @class = "ico-xls" })
+                        @Html.ActionLink("HTML", MVC.EserviceAdmin.ActionNames.TransactionListExportHtml, MVC.EserviceAdmin.Name, Model.SearchDO.ToRouteValues(), new { target = "_blank", @class = "ico-html" })
+                        @Html.ActionLink("XML", MVC.EserviceAdmin.ActionNames.TransactionListExportXml, MVC.EserviceAdmin.Name, Model.SearchDO.ToRouteValues(), new { target = "_blank", @class = "ico-xml" })
+                        @Html.ActionLink("Печат", MVC.EserviceAdmin.ActionNames.TransactionListPrintHtml, MVC.EserviceAdmin.Name, Model.SearchDO.ToRouteValues(), new { target = "_blank", @class = "ico-print" })
+
+                    </div>
+                }
+            }
+        </nav>
+    }
+
+</div>
+
+
+@*Modal popup html*@
+<div class="modal fade" id="myModalFixed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalFixedDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog payment" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@*Modal popup script*@
+<script type="text/javascript">
+    $(function () {
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+
+        // Initalize modal dialog
+        // attach myModalFixed bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#myModalFixed');
+            $(this).attr('data-target', '#myModalFixedDetails');
+            $(this).attr('data-toggle', 'modal');
+            $(this).attr('data-backdrop', 'static');
+        });
+
+        $('#myModalFixed').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        $('#myModalFixedDetails').on('loaded.bs.modal', function (e) {
+            //bootstrap popover
+            if ($('[data-toggle=popover]').length != 0) {
+                $('[data-toggle="popover"]').popover();
+            }
+        })
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#myModalFixed').modal('hide');
+            $('#myModalFixedDetails').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixed').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#myModalFixedDetails').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+
+            $('#myModalFixedDetails').removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+
+    function validateInp(elem) {
+        var validChars = /[0-9]/;
+        var strIn = elem.value;
+        var strOut = '';
+        for(var i=0; i < strIn.length; i++) {
+            strOut += (validChars.test(strIn.charAt(i)))? strIn.charAt(i) : '';
+        }
+        elem.value = strOut;
+    }
+
+</script>

@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2CF67FDF-CE60-4FBF-9177-B2C08F459A15}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EPayments.Database</RootNamespace>
+    <AssemblyName>EPayments.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PublicTest|AnyCPU'">
+    <OutputPath>bin\PublicTest\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrate.bat" />
+    <None Include="CreateAll.bat" />
+    <None Include="CreateAll.log">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateAll.tt</DependentUpon>
+    </None>
+    <None Include="CreateAll.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CreateAll.log</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Create\Procedures\spGetPaymentRequestTotal.sql" />
+    <Content Include="Migrate.sql" />
+    <Content Include="CreateAll.sql" />
+    <Content Include="Create\Create.sql" />
+    <Content Include="Create\CreateDB.sql" />
+    <Content Include="Create\Procedures\spGetPaymentRequestCounter.sql" />
+    <Content Include="Create\Tables\BoricaTransactionPaymentRequest.sql" />
+    <Content Include="Create\Tables\BoricaTransactions.sql" />
+    <Content Include="Create\Tables\Departments.sql" />
+    <Content Include="Create\Tables\DistributionTypes.sql" />
+    <Content Include="Create\Tables\EbankingClients.sql" />
+    <Content Include="Create\Tables\AuthPassLogins.sql" />
+    <Content Include="Create\Tables\DatabaseUpdates.sql" />
+    <Content Include="Create\Tables\EserviceAdminUserBankAccounts.sql" />
+    <Content Include="Create\Tables\InternalAdminUsers.sql" />
+    <Content Include="Create\Tables\EserviceBankAccounts.sql" />
+    <Content Include="Create\Tables\EventRegisterNotifications.sql" />
+    <Content Include="Create\Tables\GlobalValues.sql" />
+    <Content Include="Create\Tables\NotificationStatuses.sql" />
+    <Content Include="Create\Tables\EserviceNotifications.sql" />
+    <Content Include="Create\Tables\ObligationTypes.sql" />
+    <Content Include="Create\Tables\PaidStatusPaymentMethods.sql" />
+    <Content Include="Create\Tables\EbankingAccessLogs.sql" />
+    <Content Include="Create\Tables\EserviceAdminUsers.sql" />
+    <Content Include="Create\Tables\PaymentRequestObligationLogs.sql" />
+    <Content Include="Create\Tables\ObligationStatuses.sql" />
+    <Content Include="Create\Tables\TransactionRecordPaymentMethods.sql" />
+    <Content Include="Create\Tables\TransactionRecordRefStatuses.sql" />
+    <Content Include="Create\Tables\TransactionRecords.sql" />
+    <Content Include="Create\Tables\TransactionFiles.sql" />
+    <Content Include="Create\Tables\VposDskEcommRequests.sql" />
+    <Content Include="Create\Tables\VposEpayRequests.sql" />
+    <Content Include="Create\Tables\VposFiBankRequests.sql" />
+    <Content Include="Create\Tables\VposBoricaRequests.sql" />
+    <Content Include="Create\Tables\VposRedirects.sql" />
+    <Content Include="Create\Tables\VposResults.sql" />
+    <Content Include="Create\Tables\VposClients.sql" />
+    <Content Include="Create\Tables\EserviceClients.sql" />
+    <Content Include="Create\Tables\PaymentRequestIdentifiers.sql" />
+    <Content Include="Create\Tables\Certificates.sql" />
+    <Content Include="Create\Tables\Disclaimers.sql" />
+    <Content Include="Create\Tables\DisclaimerTemplates.sql" />
+    <Content Include="Create\Tables\Emails.sql" />
+    <Content Include="Create\Tables\LoginAttemptLogs.sql" />
+    <Content Include="Create\Tables\Users.sql" />
+    <Content Include="Create\Tables\PaymentRequestStatusLogs.sql" />
+    <Content Include="Create\Tables\PaymentRequests.sql" />
+    <Content Include="Create\Tables\Banks.sql" />
+    <Content Include="Create\Tables\PaymentRequestXmls.sql" />
+    <Content Include="Create\Tables\UinTypes.sql" />
+    <Content Include="Create\Tables\PaymentRequestStatuses.sql" />
+    <Content Include="Create\Triggers\trForUpdatePaymentRequest.sql" />
+    <Content Include="Create\Triggers\trForInsertPaymentRequest.sql" />
+    <Content Include="Insert\InsertTransactionsData.sql" />
+    <Content Include="Insert\Tables\DatabaseUpdates.sql" />
+    <Content Include="Insert\Tables\DistributionTypes.sql" />
+    <Content Include="Insert\Tables\EserviceAdminUserBankAccounts.sql" />
+    <Content Include="Insert\Tables\EserviceBankAccounts.sql" />
+    <Content Include="Insert\Tables\EserviceAdminUsers.sql" />
+    <Content Include="Insert\Tables\Banks.sql" />
+    <Content Include="Insert\Tables\Departments.sql" />
+    <Content Include="Insert\Tables\InternalAdminUsers.sql" />
+    <Content Include="Insert\Tables\GlobalValues.sql" />
+    <Content Include="Insert\Tables\NotificationStatuses.sql" />
+    <Content Include="Insert\Tables\ObligationTypes.sql" />
+    <Content Include="Insert\Tables\PaidStatusPaymentMethods.sql" />
+    <Content Include="Insert\Tables\ObligationStatuses.sql" />
+    <Content Include="Insert\Tables\TransactionRecordPaymentMethods.sql" />
+    <Content Include="Insert\Tables\TransactionRecordRefStatuses.sql" />
+    <Content Include="Insert\Tables\VposClients.sql" />
+    <Content Include="Insert\Tables\EserviceClients.sql" />
+    <Content Include="Insert\Tables\UinTypes.sql" />
+    <Content Include="Insert\Tables\PaymentRequestStatuses.sql" />
+    <Content Include="Insert\InsertTestPaymentRequests.sql" />
+    <Content Include="Update\2019-08-12_Version12.sql" />
+    <Content Include="Update\2019-03-19_Version11.sql" />
+    <Content Include="Update\2017-02-21_Version10.sql" />
+    <Content Include="Update\2017-01-18_Version11.sql" />
+    <Content Include="Update\2016-04-04_Version10.sql" />
+    <Content Include="Update\2016-03-23_Version9.sql" />
+    <Content Include="Update\2016-02-25_Version8.sql" />
+    <Content Include="Update\2016-02-18_Version7.sql" />
+    <Content Include="Update\2016-01-26_Version6.sql" />
+    <Content Include="Update\2015-12-10_Version4.sql" />
+    <Content Include="Update\2015-11-25_Version3.sql" />
+    <Content Include="Update\2015-11-19_Version2.sql" />
+    <Content Include="Update\2016-01-18_Version5.sql" />
+    <Content Include="Update\2020-10-28_Version12.9.sql" />
+    <Content Include="Update\2020-10-28_Version13.sql" />
+    <Content Include="Update\2020-11-03_Version14.sql" />
+    <Content Include="Update\2020-11-06_Version15.sql" />
+    <Content Include="Update\2020-11-11_Version16.sql" />
+    <Content Include="Update\2020-12-02_Version18.sql" />
+    <Content Include="Update\2020-12-11_Version20.sql" />
+    <Content Include="Update\2020-12-09_Version19.sql" />
+    <Content Include="Update\2020-11-21_Version17.sql" />
+    <Content Include="Update\2020-12-15_Version21.sql" />
+    <Content Include="Update\2020-12-18_Version22.sql" />
+    <Content Include="Update\2020-12-21_Version23.sql" />
+    <Content Include="Update\2021-01-07_Version26.sql" />
+    <Content Include="Update\2021-01-04_Version25.sql" />
+    <Content Include="Update\2020-12-23_Version24.sql" />
+    <Content Include="Update\2022-05-16_Version31.sql" />
+    <Content Include="Update\2022-04-14_Version30.sql" />
+    <Content Include="Update\2021-11-08_Version29.sql" />
+    <Content Include="Update\2021-05-15_Version28.sql" />
+    <Content Include="Update\2021-03-02_Version27.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Insert\InsertSystemData.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

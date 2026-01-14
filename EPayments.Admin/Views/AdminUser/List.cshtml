@@ -1,0 +1,97 @@
+﻿@model List<EPayments.Model.Models.InternalAdminUser>
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+
+    <div class="container main-content">
+
+        <h1 style="text-align: center;">Администратори</h1>
+
+        @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+        {
+            <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+                <ul>
+                    <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+                </ul>
+            </div>
+        }
+        else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+        {
+            <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+                <ul>
+                    <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+                </ul>
+            </div>
+        }
+
+        <!-- TransactionRecords table -->
+        <div class="results-table" style="@(Model == null || Model.Count() == 0 ? "border-bottom: 0px;" : "")">
+            <div class="results-thead">
+                <div class="results-cell">Име</div>
+                <div class="results-cell">ЕГН</div>
+                <div class="results-cell">Суперадмин</div>
+                <div class="results-cell">Статус активнос</div>
+                <div class="results-cell">Дата на създаване</div>
+                <div class="results-cell" style="width: 1px;"><span>Действия</span></div>
+            </div>
+            @if (Model != null && Model.Count() > 0)
+            {
+                foreach (var record in Model)
+                {
+                    <div class="results-row">
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Име:</span>
+                            <span class="label">@record.Name</span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">ЕГН:</span>
+                            <span class="label">@record.Egn</span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Суперадмин:</span>
+                            <span class="label">@(record.IsSuperadmin ? "Да" : "Не")</span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Статус активнос:</span>
+                            <span class="label">@(record.IsActive ? "Активен" : "Неактивен")</span>
+                        </div>
+                        <div class="results-cell" style="vertical-align: top;">
+                            <span class="hidden-lg">Дата на създаване:</span>
+                            <span class="label">@(EPayments.Common.Helpers.Formatter.DateToBgFormat(record.CreateDate))</span>
+                        </div>
+
+                        <div class="results-cell">
+                            <span class="hidden-lg">Действия:</span>
+                            <span class="label">
+                                <div class="actions">
+
+                                    <a style="float:right; margin-left:4px; height: 28px; padding-top: 2px; padding-top: 2px;" class="btn blue-btn"
+                                       href="@Url.Action(MVC.AdminUser.ActionNames.View, MVC.AdminUser.Name, new { id = record.InternalAdminUserId })">Преглед</a>
+
+                                </div>
+
+                            </span>
+                        </div>
+
+                    </div>
+                }
+            }
+        </div>
+
+        @if (Model == null || Model.Count() == 0)
+        {
+            <div class="results-table-empty-results">
+                Няма добавени администратори.
+            </div>
+        }
+
+    <nav class="txt-align-left" style="margin-left: 8px;">
+
+        <a style="float:right; margin-left:4px; height: 28px; margin-right: 8px;" class="btn green-btn"
+           href="@Url.Action(MVC.AdminUser.ActionNames.Create, MVC.AdminUser.Name)">Добави нов администратор</a>
+
+        <a style="float:right; margin-left:4px; height: 28px; margin-right: 8px;" class="btn grey-btn"
+           href="@Url.Action(MVC.EserviceClient.ActionNames.List, MVC.EserviceClient.Name)">Назад</a>
+
+    </nav>
+
+    </div>

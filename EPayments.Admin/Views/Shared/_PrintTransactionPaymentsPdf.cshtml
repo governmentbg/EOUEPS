@@ -1,0 +1,218 @@
+﻿@using EPayments.Admin.Models.Transactions
+@using EPayments.Common.Helpers
+
+@model TransactionWithPaymentsVM
+
+@{
+    string ttOrderName = "Номер на транзакцията";
+    string ttAmountEurName = "Сума, EUR";
+    string ttAmountBgnName = "Сума, BGN";
+    string ttFeeEurName = "Такса, EUR";
+    string ttFeeBgnName = "Такса, BGN";
+    string ttCommissionEurName = "Комисионна, EUR";
+    string ttCommissionBgnName = "Комисионна, BGN";
+    string ttTransactionDateName = "Дата на транзакцията";
+    string ttCardName = "Номер на карта";
+    string ttSettlementDateName = "Дата на стълмент";
+    string ttStatusMessage = "Съобщение от Борика";
+
+    string prPaymentRequestIdentifierName = "Номер на задължението";
+    string prPaymentReferenceNumberName = "Референтен номер на задължението";
+    string prCreateDateName = "Дата на създаване";
+    string prApplicantName = "Задължено лице";
+    string prPaymentReasonName = "Основание за плащане";
+    string prExpirationDateName = "Дата на изтичане";
+    string prServiceProviderName = "Заявител";
+    string prPaymentRequestStatusIdName = "Статус на плащането";
+    string prPaymentAmountBgnName = "Сума, BGN";
+    string prPaymentAmountEurName = "Сума, EUR";
+    string prObligationStatusIdName = "Статус на задължението";
+
+    DateTime defaultDate = new DateTime();
+}
+
+<table class="container main-content" style="font-size:8px;border: 1px solid #333;border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttOrderName</th>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+                }
+                else
+                {
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+            }
+
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttTransactionDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCardName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttSettlementDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttStatusMessage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.BoricaTransaction != null)
+        {
+        <tr class="results-row">
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Order)</td>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                }
+                else
+                {
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Amount, Model.BoricaTransaction.TransactionDate)</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Fee.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(Model.BoricaTransaction.Commission.Value, Model.BoricaTransaction.TransactionDate) : "")</td>
+            }
+
+
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.BoricaTransaction.TransactionDate))</td>
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.Card)</td>
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.SettlementDate != defaultDate ? EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.BoricaTransaction.SettlementDate) : string.Empty)</td>
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.BoricaTransaction.StatusMessage)</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<table class="container main-content" style="font-size:8px;border: 1px solid #333;border-collapse: collapse;margin-top: 20px;">
+    <thead>
+        <tr>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prPaymentRequestIdentifierName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prPaymentReferenceNumberName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prCreateDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prExpirationDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prApplicantName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prPaymentReasonName</th>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountBgnName</th>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountBgnName</th>
+                }
+                else
+                {
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountEurName</th>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse;">@prPaymentAmountEurName</th>
+            }
+
+
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prServiceProviderName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prPaymentRequestStatusIdName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@prObligationStatusIdName</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model.Payments != null && Model.Payments.Count > 0)
+        {
+            foreach (var payment in Model.Payments)
+            {
+                <tr class="results-row">
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.PaymentRequestIdentifier)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.PaymentReferenceNumber)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(payment.CreateDate))</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(payment.ExpirationDate))</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.ApplicantName)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.PaymentReason)</td>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                        }
+                        else
+                        {
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <td style="border: 1px solid #333;border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)</td>
+                    }
+
+
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.ServiceProviderName)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.Formatter.EnumToDescriptionString(payment.PaymentRequestStatusId))</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.ObligationStatusId != null  ? EPayments.Common.Helpers.Formatter.EnumToDescriptionString(payment.ObligationStatusId) : "Няма стойност")</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="results-table-empty-results text-align-center">
+                <td colspan="10">Няма намерени резултати.</td>
+            </tr>
+        }
+    </tbody>
+</table>

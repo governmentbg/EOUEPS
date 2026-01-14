@@ -1,0 +1,71 @@
+﻿@model EPayments.Admin.Models.EserviceClient.VposFibankVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Admin.Models.EserviceClient
+
+@{
+    Html.EnableClientValidation(false);
+
+    IDictionary<string, object> formControlHtmlAttributes = new Dictionary<string, object>();
+    formControlHtmlAttributes.Add("class", "form-control");
+
+    if (Model.Mode == FormMode.View)
+    {
+        formControlHtmlAttributes.Add("disabled", "disabled");
+    }
+}
+
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.EserviceClientId)
+
+@Html.HiddenFor(m => m.AisName)
+@Html.HiddenFor(m => m.DepartmentName)
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Име на АИС</label>
+        @Html.TextBoxFor(m => m.AisName, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label>Администрация</label>
+        @Html.TextBoxFor(m => m.DepartmentName, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>
+
+@if (Model.Mode == FormMode.View)
+{
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Конфигурационен файл на ПИБ клиент</label>
+            @Html.TextBoxFor(m => m.FiBankVposAccessKeystoreFilename, formControlHtmlAttributes)
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Ключ за достъп на ПИБ клиент</label>
+            @Html.TextBoxFor(m => m.FiBankVposAccessKeystorePassword, formControlHtmlAttributes)
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Конфигурационен файл на ПИБ клиент</label>
+            <input type="file" name="FiBankVposAccessKeystoreFile" id="FiBankVposAccessKeystoreFile" />
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label>Ключ за достъп на ПИБ клиент</label>
+            @Html.TextBoxFor(m => m.FiBankVposAccessKeystorePassword, formControlHtmlAttributes)
+        </div>
+    </div>
+}
+
+

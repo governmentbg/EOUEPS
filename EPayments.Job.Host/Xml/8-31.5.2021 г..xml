@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<f>
+  <h refid="8" timestamp="2021-05-31T14:51:47" sender="177098809" sendername="ДАЕУ" receiver="BNBOnline" />
+  <a acc="BG93BNBG96613000142701" bic="BNBGBGSD" cur="BGN" do="181">
+    <d doc="ПНВБ" nok="1" ipol="ИС Е-Форми - Агенция по геодез" iban="BG88FINV91503115607405" bic="FINVBGSF" cur="BGN" su="147" o1="Разпределение" o2="Разпределение" vpp="003500" vpn="003500">
+      <bud vd="9" nd="1" dd="2021-05-31" />
+    </d>
+    <d doc="ПНВБ" nok="2" ipol="ИС Е-Форми - Столична община Р" iban="BG58SOMB91303127755001" bic="SOMBBGSF" cur="BGN" su="6" o1="Разпределение" o2="Разпределение" vpp="007220" vpn="003500">
+      <bud vd="9" nd="2" dd="2021-05-31" />
+    </d>
+    <d doc="ПНВБ" nok="3" ipol="ИС Е-Форми - Община Павликени" iban="BG77UNCR75278443385100" bic="UNCRBGSF" cur="BGN" su="6" o1="Разпределение" o2="Разпределение" vpp="005406" vpn="003500">
+      <bud vd="9" nd="3" dd="2021-05-31" />
+    </d>
+    <d doc="ПНВБ" nok="4" ipol="ИС Е-Форми - Община Белослав" iban="BG44IORT73778413300000" bic="IORTBGSF" cur="BGN" su="6" o1="Разпределение" o2="Разпределение" vpp="005303" vpn="003500">
+      <bud vd="9" nd="4" dd="2021-05-31" />
+    </d>
+    <d doc="ПНВБ" nok="5" ipol="ИС Е-Форми - Община Костинброд" iban="BG85UNCR96608497575510" bic="UNCRBGSF" cur="BGN" su="16" o1="Разпределение" o2="Разпределение" vpp="007314" vpn="003500">
+      <bud vd="9" nd="5" dd="2021-05-31" />
+    </d>
+  </a>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>OduknWDw/oqbzTS8v8wyNu1GmAo=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>tOFGrFVJC8s4rBZ1amPRe9svfGcmTBTiJaN1g4R0ayfb90+dX0XbGvYOIqeTS8jzDWXNI3Ib9gkl6nS8jze+jLnhoLihWiKk73gjNYEU1OvDCJn9uIxjny2nDX8pn5Wx5PfmWB5X+Qq/mf7Cmspjo2oZqFj9MnPHKUfrlEQLuEWTu0dKtcq2MtS4wwuYYBAIOBC21OPLknw4jsOWfI8PWtTHZNVhJuJf5wL/ReISu/zjd8bNjgbWr6aITum5rzO9JdvEyNOUCIk/jhzbDs2qLVVV8HYpSSy1Iu/CayxKM25Sj95gjDQei1ihiUULClmg9Jbz0gNzokITa+w1/R8UEA==</SignatureValue>
+  </Signature>
+</f>

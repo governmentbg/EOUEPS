@@ -1,0 +1,37 @@
+﻿@model EPayments.Admin.Models.ObligationType.ObligationTypeVM
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Редакция на типа на задължението</h1>
+
+    @using (Html.BeginForm(MVC.ObligationType.ActionNames.Edit, MVC.ObligationType.Name, new { id = Model.ObligationTypeId }, FormMethod.Post, new { @class = "clearfix", style = "display: block;" }))
+    {
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary()
+            <br />
+        }
+
+        <div class="row">
+            @Html.Partial(MVC.ObligationType.Views.Form, Model)
+        </div>
+
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input class="btn blue-btn" type="submit" value="Запиши" style="width: 100%; padding: 5px 0 5px 0;">
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+                       href="@Url.Action(MVC.ObligationType.ActionNames.View, MVC.ObligationType.Name, new { id = Model.ObligationTypeId })">Отказ</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

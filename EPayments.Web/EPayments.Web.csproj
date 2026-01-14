@@ -1,0 +1,1023 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{56D35769-9C36-4EB5-B3EE-4210D984FE5E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EPayments.Web</RootNamespace>
+    <AssemblyName>EPayments.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.86.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.86.0\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="IdentityModel, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.2.6.0\lib\net45\IdentityModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JWT, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JWT.3.1.1\lib\net46\JWT.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.12.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.12.1\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.12.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.12.1\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.12.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.12.1\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\packages\NLog.Extended.4.0.0.1\lib\net45-full\NLog.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Web">
+      <HintPath>..\packages\NLog.Web.2.0.0.0\lib\net35\NLog.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SAML2, Version=3.2.0.66, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAML2.3.2.0.66\lib\net35\SAML2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.3\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=__MvcPagesVersion__, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="T4MVCExtensions">
+      <HintPath>..\packages\T4MVCExtensions.3.15.4\lib\net40\T4MVCExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AccountController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AisController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Auth\EserviceAdminAuthorizeAttribute.cs" />
+    <Compile Include="Auth\WebUserAuthorizeAttribute.cs" />
+    <Compile Include="Auth\EserviceAuthorizeAttribute.cs" />
+    <Compile Include="Common\AppKeys.cs" />
+    <Compile Include="Common\HelpDesk\ActionResultDO.cs" />
+    <Compile Include="Common\HelpDesk\UnitSimpleIDO.cs" />
+    <Compile Include="Common\HelpDesk\ActionResultCode.cs" />
+    <Compile Include="Common\HelpDesk\TokenResponse.cs" />
+    <Compile Include="Common\RegexExpressions.cs" />
+    <Compile Include="Controllers\AisController.cs" />
+    <Compile Include="Controllers\EserviceAdminController.cs" />
+    <Compile Include="Controllers\VposController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DataObjects\AcceptedReceiptJsonDO.cs" />
+    <Compile Include="DataObjects\AisRequestDO.cs" />
+    <Compile Include="DataObjects\ExternalPaymentRequestDO.cs" />
+    <Compile Include="DataObjects\EserviceAdminRequestSearchDO.cs" />
+    <Compile Include="DataObjects\MDT_ExtendedPaymentRequestDO.cs" />
+    <Compile Include="DataObjects\PaymentRequestDO.cs" />
+    <Compile Include="DataObjects\PaymentRequestResponseDO.cs" />
+    <Compile Include="DataObjects\TransactionListSearchDO.cs" />
+    <Compile Include="DataObjects\RequestAccessListSearchDO.cs" />
+    <Compile Include="DataObjects\SystemStatsSearchDO.cs" />
+    <Compile Include="DataObjects\ListSearchDO.cs" />
+    <Compile Include="DataObjects\UnacceptedReceiptJsonDO.cs" />
+    <Compile Include="EserviceAdminController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HomeController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Account\EidVM.cs" />
+    <Compile Include="Models\Account\EAuthVM.cs" />
+    <Compile Include="Models\EserviceAdmin\PaymentRequestsVM.cs" />
+    <Compile Include="Models\EserviceAdmin\PaymentRequestVM.cs" />
+    <Compile Include="Models\EserviceAdmin\PrintPaymentRequestsVM.cs" />
+    <Compile Include="Models\EserviceAdmin\TransactionListPrintHtmlVM.cs" />
+    <Compile Include="Models\EserviceAdmin\EditSettingsVM.cs" />
+    <Compile Include="Models\EserviceAdmin\TransactionListVM.cs" />
+    <Compile Include="Models\EserviceAdmin\SettingsVM.cs" />
+    <Compile Include="Models\Home\AccessByEserviceAdminVM.cs" />
+    <Compile Include="Models\Home\SystemStatsVM.cs" />
+    <Compile Include="Models\EserviceAdmin\TransactionDetailsVM.cs" />
+    <Compile Include="Models\Settings\RequestAccessDetailsVM.cs" />
+    <Compile Include="Models\Shared\TaxAgreementCvposVM.cs" />
+    <Compile Include="Models\Shared\TaxAgreementEpayVM.cs" />
+    <Compile Include="Models\Shared\TaxAgreementFiBankVM.cs" />
+    <Compile Include="Models\Shared\TaxAgreementBoricaVM.cs" />
+    <Compile Include="Models\Shared\TaxAgreementDskVM.cs" />
+    <Compile Include="Models\Home\AccessByCodeVM.cs" />
+    <Compile Include="Models\Payment\ShareVM.cs" />
+    <Compile Include="Models\Shared\AutoPostVM.cs" />
+    <Compile Include="Models\Settings\EditVM.cs" />
+    <Compile Include="Models\Settings\ViewVM.cs" />
+    <Compile Include="Models\Home\FeedbackVM.cs" />
+    <Compile Include="Models\Shared\OrderVM.cs" />
+    <Compile Include="Models\Payment\ListVM.cs" />
+    <Compile Include="Models\Shared\PagingVM.cs" />
+    <Compile Include="Mvc\Pager\IPagedList.cs" />
+    <Compile Include="Mvc\Pager\PagedList.cs" />
+    <Compile Include="Mvc\Pager\PageLinqExtensions.cs" />
+    <Compile Include="Mvc\Pager\PagerBuilder.cs" />
+    <Compile Include="Mvc\Pager\PagerHelper.cs" />
+    <Compile Include="Mvc\Pager\PagerItem.cs" />
+    <Compile Include="Mvc\Pager\PagerOptions.cs" />
+    <Compile Include="PaymentController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SharedController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SSL\Cert.aspx.cs">
+      <DependentUpon>Cert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="T4MVC.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Views\BaseView.cs" />
+    <Compile Include="VposController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VposHelpers\Borica\BoricaVposHelper.cs" />
+    <Compile Include="VposHelpers\Borica\BoricaVposResultDO.cs" />
+    <Compile Include="VposHelpers\Epay\EpayResultData.cs" />
+    <Compile Include="VposHelpers\Epay\EpayPaymentStatus.cs" />
+    <Compile Include="VposHelpers\Epay\EpayVposHelper.cs" />
+    <Compile Include="VposHelpers\EserviceVposResultStatus.cs" />
+    <Compile Include="VposHelpers\Dsk\DskVposHelper.cs" />
+    <Compile Include="VposHelpers\EserviceVposResultDO.cs" />
+    <Compile Include="VposHelpers\Dsk\DskVposResultDO.cs" />
+    <Compile Include="VposHelpers\FiBank\FiBankVposHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Certificates\FiBankVpos\ecomm_000001511646000.certificate.jks" />
+    <Content Include="Content\css\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\css\bootstrap.min335.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\chosen.min.css" />
+    <Content Include="Content\css\fonts.css" />
+    <Content Include="Content\css\style_v3.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\administracia.png" />
+    <Content Include="Content\images\app-loading.gif" />
+    <Content Include="Content\images\banks\bank01.jpg" />
+    <Content Include="Content\images\banks\bank02.jpg" />
+    <Content Include="Content\images\banks\bank03.jpg" />
+    <Content Include="Content\images\banks\bank04.jpg" />
+    <Content Include="Content\images\banks\bank05.jpg" />
+    <Content Include="Content\images\banks\bank06.jpg" />
+    <Content Include="Content\images\banks\bank07.jpg" />
+    <Content Include="Content\images\banks\dsk.png" />
+    <Content Include="Content\images\banks\fibank.png" />
+    <Content Include="Content\images\banks\postbank.png" />
+    <Content Include="Content\images\banks\procredit.png" />
+    <Content Include="Content\images\banks\reifaizen.png" />
+    <Content Include="Content\images\banks\terms_banks.png" />
+    <Content Include="Content\images\banks\unicredit.png" />
+    <Content Include="Content\images\bluedot.png" />
+    <Content Include="Content\images\blue_bg.gif" />
+    <Content Include="Content\images\departments\424px-Pleven-coat-of-arms.svg.png" />
+    <Content Include="Content\images\departments\AM.jpg" />
+    <Content Include="Content\images\departments\AV.jpg" />
+    <Content Include="Content\images\departments\bansko.JPG" />
+    <Content Include="Content\images\departments\Belogradchik-logo.jpg" />
+    <Content Include="Content\images\departments\BG-Travel.png" />
+    <Content Include="Content\images\departments\bim.jpg" />
+    <Content Include="Content\images\departments\burgas.png" />
+    <Content Include="Content\images\departments\Chavdar-logo.jpg" />
+    <Content Include="Content\images\departments\de9a3586713d2de3_lovechlogo.png" />
+    <Content Include="Content\images\departments\Dimitrovgrad.jpg" />
+    <Content Include="Content\images\departments\gabrovo.png" />
+    <Content Include="Content\images\departments\gerbBG.jpg" />
+    <Content Include="Content\images\departments\gva.jpg" />
+    <Content Include="Content\images\departments\iaaa.jpg" />
+    <Content Include="Content\images\departments\IAMA.jpg" />
+    <Content Include="Content\images\departments\cadastre.png" />
+    <Content Include="Content\images\departments\imagesLogo_Kardzhali.png" />
+    <Content Include="Content\images\departments\logo-administration.jpg" />
+    <Content Include="Content\images\departments\logo-BDZBR-Bld.jpg" />
+    <Content Include="Content\images\departments\logo-DNPCB.jpg" />
+    <Content Include="Content\images\departments\logo-DNPPirin.jpg" />
+    <Content Include="Content\images\departments\logo-DNSK.jpg" />
+    <Content Include="Content\images\departments\logo-EEA.jpg" />
+    <Content Include="Content\images\departments\logo-iag.JPG" />
+    <Content Include="Content\images\departments\logo-IARA.jpg" />
+    <Content Include="Content\images\departments\logo-KFN.jpg" />
+    <Content Include="Content\images\departments\logo-Nacid.jpg" />
+    <Content Include="Content\images\departments\logo-NOI.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Aksakovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Alfatar.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Antonovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Apriltsi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ardino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Asenovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Avren.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Aytos.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Balchik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Banite.JPG" />
+    <Content Include="Content\images\departments\logo-OA-Bansko.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Batak.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Belene.JPG" />
+    <Content Include="Content\images\departments\logo-OA-Belitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Belogradchik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Beloslav.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Belovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Berkovitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Blagoevgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Boboshevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Bobovdol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Bolyarovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Borino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Borovan.JPG" />
+    <Content Include="Content\images\departments\logo-OA-Borovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Botevgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Boychinovtsi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Bozhurishte.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Br-Daskalovi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Bratsigovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Bregovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Breznik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Brusartsi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Burgas.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Byala-Ruse.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Byala-Varna.jpg" />
+    <Content Include="Content\images\departments\logo-OA-ByalaSlatina.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Cenovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chavdar.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chelopech.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chepelare.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chernoochene.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Cherven-bryag.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chiprovci.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chirpan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Chuprene.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dalgopol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Devin.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Devnya.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dimitrovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dimovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dobrich.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dobrichka.jpg" />
+    <Content Include="Content\images\departments\logo-OA-DolnaBanya.jpg" />
+    <Content Include="Content\images\departments\logo-OA-DolnaMitropoliya.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dolni-chiflik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-DolniDabnik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dospat.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dragoman.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dryanovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dulovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dupnitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-DveMogili.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Dzhebel.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Elchovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Elena.jpg" />
+    <Content Include="Content\images\departments\logo-OA-ElinPelin.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Etropole.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Gabrovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-GenToshevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Glavinitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Godech.jpg" />
+    <Content Include="Content\images\departments\logo-OA-GornaMalina.jpg" />
+    <Content Include="Content\images\departments\logo-OA-GornaOriahovitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-GornoDamianovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-GotseDelchev.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Gramada.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Gulyantsi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Gurkovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Gylybovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Harmanli.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Haskovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Hayredin.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Hisarq.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Hitrino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ichtiman.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Iskar.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ivanovo.jpg" />
+    <Content Include="Content\images\departments\Logo-OA-Kaloyanovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kameno.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kaolinovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kardzhali.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Karlovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Karnobat.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kaspichan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kavarna.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kaynardzha.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kazanlak.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kirkovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kneja.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kocherinovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Koprivshtitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kostenetz.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kostinbrod.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kotel.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kozloduy.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kresna.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Krichim.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Krivodol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Krumovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Krushari.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kubrat.JPG" />
+    <Content Include="Content\images\departments\logo-OA-Kuklen.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Kula.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lesichovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Letnica.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Levski.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lom.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lovech.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Loznitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lucky.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lukovit.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lyaskovets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Lyubimets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Madan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Madzharovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Maglizh.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Makresh.jpg" />
+    <Content Include="Content\images\departments\logo-OA-MalkoTarnovo.jpeg" />
+    <Content Include="Content\images\departments\logo-OA-Maritsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Medkovets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Mezdra.jpg" />
+    <Content Include="Content\images\departments\logo-OA-MineralniBani.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Mirkovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Mizia.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Momchilgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Montana.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Nedelino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Nesebar.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Nevestino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Nikolaevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-NikolaKozlevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Nikopol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-NovaZagora.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Novi-pazar.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Novoselo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Omurtag.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Opaka.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Opan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Oriahovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Panagyurishte.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Parvomai.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pavel-banya.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pavlikeni.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pazardzhik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pernik.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Perushtitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Peshtera.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Petrich.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pirdop.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pleven.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Plovdiv.jpg" />
+    <Content Include="Content\images\departments\logo-OA-PolskiTrambesh.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pomorie.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Popovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pordim.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Pravets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Primorsko.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Provadia.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Radnevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Radomir.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Rakitovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Rakovski.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Razgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Razlog.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Rila.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Rodopi.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Roman.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Rudozem.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ruen.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ruse.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sadovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Samokov.jpg" />
+    <Content Include="Content\images\departments\Logo-OA-Samuil.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sandanski.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sarnitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Satovcha.jpg" />
+    <Content Include="Content\images\departments\logo-OA-SBanya.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Septemvri.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sevlievo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Shabla.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Shumen.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Silistra.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Simenovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Simeonovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Simitli.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sitovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sliven.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Slivnitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Slivo-pole.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Smolyan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Smyadovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sofia-Krasnoselo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sofia.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sopot.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sozopol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sredets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Stambolijski.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Stambolovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Stara-Zagora.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Straldzha.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Strazhitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Strelcha.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Strumyani.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Suedinenie.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Suhindol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Sungurlare.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Suvorovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Svilengrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Svishtov.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Svoge.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Targovishte.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Tervel.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Teteven.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Topolovgrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Treklyano.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Troyan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Trun.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Tsarevo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-TsarKaloyan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Tundzha.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Tutrakan.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Tvarditsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Ugarchin.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Valchedram.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Valchidol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Varbitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Varna-Mladost.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Varna.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Varshetz.jpg" />
+    <Content Include="Content\images\departments\logo-OA-VelikiPreslav.jpg" />
+    <Content Include="Content\images\departments\logo-OA-VelikoTarnovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Velingrad.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Venets.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Vetovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Vetrino.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Vidin.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Vratsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Yablanitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Yakimovo.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Yakoruda.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Yambol.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Zavet.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Zemen.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Zlataritsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Zlatitsa.jpg" />
+    <Content Include="Content\images\departments\logo-OA-Zlatograd.jpg" />
+    <Content Include="Content\images\departments\logo-obshtina-breznik.jpg" />
+    <Content Include="Content\images\departments\logo-obshtina-vetrino.jpg" />
+    <Content Include="Content\images\departments\logo-RDG-Lovech.jpg" />
+    <Content Include="Content\images\departments\logo-RIOSV-Varna.jpg" />
+    <Content Include="Content\images\departments\logo-RTA.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Bankya.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Ilinden.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Lozenets.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Mladost.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Oborishte.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Ovcha-kupel.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Sredets.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Studentski.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Triadica.jpg" />
+    <Content Include="Content\images\departments\logo-SO-rn-Vitosha.jpg" />
+    <Content Include="Content\images\departments\logo-VGS.JPG" />
+    <Content Include="Content\images\departments\Logo4_Chelopech.jpg" />
+    <Content Include="Content\images\departments\logoBIM.jpg" />
+    <Content Include="Content\images\departments\logoIAMA.png" />
+    <Content Include="Content\images\departments\logoMOD.JPG" />
+    <Content Include="Content\images\departments\logo_aksakovo.png" />
+    <Content Include="Content\images\departments\logo_alfatar.png" />
+    <Content Include="Content\images\departments\logo_antonovo.png" />
+    <Content Include="Content\images\departments\logo_avren.png" />
+    <Content Include="Content\images\departments\logo_aytos.png" />
+    <Content Include="Content\images\departments\logo_bdchr.jpg" />
+    <Content Include="Content\images\departments\logo_botevgrad.jpeg" />
+    <Content Include="Content\images\departments\logo_gerb1.jpg" />
+    <Content Include="Content\images\departments\logo_MI.jpg" />
+    <Content Include="Content\images\departments\logo_MI.png" />
+    <Content Include="Content\images\departments\logo_MIN.png" />
+    <Content Include="Content\images\departments\logo_Raion_Bankya.jpeg" />
+    <Content Include="Content\images\departments\logo_Rakitovo.png" />
+    <Content Include="Content\images\departments\Logo_regional_administration.jpg" />
+    <Content Include="Content\images\departments\logo_Strumiani.png" />
+    <Content Include="Content\images\departments\logo_Targovishte.jpeg" />
+    <Content Include="Content\images\departments\Logo_Tundzha.jpeg" />
+    <Content Include="Content\images\departments\logo_Vidin.jpeg" />
+    <Content Include="Content\images\departments\nacid.jpg" />
+    <Content Include="Content\images\departments\noi.jpg" />
+    <Content Include="Content\images\departments\obshtina-varna-logo.jpg" />
+    <Content Include="Content\images\departments\OR.jpg" />
+    <Content Include="Content\images\departments\PV22.jpg" />
+    <Content Include="Content\images\departments\rskiobshtl-777x437.jpg" />
+    <Content Include="Content\images\departments\rta.png" />
+    <Content Include="Content\images\departments\sandanski-logo-600x338.png" />
+    <Content Include="Content\images\departments\Troyan_gerb1-1.jpg" />
+    <Content Include="Content\images\departments\Zlataritsa.jpg" />
+    <Content Include="Content\images\files\bmp.png" />
+    <Content Include="Content\images\files\doc.png" />
+    <Content Include="Content\images\files\html.jpg" />
+    <Content Include="Content\images\files\jpeg.png" />
+    <Content Include="Content\images\files\pdf.png" />
+    <Content Include="Content\images\files\print.jpg" />
+    <Content Include="Content\images\files\rar.png" />
+    <Content Include="Content\images\files\text.png" />
+    <Content Include="Content\images\files\xls.jpg" />
+    <Content Include="Content\images\files\xls.png" />
+    <Content Include="Content\images\files\xml.jpg" />
+    <Content Include="Content\images\files\zip.png" />
+    <Content Include="Content\images\footer-flags.png" />
+    <Content Include="Content\images\footer_logos.png" />
+    <Content Include="Content\images\footer_logos_.png" />
+    <Content Include="Content\images\gerb.gif" />
+    <Content Include="Content\images\gototop.png" />
+    <Content Include="Content\images\home\arr-down.png" />
+    <Content Include="Content\images\home\epayments.png" />
+    <Content Include="Content\images\home\icon-administracia.png" />
+    <Content Include="Content\images\home\icon-danaci.png" />
+    <Content Include="Content\images\home\icon-e-uslugi.png" />
+    <Content Include="Content\images\home\icon-registri.png" />
+    <Content Include="Content\images\home\icon-sudebna-sistema.png" />
+    <Content Include="Content\images\home\your-bank.png" />
+    <Content Include="Content\images\icons\404.png" />
+    <Content Include="Content\images\icons\actions\borica.png" />
+    <Content Include="Content\images\icons\actions\epay.png" />
+    <Content Include="Content\images\icons\actions\karta.png" />
+    <Content Include="Content\images\icons\actions\otkaji.png" />
+    <Content Include="Content\images\icons\actions\otorizacia.png" />
+    <Content Include="Content\images\icons\actions\platejno.png" />
+    <Content Include="Content\images\icons\back.png" />
+    <Content Include="Content\images\icons\browsers\chrome.jpg" />
+    <Content Include="Content\images\icons\browsers\firefox.jpg" />
+    <Content Include="Content\images\icons\browsers\ie.jpg" />
+    <Content Include="Content\images\icons\browsers\opera.jpg" />
+    <Content Include="Content\images\icons\browsers\safari.jpg" />
+    <Content Include="Content\images\icons\checkbox-tick.gif" />
+    <Content Include="Content\images\icons\chevron-down.png" />
+    <Content Include="Content\images\icons\chevron-up.png" />
+    <Content Include="Content\images\icons\error.png" />
+    <Content Include="Content\images\icons\faq-arrow.png" />
+    <Content Include="Content\images\icons\ico-download.png" />
+    <Content Include="Content\images\icons\ico_info.png" />
+    <Content Include="Content\images\icons\ico_pdf.jpg" />
+    <Content Include="Content\images\icons\ico_print.gif" />
+    <Content Include="Content\images\icons\ico_success.png" />
+    <Content Include="Content\images\icons\ico_tree.gif" />
+    <Content Include="Content\images\icons\logout.png" />
+    <Content Include="Content\images\icons\search.gif" />
+    <Content Include="Content\images\icons\search.png" />
+    <Content Include="Content\images\icons\settings.png" />
+    <Content Include="Content\images\icons\success.png" />
+    <Content Include="Content\images\icons\tick.png" />
+    <Content Include="Content\images\icons\warning.png" />
+    <Content Include="Content\images\lion-form.svg" />
+    <Content Include="Content\images\login.jpg" />
+    <Content Include="Content\images\logo.svg" />
+    <Content Include="Content\images\under-construction.png" />
+    <Content Include="Content\images\vposcard.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="GitRevision.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\bootstrap-confirmation.js" />
+    <Content Include="Scripts\bootstrap-datepicker.bg.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\html5shiv.js" />
+    <Content Include="Scripts\jquery-1.11.2.min.js" />
+    <Content Include="Scripts\jquery.easing.1.3.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\upx.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SSL\Cert.aspx" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Documents\appElectronicService.doc" />
+    <Content Include="Documents\appElectronicService.pdf" />
+    <Content Include="Documents\appPaymentService.doc" />
+    <Content Include="Documents\appPaymentService.pdf" />
+    <Content Include="Documents\rulesElectronicService.pdf" />
+    <Content Include="Documents\rulesPaymentService.pdf" />
+    <Content Include="~App_Offline.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Certificates\EAuth\pay.egov.bg.pfx" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-D.cer" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-D.pub" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-D.key" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-D.p12" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-D.pfx" />
+    <Content Include="Certificates\BoricaCvpos\MPI_OW_APGW_B-Trust.cer" />
+    <Content Include="Certificates\BoricaCvpos\MPI_OW_APGW_B-Trust.p12" />
+    <Content Include="Certificates\BoricaVpos\RTA_ePaymentsRequestSign_Test.p12" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-P.cer" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-P.cer.p12" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-P.cer.pfx" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-e-gov.bg-P.pub" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-pay-egov-bg_20210720_P.csr" />
+    <Content Include="Certificates\BoricaCvpos\V6400006-pay-egov-bg_P.key" />
+    <Content Include="Documents\613725_актуализиран_вариант_е-плащаневусловията ЦВПОС 04062021.pdf" />
+    <Content Include="Documents\Prilojenie-1.1-DPU.pdf" />
+    <Content Include="Documents\Prilojenie-1.2-DPU-CVPOS.pdf" />
+    <Content Include="Documents\Prilojenie-2.1-AO-CVPOS.pdf" />
+    <Content Include="Documents\Prilojenie-2.2-AO-spr.pdf" />
+    <Content Include="Documents\Prilojenie-3.1-DPU-prekr.pdf" />
+    <Content Include="Documents\Prilojenie-3.2-AO-prekr.pdf" />
+    <Content Include="Documents\Общи условия за присъединяване.pdf" />
+    <Content Include="Documents\Prawila_БОРИКА osporvane.pdf" />
+    <Content Include="log4net.config" />
+    <Content Include="Documents\e-Payments AIS Integration.pdf" />
+    <None Include="PreBuild.cmd" />
+    <Content Include="Scripts\chosen.jquery.min-1.8.7.js" />
+    <None Include="SSL\Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="SSL\Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="SSL\Web.PublicTest.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="SSL\Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="SSL\Web.Stage.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="T4MVC.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>T4MVC.cs</LastGenOutput>
+    </Content>
+    <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_EmptyLayout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="SSL\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Payment\List.cshtml" />
+    <Content Include="Views\Payment\Details.cshtml" />
+    <Content Include="Views\Shared\_Order.cshtml" />
+    <Content Include="Views\Home\BanksInfo.cshtml" />
+    <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\Home\Feedback.cshtml" />
+    <Content Include="Views\Home\AccessibilityPolicy.cshtml" />
+    <Content Include="Views\Shared\_PrintHtml.cshtml" />
+    <Content Include="Views\Shared\_OrderPrint.cshtml" />
+    <Content Include="Views\Payment\DetailsPrint.cshtml" />
+    <Content Include="Views\Shared\_PrintPdf.cshtml" />
+    <Content Include="Views\Shared\_Paging.cshtml" />
+    <Content Include="Views\Shared\_TaxAgreementDsk.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Settings\View.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Shared\_AutoPost.cshtml" />
+    <Content Include="Views\Home\Departments.cshtml" />
+    <Content Include="Views\Home\AccessRules.cshtml" />
+    <Content Include="Views\Shared\_EidSubmitForm.cshtml" />
+    <Content Include="Views\Home\EidLogin.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
+    <Content Include="Views\Shared\_TaxAgreementBorica.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\SystemStats.cshtml" />
+    <Content Include="Views\Home\AccessByCode.cshtml" />
+    <Content Include="Views\Payment\Share.cshtml" />
+    <Content Include="Views\Settings\RequestAccessDetails.cshtml" />
+    <Content Include="Views\EserviceAdmin\TransactionList.cshtml" />
+    <Content Include="Views\EserviceAdmin\TransactionDetails.cshtml" />
+    <Content Include="Views\Home\AccessByEserviceAdmin.cshtml" />
+    <Content Include="Views\EserviceAdmin\EditSettings.cshtml" />
+    <Content Include="Views\EserviceAdmin\Settings.cshtml" />
+    <Content Include="Views\EserviceAdmin\TransactionListPrintHtml.cshtml" />
+    <Content Include="Views\Shared\_VposPaymentSumulation.cshtml" />
+    <Content Include="Views\Shared\_TaxAgreementFiBank.cshtml" />
+    <Content Include="Views\Shared\_TaxAgreementEpay.cshtml" />
+    <Content Include="Views\EserviceAdmin\PaymentRequests.cshtml" />
+    <Content Include="Views\EserviceAdmin\PrintPaymentRequests.cshtml" />
+    <Content Include="Views\EserviceAdmin\CreatePaymentRequest.cshtml" />
+    <Content Include="Views\EserviceAdmin\PaymentRequestDOForm.cshtml" />
+    <Content Include="Views\Shared\_AutoPostBoricaVpos.cshtml" />
+    <Content Include="Views\Shared\_TaxAgreementBoricaCvpos.cshtml" />
+    <Content Include="Views\Shared\_PaymentRequestsPrintPdf.cshtml" />
+    <Content Include="Views\Shared\_UserPaymentRequestsPrintPdf.cshtml" />
+    <Content Include="Views\Home\Developers.cshtml" />
+    <Content Include="Views\Home\MdtMunicipality.cshtml" />
+    <None Include="Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.PublicTest.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Stage.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\Vpos\" />
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="T4MVC.tt.hooks.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EPayments.CertificateUtils\EPayments.CertificateUtils.csproj">
+      <Project>{e13b449d-2ea1-45d0-a376-db23e44e24d7}</Project>
+      <Name>EPayments.CertificateUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPayments.Common\EPayments.Common.csproj">
+      <Project>{d2bea422-44b9-4e04-8f38-d22944d97a39}</Project>
+      <Name>EPayments.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPayments.Data\EPayments.Data.csproj">
+      <Project>{4537dc3c-f9d5-4926-aedb-33c199599153}</Project>
+      <Name>EPayments.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPayments.Model\EPayments.Model.csproj">
+      <Project>{95719963-7f57-4d51-b3f9-06fe06e113ca}</Project>
+      <Name>EPayments.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PublicTest|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2651</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44330</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>"$(ProjectDir)PreBuild.cmd" "$(ProjectDir)" "$(ProjectDir)GitRevision.txt"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

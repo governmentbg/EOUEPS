@@ -1,0 +1,42 @@
+﻿@model EPayments.Web.Models.EserviceAdmin.SettingsVM
+@{
+    ViewBag.Title = "Настройки за известия на потребител";
+}
+
+<div class="container main-content">
+    <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 text-align-center">
+        <h1>Настройки за известия на потребител</h1>
+    </div>
+
+    <form class="inquiry" action="">
+        <div class="col-lg-8 col-md-10 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 inquiry-form">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Електронна поща</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", disabled = "disabled" })
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Изпращане на известия при:</label>
+                    <div class="">
+                        @Html.CheckBoxFor(m => m.InsufficientAmountNotifications, new { disabled = "disabled" })
+                        <label for="InsufficientAmountNotifications">постъпване на недостатъчна сума по ел. задължение</label>
+                        @Html.CheckBoxFor(m => m.OverpaidAmountNotifications, new { disabled = "disabled" })
+                        <label for="OverpaidAmountNotifications">постъпване на надплатена сума по ел. задължение</label>
+                        @Html.CheckBoxFor(m => m.ReferencedNotifications, new { disabled = "disabled" })
+                        <label for="ReferencedNotifications">постъпване на плащане по ел. заявено задължение</label>
+                        @Html.CheckBoxFor(m => m.NotReferencedNotifications, new { disabled = "disabled" })
+                        <label for="NotReferencedNotifications">постъпване на плащания по други задължения</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="form-group col-md-12 snd">
+                    @Html.ActionLink("Редактирай", MVC.EserviceAdmin.ActionNames.EditSettings, MVC.EserviceAdmin.Name, null, new { @class = "btn big-btn blue-btn" })
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+
+</div>

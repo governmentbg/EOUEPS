@@ -1,0 +1,165 @@
+﻿@using EPayments.Common.Helpers
+@model EPayments.Web.Models.Shared.TaxAgreementCvposVM
+@{
+    ViewBag.Title = "Условия за плащане";
+    if (!Model.IsInternalPayment)
+    {
+        Layout = MVC.Shared.Views._EmptyLayout;
+    }
+}
+
+@if (!Model.IsInternalPayment)
+{
+    <header style="margin-left: -30px; margin-right: -30px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-color: rgb(180,180,180)">
+        <div class="container clearfix">
+            <table style="margin-left: auto; margin-right: auto;">
+                <tr>
+                    <td style="padding: 10px;">
+                        <span class="logo">
+                            <img src="@Links.Content.images.gerb_gif" alt="" />
+                        </span>
+                    </td>
+                    <td style="padding: 10px;">
+                        <div class="title" style="margin-top: 0px; text-align: left;">
+                            <strong>Портал за електронни плащания<br />pay.egov.bg</strong>
+                            <span>Република България</span>
+                        </div>
+                    </td>
+                    <td style="padding: 10px;">
+                        <div>
+                            @using (Html.BeginForm(MVC.Vpos.ActionNames.PaymentCanceled, MVC.Vpos.Name, null, FormMethod.Post))
+                            {
+                                @Html.Hidden("clientId", Model.ExternalRequestDO.ClientId)
+                                @Html.Hidden("hmac", Model.ExternalRequestDO.Hmac)
+                                @Html.Hidden("data", Model.ExternalRequestDO.Data)
+                                <button type="submit" class="close" style="font-size: 48px; font-weight: normal; margin-top: -48px;" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+}
+
+<div class="modal-header">
+    @if (Model.IsInternalPayment)
+    {
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+    }
+    <h4 class="modal-title" id="myModalLabel" style="@(!Model.IsInternalPayment ? "padding-left: 0px; padding-bottom: 5px;" : String.Empty)">Условия за плащане</h4>
+</div>
+<div class="modal-body">
+
+    <h4 data-section="1-1" class="collapsable" style="color: #0097e5;">
+        <img class="arrow" src="@Links.Content.images.icons.faq_arrow_png" alt="">
+        Условията за използване на системата
+    </h4>
+    <section data-section="1-1" class="clearfix">
+        <p style="text-align: justify;">Тази информационна система е само посредник при обмена на информация между всички участници в нея (доставчици на електронни административни услуги, доставчици на платежни услуги и получатели на електронни административни услуги) при извършване на плащания по повод предоставяне на електронни административни услуги.</p>
+        <p style="text-align: justify;">Самите плащания се извършват съгласно предвиденото в действащото българско законодателство и договорните отношения между картодържателя и неговия доставчик на платежни услуги и доставчика на електронни административни услуги и неговия доставчик на платежни услуги.</p>
+        <p style="text-align: justify;">Размерът на дължимата за плащане сума се определя от администрацията, предоставяща конкретната електронна административна услуга и тя носи пълната отговорност за нейната основателност и актуалност.</p>
+    </section>
+
+    <p style="text-align: justify; margin-top: 30px; margin-bottom: 30px;">
+        Заявката за плащане е на <strong>
+            обща стойност
+            <span style="font-size: 16px;">
+                @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                {
+                    @String.Format("{0:F2} лв.", Model.PaymentAmountInBGN)
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                {
+                    if (CurrencyHelper.IsEuroTimePeriod)
+                    {
+                        @String.Format("{0:F2} € / {1:F2} лв.", Model.PaymentAmountInEuro, Model.PaymentAmountInBGN)
+                    }
+                    else
+                    {
+                        @String.Format("{0:F2} лв. / {1:F2} €", Model.PaymentAmountInBGN, Model.PaymentAmountInEuro)
+                    }
+                }
+                else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                {
+                    @String.Format("{0:F2} €", Model.PaymentAmountInEuro)
+                }
+            </span>
+        </strong> и може да се плати през виртуалния ПОС терминал на БОРИКА чрез следните кредитни и дебитни карти:
+    </p>
+    <p style="text-align: center;"><img src="@Links.Content.images.banks.terms_banks_png" /></p>
+    <p style="text-align: justify; font-weight: bold; color: red;">Министерство на електронното управление не носи каквато и да е отговорност за изпълнението или неизпълнението на посочените задължения, причинени вреди или каквито и да е било други претенции във връзка или по повод наредено и/или извършено плащане при предоставяне на електронна административна услуга.</p>
+    <p style="text-align: justify;">Оспорването на извършени транзакции и/или евентуалното връщане на суми, платени от получателите на електронни административни услуги, се извършва без посредничеството на системата, съобразно действащото законодателство и правилата, договорени между съответния доставчик на електронни административни услуги и избрания от него доставчик на платежни услуги.</p>
+
+    <div class="row" style="padding-top: 20px; padding-bottom: 20px;">
+        <div class="form-group col-sm-12">
+            <input id="aggreementCheck" type="checkbox" name="group1">
+            <label for="aggreementCheck" style="font-weight: 600;">Запознат съм и приемам условията за използване на системата</label>
+        </div>
+    </div>
+
+    @if (Model.IsInternalPayment)
+    {
+        using (Html.BeginForm(MVC.Vpos.ActionNames.Borica, MVC.Vpos.Name, FormMethod.Get))
+        {
+            <input id="submitBtn" type="submit" value="Продължи" class="btn grey-btn" style="border-width: 0px; margin-bottom: 20px;"
+                   data-toggle="popover" data-placement="right" title="" data-content="За да продължите трябва да приемете условията на системата" data-trigger="hover"
+                   onclick="return false">
+        }
+    }
+    else
+    {
+        using (Html.BeginForm(MVC.Vpos.ActionNames.PaymentConfirmed, MVC.Vpos.Name, null, FormMethod.Post))
+        {
+            @Html.Hidden("clientId", Model.ExternalRequestDO.ClientId)
+            @Html.Hidden("hmac", Model.ExternalRequestDO.Hmac)
+            @Html.Hidden("data", Model.ExternalRequestDO.Data)
+            @Html.Hidden("isEpayPayment", false)
+            <input id="submitBtn" type="submit" value="Продължи" class="btn grey-btn" style="border-width: 0px; margin-bottom: 20px;"
+                   data-toggle="popover" data-placement="right" title="" data-content="За да продължите трябва да приемете условията на системата" data-trigger="hover"
+                   onclick="return false">
+        }
+    }
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var model = @Html.Raw(Json.Encode(Model));
+        $("#submitBtn").popover('enable');
+
+        $("#aggreementCheck").change(function () {
+            if ($("#aggreementCheck").is(':checked')) {
+                $("#submitBtn").attr("class", "btn blue-btn");
+                $("#submitBtn").popover('disable');
+                $("#submitBtn").on('click', function () {
+                    var gidValues = "";
+                    for (var i = 0; i < model.Gids.length; i++) {
+                        gidValues += "&gids=" + model.Gids[i];
+                    }
+                    window.location.href = "/vpos/borica?" + gidValues;
+                });
+            } else {
+                $("#submitBtn").attr("class", "btn grey-btn");
+                $("#submitBtn").prop("onclick", null).off("click");
+                //$("#submitBtn").on('click', function () { });
+                $("#submitBtn").attr("onclick", "return false");
+                $("#submitBtn").popover('enable');
+            }
+        });
+
+        //sections slide Up/Down
+        $("h4.collapsable").click(function () {
+            section = $(this).data('section');
+            if ($(this).hasClass("opened")) {
+                $("section[data-section=" + section + "]").slideUp(450);
+            }
+            else {
+                $("section[data-section=" + section + "]").slideDown(450);
+            }
+            $(this).toggleClass("opened");
+        });
+    });
+</script>
+
+

@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4537DC3C-F9D5-4926-AEDB-33C199599153}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EPayments.Data</RootNamespace>
+    <AssemblyName>EPayments.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PublicTest|AnyCPU'">
+    <OutputPath>bin\PublicTest\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="DataModule.cs" />
+    <Compile Include="Repositories\Implementations\DistributionRepository.cs" />
+    <Compile Include="Repositories\Implementations\JobRepository.cs" />
+    <Compile Include="Repositories\Implementations\CommonRepository.cs" />
+    <Compile Include="Repositories\Implementations\PaymentRequestRepository.cs" />
+    <Compile Include="Repositories\Implementations\SystemRepository.cs" />
+    <Compile Include="Repositories\Implementations\ApiRepository.cs" />
+    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
+    <Compile Include="Repositories\Implementations\EquationControlsRepository.cs" />
+    <Compile Include="Repositories\Implementations\WebRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IDistributionRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IJobRepository.cs" />
+    <Compile Include="Repositories\Interfaces\ICommonRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IBaseRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IPaymentRequestRepository.cs" />
+    <Compile Include="Repositories\Interfaces\ISystemRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IApiRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IEquationControlsRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IWebRepository.cs" />
+    <Compile Include="ViewObjects\Admin\DepartmentVO.cs" />
+    <Compile Include="ViewObjects\Admin\DistribtutionTypeVO.cs" />
+    <Compile Include="ViewObjects\Admin\DistributedPaymentRequestVO.cs" />
+    <Compile Include="ViewObjects\Admin\DistributionRevenueVO.cs" />
+    <Compile Include="ViewObjects\Admin\PaymentRequestVO.cs" />
+    <Compile Include="ViewObjects\Admin\BoricaTransactionVO.cs" />
+    <Compile Include="ViewObjects\Admin\TotalsBoricaTransactionVO.cs" />
+    <Compile Include="ViewObjects\Admin\UndistributedPaymentRequestVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestEikInfoVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestInfoParsedVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestPaymentInfoParsedVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestRefidInfoVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestStatusVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestXmlVO.cs" />
+    <Compile Include="ViewObjects\Api\RequestInfoVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\APGWBaseData.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWEndingAuthorizationDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWReversalAuthorizationRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWReversalPaymentRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWFirstAuthorizationDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWPaymentRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\APGWPaymentResponseDataDO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\APGWRequestBase.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\APGWResponseBase.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWSoftFirstAutorizationDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWSoftRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\Requests\APGWStatusCheckRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\APGModels\TrTypeEnum.cs" />
+    <Compile Include="ViewObjects\Web\EserviceRecordVO.cs" />
+    <Compile Include="ViewObjects\Web\ObligationTypeVO.cs" />
+    <Compile Include="ViewObjects\Web\PaymentRequestObligationLog.cs" />
+    <Compile Include="ViewObjects\Web\TransactionRecordVO.cs" />
+    <Compile Include="ViewObjects\Web\RequestAccessDetailsVO.cs" />
+    <Compile Include="ViewObjects\Web\RequestAccessVO.cs" />
+    <Compile Include="ViewObjects\Web\SystemStatsVO.cs" />
+    <Compile Include="ViewObjects\Web\PaymentOrderVO.cs" />
+    <Compile Include="ViewObjects\Web\ProcessedRequestVO.cs" />
+    <Compile Include="ViewObjects\Web\VposRequestDataVO.cs" />
+    <Compile Include="ViewObjects\Web\PendingRequestVO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EPayments.Common\EPayments.Common.csproj">
+      <Project>{d2bea422-44b9-4e04-8f38-d22944d97a39}</Project>
+      <Name>EPayments.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EPayments.Model\EPayments.Model.csproj">
+      <Project>{95719963-7f57-4d51-b3f9-06fe06e113ca}</Project>
+      <Name>EPayments.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

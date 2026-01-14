@@ -1,0 +1,186 @@
+﻿@using EPayments.Common.Helpers
+
+@model EPayments.Web.Models.Home.SystemStatsVM
+@{
+    ViewBag.Title = "Системни справки";
+}
+
+<div class="container main-content" style="max-width: 600px;">
+
+    <h1 style="text-align: center; margin-top: 18px;">Системни справки</h1>
+
+    <!-- FILTERS -->
+    <div class="table-filters">
+        <span class="filter-toggle opened">Търсене</span>
+        @using (Html.BeginForm(MVC.Home.ActionNames.SystemStatsSearch, MVC.Home.Name, null, FormMethod.Post, new { style = "display: block;" }))
+        {
+            <div class="row">
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Година</label>
+                                        <br />
+                                        @Html.DropDownListFor(m => m.SearchDO.PeriodYear,
+                                                Model.PeriodYearDropdownValues.Select(e => new SelectListItem
+                                                {
+                                                    Value = e.Key,
+                                                    Text = e.Value
+                                                })
+                                                .ToList())
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Ведомство</label>
+                                        <br />
+                                        @Html.DropDownListFor(m => m.SearchDO.DepartmentId,
+                                            Model.DepartmentIdDropdownValues.Select(e => new SelectListItem
+                                            {
+                                                Value = e.Key,
+                                                Text = e.Value
+                                            })
+                                            .ToList(),
+                                            new { style = "width: 100%;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Административна информационна система</label>
+                                        <br />
+                                        @Html.DropDownListFor(m => m.SearchDO.EserviceClientId,
+                                            Model.EserviceClientIdDropdownValues.Select(e => new SelectListItem
+                                            {
+                                                Value = e.Key,
+                                                Text = e.Value
+                                            })
+                                            .ToList(),
+                                            new { style = "width: 100%;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input class="btn blue-btn" type="submit" value="Търси" style="margin-left: 0px; margin-top: 10px; float: left;">
+                                        <span class="reset" style="color: #0097e5; text-decoration: none; float: left; margin-top: 16px; text-align: left; margin-left: 20px;">Изчисти</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    @*Filtered results*@
+    <div class="results-table">
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Общ брой регистрирани задължения</span>
+            </div>
+            <div class="results-cell" style="text-align: right; min-width: 350px;">
+                <span class="label">
+                    @Model.SystemStats.RegisteredRequests.ToString("### ### ##0").Trim()
+                    (
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.RegisteredRequestsAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.RegisteredRequestsAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.RegisteredRequestsAmountInEuro)
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        @:&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.RegisteredRequestsAmountInEuro)
+                    }
+                    )
+                </span>
+            </div>
+        </div>
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Платени чрез карта</span>
+            </div>
+            <div class="results-cell" style="text-align: right; min-width: 350px;">
+                <span class="label">
+                    @Model.SystemStats.PaidViaVpos.ToString("### ### ##0").Trim()
+                    (
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaVposAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaVposAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaVposAmountInEuro)
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        @:&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaVposAmountInEuro)
+                    }
+                    )
+                </span>
+            </div>
+        </div>
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Платени чрез платежен оператор</span>
+            </div>
+            <div class="results-cell" style="text-align: right; min-width: 350px;">
+                <span class="label">
+                    @Model.SystemStats.PaidViaBankOrder.ToString("### ### ##0").Trim()
+                    (
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaBankOrderAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaBankOrderAmountInEuro * CurrencyHelper.BgnToEuroRate) @:лв или &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaBankOrderAmountInEuro)
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        @:&euro; @Formatter.DecimalToTwoDecimalPlacesFormat(Model.SystemStats.PaidViaBankOrderAmountInEuro)
+                    }
+                    )
+                </span>
+            </div>
+        </div>
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Отказани от задълженото лице</span>
+            </div>
+            <div class="results-cell" style="text-align: right;">
+                <span class="label">@Model.SystemStats.CanceledByUser.ToString("### ### ##0").Trim()</span>
+            </div>
+        </div>
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Активни заявки „За плащане“ </span>
+            </div>
+            <div class="results-cell" style="text-align: right;">
+                <span class="label">@Model.SystemStats.PendingRequests.ToString("### ### ##0").Trim()</span>
+            </div>
+        </div>
+        <div class="results-row">
+            <div class="results-cell">
+                <span class="label">Брой заявки с „Код за плащане“ </span>
+            </div>
+            <div class="results-cell" style="text-align: right;">
+                <span class="label">@Model.SystemStats.RequestsWithAccessCode.ToString("### ### ##0").Trim()</span>
+            </div>
+        </div>
+    </div>
+
+</div>

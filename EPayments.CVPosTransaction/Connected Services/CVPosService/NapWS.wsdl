@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://ws.sucardws.bobs.bg/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="NapWS" targetNamespace="http://ws.sucardws.bobs.bg/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="NapWS.xsd" namespace="http://ws.sucardws.bobs.bg/" />
+    </xsd:schema>
+  </types>
+  <message name="managment_POS">
+    <part name="parameters" element="tns:managment_POS" />
+  </message>
+  <message name="managment_POSResponse">
+    <part name="parameters" element="tns:managment_POSResponse" />
+  </message>
+  <message name="SucardFault">
+    <part name="fault" element="tns:SucardFault" />
+  </message>
+  <message name="transactionsDifferentDays">
+    <part name="parameters" element="tns:transactionsDifferentDays" />
+  </message>
+  <message name="transactionsDifferentDaysResponse">
+    <part name="parameters" element="tns:transactionsDifferentDaysResponse" />
+  </message>
+  <message name="distributionRevenueAgencies">
+    <part name="parameters" element="tns:distributionRevenueAgencies" />
+  </message>
+  <message name="distributionRevenueAgenciesResponse">
+    <part name="parameters" element="tns:distributionRevenueAgenciesResponse" />
+  </message>
+  <message name="transactionsForDate">
+    <part name="parameters" element="tns:transactionsForDate" />
+  </message>
+  <message name="transactionsForDateResponse">
+    <part name="parameters" element="tns:transactionsForDateResponse" />
+  </message>
+  <message name="transactionsForDateAPI">
+    <part name="parameters" element="tns:transactionsForDateAPI" />
+  </message>
+  <message name="transactionsForDateAPIResponse">
+    <part name="parameters" element="tns:transactionsForDateAPIResponse" />
+  </message>
+  <message name="transactionsForDateCurrency">
+    <part name="parameters" element="tns:transactionsForDateCurrency" />
+  </message>
+  <message name="transactionsForDateCurrencyResponse">
+    <part name="parameters" element="tns:transactionsForDateCurrencyResponse" />
+  </message>
+  <portType name="NapWS">
+    <operation name="managment_POS">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/managment_POSRequest" message="tns:managment_POS" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/managment_POSResponse" message="tns:managment_POSResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/managment_POS/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+    <operation name="transactionsDifferentDays">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsDifferentDaysRequest" message="tns:transactionsDifferentDays" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsDifferentDaysResponse" message="tns:transactionsDifferentDaysResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsDifferentDays/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+    <operation name="distributionRevenueAgencies">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/distributionRevenueAgenciesRequest" message="tns:distributionRevenueAgencies" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/distributionRevenueAgenciesResponse" message="tns:distributionRevenueAgenciesResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/distributionRevenueAgencies/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+    <operation name="transactionsForDate">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateRequest" message="tns:transactionsForDate" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateResponse" message="tns:transactionsForDateResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDate/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+    <operation name="transactionsForDateAPI">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateAPIRequest" message="tns:transactionsForDateAPI" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateAPIResponse" message="tns:transactionsForDateAPIResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateAPI/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+    <operation name="transactionsForDateCurrency">
+      <input wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateCurrencyRequest" message="tns:transactionsForDateCurrency" />
+      <output wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateCurrencyResponse" message="tns:transactionsForDateCurrencyResponse" />
+      <fault wsam:Action="http://ws.sucardws.bobs.bg/NapWS/transactionsForDateCurrency/Fault/SucardFault" name="SucardFault" message="tns:SucardFault" />
+    </operation>
+  </portType>
+  <binding name="NapWSPortBinding" type="tns:NapWS">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="managment_POS">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+    <operation name="transactionsDifferentDays">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+    <operation name="distributionRevenueAgencies">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+    <operation name="transactionsForDate">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+    <operation name="transactionsForDateAPI">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+    <operation name="transactionsForDateCurrency">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="SucardFault">
+        <soap:fault use="literal" name="SucardFault" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="NapWS">
+    <port name="NapWSPort" binding="tns:NapWSPortBinding">
+      <soap:address location="http://192.168.121.88:7003/SucardBnbWS/NapWS" />
+    </port>
+  </service>
+</definitions>

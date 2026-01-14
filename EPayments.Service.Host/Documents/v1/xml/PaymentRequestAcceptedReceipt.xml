@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PaymentRequestAcceptedReceipt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ereg.egov.bg/segment/R-10055">
+    <!--Value of DocumentTypeURI is dummy. The real values for the element will be provided when document is registerd in RIO register.-->
+    <DocumentTypeURI>
+        <RegisterIndex xmlns="http://ereg.egov.bg/segment/0009-000022">000001</RegisterIndex>
+        <BatchNumber xmlns="http://ereg.egov.bg/segment/0009-000022">0010</BatchNumber>
+    </DocumentTypeURI>
+    <DocumentTypeName>Съобщение, че заявката за плащане се приема</DocumentTypeName>
+    <PaymentRequestID>1508261</PaymentRequestID>
+    <PaymentRequestRegistrationTime>2015-08-26T11:45:43.7924222+03:00</PaymentRequestRegistrationTime>
+</PaymentRequestAcceptedReceipt>

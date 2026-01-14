@@ -1,0 +1,70 @@
+﻿@model EPayments.Admin.Models.EserviceClient.EformsUserVM
+@using EPayments.Common.Helpers
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Преглед на системен потребител за Е-Форми</h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+<div class="row">
+
+    @Html.Partial(MVC.EserviceClient.Views.FormEformsUser, Model)
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn blue-btn"
+               href="@Url.Action(MVC.EserviceClient.ActionNames.EditEformsUser, MVC.EserviceClient.Name, new { id = Model.EserviceClientId, eserviceAdminUserId = Model.EserviceAdminUserId })">Редактирай</a>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn blue-btn"
+               href="@Url.Action(MVC.EserviceClient.ActionNames.EditEformsUserPassword, MVC.EserviceClient.Name, new { id = Model.EserviceClientId, eserviceAdminUserId = Model.EserviceAdminUserId })">Промени парола</a>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+        <div class="form-group">
+            <label>&nbsp;</label>
+
+            @using (Html.BeginForm(MVC.EserviceClient.ActionNames.DeleteEformsUser, MVC.EserviceClient.Name, new { id = Model.EserviceClientId, eserviceAdminUserId = Model.EserviceAdminUserId }, FormMethod.Post, new { @class = "clearfix", style = "display: block;", id = "frmDelete" }))
+            {
+                <a data-toggle="confirmation-post" data-formid="frmDelete"
+                   title="Сигурни ли сте, че искате да изтриете потребителя за Е-Форми?" data-btnoklabel="Да" data-btnokclass="btn btn-sm red" data-btncancellabel="Отказ"
+                   style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn red-btn">Изтрий</a>
+            }
+
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+               href="@Url.Action(MVC.EserviceClient.ActionNames.View, MVC.EserviceClient.Name, new { id = Model.EserviceClientId })">Назад</a>
+        </div>
+    </div>
+
+</div>
+
+
+</div>

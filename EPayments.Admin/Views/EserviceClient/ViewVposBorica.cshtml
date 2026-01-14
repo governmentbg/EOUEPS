@@ -1,0 +1,80 @@
+﻿@model EPayments.Admin.Models.EserviceClient.VposBoricaVM
+@using EPayments.Common.Helpers
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Преглед на ВПОС терминал на БОРИКА</h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+        <div class="row">
+
+            @Html.Partial(MVC.EserviceClient.Views.FormVposBorica, Model)
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn blue-btn"
+                       href="@Url.Action(MVC.EserviceClient.ActionNames.EditVposBorica, MVC.EserviceClient.Name, new { id = Model.EserviceClientId })">Редактирай</a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+
+                    <form action="@Model.TestVposPostUrl" method="post" target="_blank" class="clearfix" style="display: block;" id="frmTestVpos">
+
+                        <input type="hidden" id="ClientId" name="ClientId" value="@Model.TestVposRequestDO.ClientId" />
+                        <input type="hidden" id="Hmac" name="Hmac" value="@Model.TestVposRequestDO.Hmac" />
+                        <input type="hidden" id="Data" name="Data" value="@Model.TestVposRequestDO.Data" />
+
+                        <a data-toggle="confirmation-post" data-formid="frmTestVpos"
+                           title="Пренасочване към ВПОС уеб интерфейса?" data-btnoklabel="Да" data-btnokclass="btn btn-sm red" data-btncancellabel="Отказ"
+                           style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn blue-btn">Тест ВПОС</a>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+
+                    @using (Html.BeginForm(MVC.EserviceClient.ActionNames.DeleteVposBorica, MVC.EserviceClient.Name, new { id = Model.EserviceClientId }, FormMethod.Post, new { @class = "clearfix", style = "display: block;", id = "frmDelete" }))
+                    {
+                        <a data-toggle="confirmation-post" data-formid="frmDelete"
+                           title="Сигурни ли сте, че искате да изтриете ВПОС терминала?" data-btnoklabel="Да" data-btnokclass="btn btn-sm red" data-btncancellabel="Отказ"
+                           style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn red-btn">Изтрий</a>
+                    }
+
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+                       href="@Url.Action(MVC.EserviceClient.ActionNames.View, MVC.EserviceClient.Name, new { id = Model.EserviceClientId })">Назад</a>
+                </div>
+            </div>
+
+        </div>
+
+
+</div>

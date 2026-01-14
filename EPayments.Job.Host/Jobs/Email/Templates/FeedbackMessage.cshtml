@@ -1,0 +1,17 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    string subject = (string)Model.GetValue("Subject", StringComparison.InvariantCultureIgnoreCase);
+    string name = (string)Model.GetValue("Name", StringComparison.InvariantCultureIgnoreCase);
+    string email = (string)Model.GetValue("Email", StringComparison.InvariantCultureIgnoreCase);
+    string phone = (string)Model.GetValue("Phone", StringComparison.InvariantCultureIgnoreCase);
+    string messageText = (string)Model.GetValue("MessageText", StringComparison.InvariantCultureIgnoreCase);
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Съобщение от формата за обратна връзка на услугата "Портал за електронни плащания".</strong></p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Съобщение за:</strong> @subject</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">От:</strong> @name</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Електронна поща:</strong> @email</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Телефон:</strong> @phone</p>
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Описание:</strong></p>
+<p style="margin-bottom: 15px;">@Raw(messageText)</p>
+

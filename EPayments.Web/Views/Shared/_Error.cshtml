@@ -1,0 +1,102 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using EPayments.Web.Common;
+@using EPayments.Common.Helpers;
+
+<div class="container main-content">
+    <div class="message-page">
+        @{
+            ViewBag.Title = "Error";
+
+            if (Model.GetType() == typeof(CustomHandleErrorInfo))
+            {
+                CustomHandleErrorInfo errorInfo = (CustomHandleErrorInfo)Model;
+
+                if (errorInfo.ErrorCode == "101")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Изисква се идентификация<br />с електронен подпис</h1>
+                    if (!String.IsNullOrWhiteSpace(errorInfo.EAuthError))
+                    {
+                        <p>@errorInfo.EAuthError</p>
+                    }
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Системата не може да зареди електронен подпис.</p>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "102")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Невалиден електронен подпис</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Системата не може да зареди квалифициран електронен подпис.</p>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "103")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Анулиран или блокиран електронен подпис</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Вашият електронен подпис е анулиран или блокиран от издателя.</p>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "104")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Изтекъл срок на валидност на електронен подпис</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Вашият електронен подпис е с изтекъл срок на валидност.</p>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode.StartsWith("110"))
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Невалиден или неразпознат електронен подпис</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Вашият електронен подпис е невалиден или неразпознат от системата.</p>
+                    <p>Заредете електронен подпис, отговарящ на изискванията и рестартирайте браузъра!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "401")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Неупълномощен достъп</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Нямате права за достъп до този ресурс.</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else if (errorInfo.ErrorCode == "404")
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Навигационна грешка</h1>
+                    <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    <p>Несъществуващ адрес на страница.</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+                else
+                {
+                    <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                    <h1>Комуникационна грешка</h1>
+                    if (!String.IsNullOrWhiteSpace(errorInfo.ErrorCode))
+                    {
+                        <p><strong>Код за грешка: @errorInfo.ErrorCode</strong></p>
+                    }
+                    <p>Възникнала грешка при заявка към сървъра.</p>
+                    <p>Рестартирайте браузъра и опитайте по-късно!</p>
+                    <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+                }
+            }
+            else
+            {
+                <img class="warning" src="@Links.Content.images.icons.warning_png" alt="Error" />
+                <h1>Комуникационна грешка</h1>
+                <p>Възникнала грешка при заявка към сървъра.</p>
+                <p>Рестартирайте браузъра и опитайте по-късно!</p>
+                <p>@Html.ActionLink("Към началната страница", MVC.Home.ActionNames.Index, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" })</p>
+            }
+        }
+    </div>
+</div>

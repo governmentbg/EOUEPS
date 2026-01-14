@@ -1,0 +1,296 @@
+﻿@using EPayments.Admin.Models.Transactions
+@using EPayments.Common.Helpers
+
+@model TransactionPdfVM
+
+@{
+    string ttOrderName = "Номер на транзакцията";
+    string ttAmountEurName = "Сума, EUR";
+    string ttAmountBgnName = "Сума, BGN";
+    string ttFeeEurName = "Такса, EUR";
+    string ttFeeBgnName = "Такса, BGN";
+    string ttCommissionEurName = "Комисионна, EUR";
+    string ttCommissionBgnName = "Комисионна, BGN";
+    string ttTransactionDateName = "Дата на транзакцията";
+    string ttCardName = "Номер на карта";
+    string ttSettlementDateName = "Дата на стълмент";
+    string ttStatusMessage = "Съобщение от Борика";
+
+    DateTime defaultDate = new DateTime();
+}
+
+<table class="container main-content" style="font-size:8px;border: 1px solid #333;border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttOrderName</th>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+                }
+                else
+                {
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttAmountEurName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttFeeEurName</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCommissionEurName</th>
+            }
+
+
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttTransactionDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttCardName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttSettlementDateName</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@ttStatusMessage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Transactions != null && Model.Transactions.Count > 0)
+        {
+            for (int i = 0; i < Model.Transactions.Count; i++)
+            {
+                var tx = Model.Transactions[i];
+                var txDate = tx.TransactionDate;
+                <tr class="results-row">
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.Transactions[i].Order)</td>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(tx.Amount, txDate)</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @(tx.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Fee.Value, txDate) : "")
+                        </td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @(tx.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Commission.Value, txDate) : "")
+                        </td>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(tx.Amount, txDate)</td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(tx.Amount, txDate)</td>
+
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Fee.Value, txDate) : "")
+                            </td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Fee.Value, txDate) : "")
+                            </td>
+
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Commission.Value, txDate) : "")
+                            </td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Commission.Value, txDate) : "")
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetBgnValueFormated(tx.Amount, txDate)</td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(tx.Amount, txDate)</td>
+
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Fee.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Fee.Value, txDate) : "")
+                            </td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Fee.Value, txDate) : "")
+                            </td>
+
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Commission.HasValue ? CurrencyHelper.GetBgnValueFormated(tx.Commission.Value, txDate) : "")
+                            </td>
+                            <td style="border: 1px solid #333; border-collapse: collapse;">
+                                @(tx.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Commission.Value, txDate) : "")
+                            </td>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <td style="border: 1px solid #333; border-collapse: collapse;">@CurrencyHelper.GetEuroValueFormated(tx.Amount, txDate)</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @(tx.Fee.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Fee.Value, txDate) : "")
+                        </td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @(tx.Commission.HasValue ? CurrencyHelper.GetEuroValueFormated(tx.Commission.Value, txDate) : "")
+                        </td>
+                    }
+
+
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.Transactions[i].TransactionDate))</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.Transactions[i].Card)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.Transactions[i].SettlementDate != defaultDate ? EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.Transactions[i].SettlementDate) : string.Empty)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(Model.Transactions[i].StatusMessage)</td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <tr class="results-table-empty-results text-align-center">
+                <td colspan="8">Няма намерени резултати.</td>
+            </tr>
+        }
+    </tbody>
+    @if (Model.Transactions != null && Model.Transactions.Count > 0)
+    {
+        <tfoot>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, BGN</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalAmountInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, BGN</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalFeeInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, BGN</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalCommissionInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                    </td>
+                </tr>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro ?? 0m)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalAmountInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro ?? 0m)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalFeeInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro ?? 0m)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalCommissionInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalAmountInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro ?? 0m)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalFeeInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro ?? 0m)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, BGN</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat((Model.CalculateTotalCommissionInEuro ?? 0m) * CurrencyHelper.BgnToEuroRate)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, EUR</td>
+                        <td style="border: 1px solid #333; border-collapse: collapse;">
+                            @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro ?? 0m)
+                        </td>
+                    </tr>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо сума за всички транзакции, EUR</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalAmountInEuro ?? 0m)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо такси за всички транзакции, EUR</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalFeeInEuro ?? 0m)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">Общо комисионни за всички транзакции, EUR</td>
+                    <td style="border: 1px solid #333; border-collapse: collapse;">
+                        @Formatter.DecimalToTwoDecimalPlacesFormat(Model.CalculateTotalCommissionInEuro ?? 0m)
+                    </td>
+                </tr>
+
+            }
+
+
+        </tfoot>
+    }
+</table>

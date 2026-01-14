@@ -1,0 +1,173 @@
+﻿@using EPayments.Model.Enums
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="version" content="@EPayments.Common.Helpers.AssemblyHelper.GetAssemblyVersion()">
+    <title>Единна входна точка за електронни плащания</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" type="text/css">
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/upxjs")
+    @Scripts.Render("~/bundles/homejs")
+    <!--[if lt IE 9]>
+      <script src="Scripts/html5shiv.js"></script>
+      <script src="Scripts/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container clearfix">
+            <a class="logo" href="/" title="">
+                @*<img src="@Links.Content.images.gerb_gif" alt="" />*@
+                <img src="~/Content/images/lion-form.svg" class="icon-lion-form" alt="" />
+            </a>
+            <div class="title">
+                <a href="/"><strong>Единна входна точка за електронни плащания за<br /> централната и местната администрация</strong></a>
+                <a href="/"><span>Министерство на електронното управление</span></a>
+            </div>
+            @if (Request.IsAuthenticated)
+            {
+                <div class="right_controls_wrapper">
+                    <div class="right_controls clearfix">
+
+                        <a class="logout" data-href="@Url.Action(MVC.Account.ActionNames.Logout, MVC.Account.Name, null)" data-toggle="confirmation" data-placement="left" data-btnOkLabel="Да, искам" data-btnOkClass="btn btn-sm red" data-btnCancelLabel="Отказ" title="Сигурни ли сте, че искате да излезете?">Изход</a>
+
+                        <div class="user">
+                            @if (this.CurrentUser != null && !String.IsNullOrWhiteSpace(this.CurrentUser.Name))
+                            {
+                                @*<strong style="font-weight: bold;">Потребител:</strong>*@
+                                <strong>@this.CurrentUser.Name</strong>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </header>
+
+    <!-- -->
+    <!-- CONTENT -->
+    <div class="wpthemeContainer">
+        <div class="gradient-decor"></div>
+        <div class="wpthemeInner">
+            @if (Request.IsAuthenticated)
+            {
+                if (this.CurrentUser.Permission != null)
+                {
+                    <div class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <ul class="nav navbar-nav">
+                                @if (this.CurrentUser.HasPermission(InternalAdminUserPermissionEnum.Modify))
+                                {
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">
+                                            Управление
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="@Url.Action(MVC.EserviceClient.ActionNames.List, MVC.EserviceClient.Name)">Управление на АИС клиенти</a></li>
+                                            <li><a href="@Url.Action(MVC.Department.ActionNames.List, MVC.Department.Name)">Управление на администрации</a></li>
+                                            <li><a href="@Url.Action(MVC.ObligationType.ActionNames.List, MVC.ObligationType.Name)">Управление на видове задължения</a></li>
+                                            <li><a href="@Url.Action(MVC.AdminUser.ActionNames.List, MVC.AdminUser.Name)">Управление на потребители</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                @if (this.CurrentUser.HasPermission(InternalAdminUserPermissionEnum.ViewReferences))
+                                {
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">
+                                            Справки
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="@(Url.Action(MVC.PaymentRequest.ActionNames.List, MVC.PaymentRequest.Name))">Справки по задължения</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                @if (this.CurrentUser.HasPermission(InternalAdminUserPermissionEnum.DistributionReferences))
+                                {
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">
+                                            Справки разпределения
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="@Url.Action(MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name)">Разпределения</a></li>
+                                            <li><a href="@Url.Action(MVC.UndistributedPayments.ActionNames.List, MVC.UndistributedPayments.Name)">Контрол за равнения по неразпределени задължения</a></li>
+                                            <li><a href="@Url.Action(MVC.OldObligations.ActionNames.List, MVC.OldObligations.Name)">Контрол за равнения по стари задължения</a></li>
+                                            <li><a href="@Url.Action(MVC.Transaction.ActionNames.List, MVC.Transaction.Name)">Преглед на транзакции към ЦВПОС</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            }
+
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- FOOTER LINKS -->
+    @if (string.Compare(Request.Url.LocalPath, "/") == 0)
+    {
+        <div class="container-fluid footer-links">
+            <div class="band-section-wrapper">
+                <div class="section-wrapper-list">
+                    <div class="title">EGOV.BG</div>
+                    <ul>
+                        <li><a href="https://egov.bg/wps/portal/egov/uslugi">Административни услуги</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/dostavchitsi na uslugi">Институциите на Република България</a></li>
+                        <li> <a href="https://egov.bg/wps/portal/egov/aktualno">Актуално</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/polezni-vrazki">Полезни връзки</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/statistika">Статистическа информация</a></li>
+                    </ul>
+                </div>
+                <div class="section-wrapper-list">
+                    <div class="title">Общи условия и политики</div>
+                    <ul>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/access-policy">Политика за достъпност</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/privacy-policy">Политика за поверителност</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/terms-and-conditions">Условия за ползване</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/sitemap">Карта на сайта</a></li>
+                    </ul>
+                </div>
+                <div class="section-wrapper-list">
+                    <div class="title">Министерство на електронното управление</div>
+                    <ul>
+                        <li><a href="https://egov.government.bg" target="_blank">Официална интернет страница на министерството</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/info-pages/interoperability">Оперативна съвместимост</a></li>
+                        <li><a href="https://unifiedmodel.egov.bg/wps/portal/home/" target="_blank">Единен модел</a></li>
+                        <li><a href="https://egov.bg/wps/portal/egov/helpdesk">Помощен контактен център</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+        <!------------------>
+
+        <footer style="background-color: #f0f0f0;">
+
+            <div class="wrapper">
+                <div class="flex-between content-wrapper">
+                    <div>
+                        <p class="explain">
+                            ПРОЕКТ: „Надграждане на съществуващите и изграждане на нови централни системи за електронното правителство с оглед на усъвършенстване на информационно-комуникационната среда за по-добро административно обслужване на гражданите и бизнеса“
+                        </p>
+                        <p class="small">© 2018 Министерство на електронното управление</p>
+                    </div>
+                    <img src="@Links.Content.images.footer_logos_png" />
+                </div>
+            </div>
+
+        </footer>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

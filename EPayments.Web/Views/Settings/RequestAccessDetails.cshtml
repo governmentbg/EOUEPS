@@ -1,0 +1,43 @@
+﻿@model EPayments.Web.Models.Settings.RequestAccessDetailsVM
+@{
+    ViewBag.Title = "Информация за достъп";
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">Информация за достъп</h4>
+</div>
+<div class="modal-body" style="margin-top: 10px; max-height:calc(100vh - 150px); overflow-y: auto; padding-bottom: 0px; padding-top: 0px;">
+
+    @if(Model.AccessCount > Model.LimitCount)
+    {
+        <p style="color:red; text-align: justify; margin-top: 0px;">Информацията за Вашето задължение е достъпена от информационни системи  на доставчици на платежни услуги повече от @Model.LimitCount пъти – по-долу са посочени само последните @Model.LimitCount достъпа.</p>
+        <p style="margin-bottom: 30px;">Ако желаете да получите справка за всички достъпвания на информация за Вашето задължение или имате съмнения за осъществен неправомерен достъп, може да се обърнете към МТИТС или да ни пишете чрез формата за @Html.ActionLink("Обратна връзка", MVC.Home.ActionNames.Feedback, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>
+    }
+
+    <div class="results-table" style="margin-top: 10px;">
+        <div class="results-thead">
+            <div class="results-cell">Дата и час</div>
+            <div class="results-cell">IP адрес</div>
+            <div class="results-cell">Достъпено от</div>
+        </div>
+
+        @foreach (var item in Model.AccessDetails)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата и час:</span>
+                    <span class="label">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(item.AccessDate))</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">IP адрес:</span>
+                    <span class="label">@item.IpAddress</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Достъпено от:</span>
+                    <span class="label">@item.EbankingClientName</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

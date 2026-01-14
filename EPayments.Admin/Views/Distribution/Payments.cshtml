@@ -1,0 +1,458 @@
+﻿@using EPayments.Admin.Models.Distributions
+@using EPayments.Data.ViewObjects.Admin
+@using EPayments.Common.Helpers
+
+@model PaymentVM
+
+@{
+    ViewBag.Title = "Справката генерирана на " + EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.DistributionRevenue.CreatedAt);
+
+    string defaultClass = "results-cell";
+    string sortAsyncClass = " sortable sort-asc";
+    string sortDescClass = " sortable sort-desc";
+
+    string paymentRequestIdentifierTitle = "Номер на задължението";
+    string paymentReasonTitle = "Основание за плащане";
+    string paymentAmountBgnTitle = "Сума, ЛВ";
+    string paymentAmountEuroTitle = "Сума, EUR";
+    string eServiceClientNameTitle = "Заявител";
+    string targetEServiceClientNameTitle = "АИС разпоредител";
+    string applicantNameTitle = "Задължено лице";
+    string paymentRequestStatusTitle = "Статус на плащането";
+    string obligationStatusTitle = "Статус на задължението";
+
+    string yes = "Да";
+    string no = "Не";
+
+    string paymentRequestIdentifierClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.PaymentRequestIdentifier ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string paymentReasonClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.PaymentReason ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string paymentAmountClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.PaymentAmount ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string eServiceClientNameClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.EServiceClientName ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string targetEServiceClientNameClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.TargetEServiceClientName ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string applicantNameClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.ApplicantName ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string paymentRequestStatusClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.PaymentRequestStatus ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+    string obligationStatusClass = defaultClass + (Model.SearchDO.SortBy == DistributedPaymentSortEnum.ObligationStatus ? (Model.SearchDO.SortDesc ? sortDescClass : sortAsyncClass) : string.Empty);
+
+    Dictionary<int, List<DistributedPaymentRequestVO>> paymentRequstsByTargetEserviceId =
+        new Dictionary<int, List<DistributedPaymentRequestVO>>();
+
+    foreach (DistributedPaymentRequestVO distributedPaymentRequestVO in Model.Payments)
+    {
+        List<DistributedPaymentRequestVO> addedPayments;
+
+        if (!paymentRequstsByTargetEserviceId.TryGetValue(distributedPaymentRequestVO.TargetEServiceClientId, out addedPayments))
+        {
+            addedPayments = new List<DistributedPaymentRequestVO>();
+            paymentRequstsByTargetEserviceId.Add(distributedPaymentRequestVO.TargetEServiceClientId, addedPayments);
+        }
+
+        addedPayments.Add(distributedPaymentRequestVO);
+    }
+}
+
+<div class="container main-content">
+    <h1 id="processedPayments" class="table-heading" style="width: 100%;">
+        @(ViewBag.Title)&nbsp;<small>(@(Model.Payments == null || Model.Payments.Count == 0 ? "няма налични задължения за справката за разпределение" : String.Format("{0} {1}", Model.Payments.Count, Model.Payments.Count == 1 ? "задължение" : "задължения")))</small>
+    </h1>
+
+    @if (TempData[EPayments.Admin.Common.TempDataKeys.Message] != null)
+    {
+        <div class="validation-summary-errors validation-success" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.Message]</li>
+            </ul>
+        </div>
+    }
+    else if (TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage] != null)
+    {
+        <div class="validation-summary-errors validation-error" style="margin-top: 20px; margin-bottom: 25px;">
+            <ul>
+                <li style="padding-left: 40px;">@TempData[EPayments.Admin.Common.TempDataKeys.ErrorMessage]</li>
+            </ul>
+        </div>
+    }
+
+    <h3 class="text-align-center" style="width: 100%;margin-bottom: 1rem;">Данни за разпределението</h3>
+    <div class="row">
+        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+            <label>Справката е генерирана на</label>
+            <div class="form-control">@(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.DistributionRevenue.CreatedAt))</div>
+        </div>
+        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+            <label>Справката е разпределена на</label>
+            <div class="form-control">@(Model.DistributionRevenue.DistributedDate != null ? EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.DistributionRevenue.DistributedDate) : "не е разпределено")</div>
+        </div>
+    </div>
+    <div class="row">
+
+        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+        {
+            <div class="form-group col-lg-3 col-md-3 col-sm-6">
+                <label style="text-wrap-mode: nowrap">Обща сума на разпределението</label>
+                <div class="form-control">
+                    @CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt) лв.
+                </div>
+            </div>
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+        {
+            if (CurrencyHelper.IsEuroTimePeriod)
+            {
+                <div class="form-group col-lg-3 col-md-3 col-sm-6" style="margin-top: 25px">
+                    <div class="form-control">
+                        &euro; @CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt)
+                    </div>
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-6">
+                    <label style="text-wrap-mode: nowrap">Обща сума на разпределението</label>
+                    <div class="form-control">
+                        @CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt) лв.
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group col-lg-3 col-md-3 col-sm-6">
+                    <label style="text-wrap-mode: nowrap">Обща сума на разпределението</label>
+                    <div class="form-control">
+                        @CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt) лв.
+                    </div>
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-6" style="margin-top: 25px">
+                    <div class="form-control">
+                        &euro; @CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt)
+                    </div>
+                </div>
+            }
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+        {
+            <div class="form-group col-lg-3 col-md-3 col-sm-6" style="margin-top: 25px">
+                <div class="form-control">
+                    &euro; @CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.CreatedAt)
+                </div>
+            </div>
+        }
+
+
+        <div class="form-group col-lg-6 col-md-6 col-sm-12">
+            <label>Дали е разпределенa</label>
+            <div class="form-control">@(Model.DistributionRevenue.IsDistributed ? "Да" : "Не")</div>
+        </div>
+    </div>
+    <div>
+        <h3 class="text-align-center" style="width: 100%;margin-bottom: 1rem;">Задължения в разпределението</h3>
+    </div>
+    <div class="results-table" id="payment-results" style="@(Model.Payments.Count == 0 ? "border-bottom: 0px;" : string.Empty)">
+        <div class="results-thead">
+            <div class="@paymentRequestIdentifierClass">@Html.ActionLink(paymentRequestIdentifierTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentRequestIdentifier), null)</div>
+            <div class="@paymentReasonClass">@Html.ActionLink(paymentReasonTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentReason), null)</div>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountBgnTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountEuroTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+                    <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountBgnTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+                }
+                else
+                {
+                    <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountBgnTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+                    <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountEuroTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <div class="@paymentAmountClass">@Html.ActionLink(paymentAmountEuroTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentAmount), null)</div>
+            }
+
+
+            <div class="@eServiceClientNameClass">@Html.ActionLink(eServiceClientNameTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.EServiceClientName), null)</div>
+            <div class="@targetEServiceClientNameClass">@Html.ActionLink(targetEServiceClientNameTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.TargetEServiceClientName), null)</div>
+            <div class="@applicantNameClass">@Html.ActionLink(applicantNameTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.ApplicantName), null)</div>
+            <div class="@paymentRequestStatusClass">@Html.ActionLink(paymentRequestStatusTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.PaymentRequestStatus), null)</div>
+            <div class="@obligationStatusClass">@Html.ActionLink(obligationStatusTitle, MVC.Distribution.ActionNames.Payments, MVC.Distribution.Name, Model.SearchDO.ToDistributionRouteValues(DistributedPaymentSortEnum.ObligationStatus), null)</div>
+        </div>
+
+        @if (Model.Payments.Count > 0)
+        {
+            foreach (var payment in Model.Payments)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">(@paymentRequestIdentifierTitle):</span>
+                        <span class="label">@(payment.PaymentRequestIdentifier)</span>
+                    </div>
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(paymentReasonTitle):</span>
+                        <span class="label">@(payment.PaymentReason)</span>
+                    </div>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(paymentAmountBgnTitle):</span>
+                            <span class="label">
+                                @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                            </span>
+                        </div>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(paymentAmountEuroTitle):</span>
+                                <span class="label">
+                                    &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(paymentAmountBgnTitle):</span>
+                                <span class="label">
+                                    @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(paymentAmountBgnTitle):</span>
+                                <span class="label">
+                                    @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                                </span>
+                            </div>
+                            <div class="results-cell">
+                                <span class="hidden-lg">@(paymentAmountEuroTitle):</span>
+                                <span class="label">
+                                    &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                                </span>
+                            </div>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <div class="results-cell">
+                            <span class="hidden-lg">@(paymentAmountEuroTitle):</span>
+                            <span class="label">
+                                &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                            </span>
+                        </div>
+                    }
+
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(eServiceClientNameTitle):</span>
+                        <span class="label">@(payment.EServiceClientName)</span>
+                    </div>
+
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(targetEServiceClientNameTitle):</span>
+                        <span class="label">@(payment.TargetEServiceClientName)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(applicantNameTitle):</span>
+                        <span class="label">@(payment.ApplicantName)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(paymentRequestStatusTitle):</span>
+                        <span class="label">@(EPayments.Common.Helpers.EnumHelper.GetDescription(payment.PaymentRequestStatus))</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">@(obligationStatusTitle):</span>
+                        <span class="label">
+                            @if (payment.ObligationStatus != null)
+                            {
+                                @(EPayments.Common.Helpers.EnumHelper.GetDescription(payment.ObligationStatus))
+                            }
+                        </span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.Payments.Count == 0)
+    {
+        <div class="results-table-empty-results">
+            Няма намерени резултати.
+        </div>
+    }
+
+    <div class="row">
+        @if (Model.DistributionRevenue.IsDistributed == false)
+        {
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn green-btn"
+                       data-href="@Url.Action(MVC.Distribution.ActionNames.Distribute, MVC.Distribution.Name, new { id = Model.DistributionRevenue.DistributionRevenueId })"
+                       data-toggle="confirmation"
+                       data-placement="left"
+                       data-btnOkLabel="Да, искам"
+                       data-btnOkClass="btn btn-sm red"
+                       data-btnCancelLabel="Отказ" title="Сигурни ли сте, че искате да маркирате всички плащания като 'Заверени в сметка на администрация'?">Завери плащанията</a>
+                </div>
+            </div>
+        }
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn green-btn"
+                   href="@Url.Action(MVC.Distribution.ActionNames.GetFile, MVC.Distribution.Name, new { id = Model.DistributionRevenue.DistributionRevenueId })">Изтегли форма за БНБ</a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+                   href="@Url.Action(MVC.Distribution.ActionNames.Distributions, MVC.Distribution.Name)">Назад</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-actions pull-right">
+        <div class="payment-actions pull-right">
+            <a href="@Url.Action(MVC.Distribution.ActionNames.DownloadExcel, MVC.Distribution.Name, Model.SearchDO.ToDistributionAllRouteValues(Model.SearchDO.SortBy, Model.SearchDO.SortDesc))"
+               class="download-excel" target="_blank"
+               title="Изтегли всички резултати в ексел">
+            </a>
+            <a href="@Url.Action(MVC.Distribution.ActionNames.DownloadPdf, MVC.Distribution.Name, Model.SearchDO.ToDistributionAllRouteValues(Model.SearchDO.SortBy, Model.SearchDO.SortDesc))"
+               class="download-pdf" target="_blank"
+               title="Изтегли всички резултати в PDF">
+            </a>
+        </div>
+    </div>
+
+    @if (paymentRequstsByTargetEserviceId.Count > 0)
+    {
+        <div class="row clear">
+            <h3 class="text-align-center" style="width: 100%;margin-bottom: 1rem;">Визуализация на разпределението</h3>
+            <table class="results-table">
+                @foreach (int id in paymentRequstsByTargetEserviceId.Keys)
+                {
+                    <tr class="results-thead">
+                        <th class="results-cell first-cell distribution-toggle toggle expander payment-toggle"></th>
+                        <th class="results-cell">@(Model.Payments.First(drp => drp.TargetEServiceClientId == id).TargetEServiceClientName)</th>
+
+                        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                        {
+                            <th class="results-cell" style="text-align: right; width: 80px; padding-right: 14px;">
+                                @Formatter.DecimalToTwoDecimalPlacesFormat(paymentRequstsByTargetEserviceId[id].Sum(drp => CurrencyHelper.GetBgnValue(drp.PaymentAmount, drp.CreateDate))) лв.
+                            </th>
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                        {
+                            <th class="results-cell" style="text-align: right; width: 80px; padding-right: 14px;">
+                                @Formatter.DecimalToTwoDecimalPlacesFormat(paymentRequstsByTargetEserviceId[id].Sum(drp => CurrencyHelper.GetBgnValue(drp.PaymentAmount, drp.CreateDate))) лв.
+                            </th>
+
+                            <th class="results-cell" style="text-align: right; width: 80px; padding-right: 15px;">
+                                &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(paymentRequstsByTargetEserviceId[id].Sum(drp => CurrencyHelper.GetEuroValue(drp.PaymentAmount, drp.CreateDate)))
+                            </th>
+                        }
+                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                        {
+                            <th class="results-cell" style="text-align: right; width: 80px; padding-right: 15px;">
+                                &euro; @Formatter.DecimalToTwoDecimalPlacesFormat(paymentRequstsByTargetEserviceId[id].Sum(drp => CurrencyHelper.GetEuroValue(drp.PaymentAmount, drp.CreateDate)))
+                            </th>
+                        }
+                    </tr>
+
+                    <tr class="table-row" style="display: none;">
+                        <td class="results-cell"></td>
+                        <td class="results-cell" colspan="4">
+                            <table class="results-table">
+                                @foreach (var payment in paymentRequstsByTargetEserviceId[id])
+                                {
+                                    <tr class="table-row">
+                                        <td class="results-cell">
+                                            <span class="label">@(payment.PaymentReason)</span>
+                                        </td>
+                                        <td class="results-cell">
+                                            <span class="label">@(payment.TargetEServiceClientName)</span>
+                                        </td>
+                                        <td class="results-cell">
+                                            <span class="label">@(payment.ApplicantName)</span>
+                                        </td>
+
+                                        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                                        {
+                                            <td class="results-cell" style="text-align:right; width:80px;">
+                                                <span class="label">
+                                                    @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                                                </span>
+                                            </td>
+                                        }
+                                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                                        {
+                                            if (CurrencyHelper.IsEuroTimePeriod)
+                                            {
+                                                <td class="results-cell" style="text-align:right; width: 80px">
+                                                    <span class="label">
+                                                        &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                                                    </span>
+                                                </td>
+                                                <td class="results-cell" style="text-align:right; width:80px;">
+                                                    <span class="label">
+                                                        @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                                                    </span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="results-cell" style="text-align:right; width:80px;">
+                                                    <span class="label">
+                                                        @CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate) лв.
+                                                    </span>
+                                                </td>
+                                                <td class="results-cell" style="text-align:right; width: 80px">
+                                                    <span class="label">
+                                                        &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                                                    </span>
+                                                </td>
+                                            }
+                                        }
+                                        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                                        {
+                                            <td class="results-cell" style="text-align:right; width: 80px">
+                                                <span class="label">
+                                                    &euro; @CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate)
+                                                </span>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                 }
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+    <div class="row">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+            <label>Грешки в разпределението</label>
+            <div style="color: red;">@(string.Join(", ", Model.DistributionRevenue.Errors))</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+   @{
+        <text>
+            $(document).ready(function () {
+                $('html, body').animate({
+                    scrollTop: $('#payment-results').offset().top - 50
+                }, 200);
+            });
+        </text>
+   }
+</script>

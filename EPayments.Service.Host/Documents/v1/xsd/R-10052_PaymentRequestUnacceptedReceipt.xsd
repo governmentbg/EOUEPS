@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://ereg.egov.bg/segment/R-10052" xmlns="http://ereg.egov.bg/segment/R-10052" 
+
+	xmlns:dtn="http://ereg.egov.bg/value/0008-000007"
+    xmlns:dtu="http://ereg.egov.bg/segment/0009-000003"
+
+    xmlns:pr="http://ereg.egov.bg/segment/R-10046"
+    xmlns:mpr="http://ereg.egov.bg/segment/R-10049"	
+    xmlns:pre="http://ereg.egov.bg/segment/R-10036"
+    xmlns:prvt="http://ereg.egov.bg/value/R-10038"
+    
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    
+    elementFormDefault="qualified">
+	<xsd:import namespace="http://ereg.egov.bg/value/0008-000007"/>
+    <xsd:import namespace="http://ereg.egov.bg/segment/0009-000003"/>
+	
+    <xsd:import namespace="http://ereg.egov.bg/segment/R-10046" />
+	<xsd:import namespace="http://ereg.egov.bg/segment/R-10049" />
+    <xsd:import namespace="http://ereg.egov.bg/segment/R-10036" />
+    <xsd:import namespace="http://ereg.egov.bg/value/R-10038" />
+    
+    <xsd:element name="PaymentRequestUnacceptedReceipt" type="PaymentRequestUnacceptedReceipt" />
+    
+	<xsd:complexType name="PaymentRequestUnacceptedReceipt">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="bg">Съобщение, че заявката за плащане не се приема</xsd:documentation>
+		</xsd:annotation>
+
+		<xsd:sequence>
+		<xsd:element name="DocumentTypeURI" type="dtu:DocumentTypeURI" minOccurs="0"/>
+        <xsd:element name="DocumentTypeName" type="dtn:DocumentTypeName" minOccurs="0"/>		
+          <xsd:element name="PaymentRequestErrors" minOccurs="0">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="PaymentRequestError" type="pre:PaymentRequestError" minOccurs="0" maxOccurs="unbounded" />  
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="PaymentRequestValidationTime" type="prvt:PaymentRequestValidationTime" minOccurs="0" />   
+          <xsd:element name="PaymentRequest" type="pr:PaymentRequest" minOccurs="0" />
+		  <xsd:element name="PaymentRequestMultiple" type="mpr:PaymentRequestMultiple" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

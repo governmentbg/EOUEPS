@@ -1,0 +1,37 @@
+﻿@model EPayments.Admin.Models.EserviceClient.VposDskVM
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Добавяне на ВПОС терминал на ДСК</h1>
+
+    @using (Html.BeginForm(MVC.EserviceClient.ActionNames.AddVposDsk, MVC.EserviceClient.Name, new { id = Model.EserviceClientId}, FormMethod.Post, new { @class = "clearfix", style = "display: block;" }))
+    {
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary()
+            <br />
+        }
+
+        <div class="row">
+            @Html.Partial(MVC.EserviceClient.Views.FormVposDsk, Model)
+        </div>
+
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <input class="btn blue-btn" type="submit" value="Запиши" style="width: 100%; padding: 5px 0 5px 0;">
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-right">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <a style="width: 100%; padding: 5px 0 5px 0; text-align: center;" class="btn grey-btn"
+                       href="@Url.Action(MVC.EserviceClient.ActionNames.View, MVC.EserviceClient.Name, new { id = Model.EserviceClientId})">Отказ</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

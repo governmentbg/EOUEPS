@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Epayments.Schema</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{1a53a1c8-e6be-4df0-830e-2664d4761371}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Epayments.Schema</RootNamespace>
+    <AssemblyName>Epayments.Schema</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\spGetPaymentRequestCounter.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPaymentRequestTotal.sql" />
+    <Build Include="dbo\Tables\AuthPassLogins.sql" />
+    <Build Include="dbo\Tables\Banks.sql" />
+    <Build Include="dbo\Tables\BoricaTransactionPaymentRequest.sql" />
+    <Build Include="dbo\Tables\BoricaTransactions.sql" />
+    <Build Include="dbo\Tables\BoricaTransactionStatuses.sql" />
+    <Build Include="dbo\Tables\Certificates.sql" />
+    <Build Include="dbo\Tables\DatabaseUpdates.sql" />
+    <Build Include="dbo\Tables\Departments.sql" />
+    <Build Include="dbo\Tables\Disclaimers.sql" />
+    <Build Include="dbo\Tables\DisclaimerTemplates.sql" />
+    <Build Include="dbo\Tables\DistributionErrors.sql" />
+    <Build Include="dbo\Tables\DistributionRevenuePayments.sql" />
+    <Build Include="dbo\Tables\DistributionRevenues.sql" />
+    <Build Include="dbo\Tables\DistributionTypes.sql" />
+    <Build Include="dbo\Tables\EbankingAccessLogs.sql" />
+    <Build Include="dbo\Tables\EbankingClients.sql" />
+    <Build Include="dbo\Tables\Emails.sql" />
+    <Build Include="dbo\Tables\EserviceAdminUserBankAccounts.sql" />
+    <Build Include="dbo\Tables\EserviceAdminUsers.sql" />
+    <Build Include="dbo\Tables\EserviceBankAccounts.sql" />
+    <Build Include="dbo\Tables\EserviceClients.sql" />
+    <Build Include="dbo\Tables\EserviceDeliveryNotifications.sql" />
+    <Build Include="dbo\Tables\EserviceNotifications.sql" />
+    <Build Include="dbo\Tables\EventRegisterNotifications.sql" />
+    <Build Include="dbo\Tables\GlobalValues.sql" />
+    <Build Include="dbo\Tables\InternalAdminUsers.sql" />
+    <Build Include="dbo\Tables\LoginAttemptLogs.sql" />
+    <Build Include="dbo\Tables\NotificationStatuses.sql" />
+    <Build Include="dbo\Tables\ObligationStatuses.sql" />
+    <Build Include="dbo\Tables\ObligationTypes.sql" />
+    <Build Include="dbo\Tables\PaidStatusPaymentMethods.sql" />
+    <Build Include="dbo\Tables\PaymentRequestIdentifiers.sql" />
+    <Build Include="dbo\Tables\PaymentRequestObligationLogs.sql" />
+    <Build Include="dbo\Tables\PaymentRequests.sql" />
+    <Build Include="dbo\Tables\PaymentRequestStatuses.sql" />
+    <Build Include="dbo\Tables\PaymentRequestStatusLogs.sql" />
+    <Build Include="dbo\Tables\PaymentRequestXmls.sql" />
+    <Build Include="dbo\Tables\Permissions.sql" />
+    <Build Include="dbo\Tables\TransactionFiles.sql" />
+    <Build Include="dbo\Tables\TransactionRecordPaymentMethods.sql" />
+    <Build Include="dbo\Tables\TransactionRecordRefStatuses.sql" />
+    <Build Include="dbo\Tables\TransactionRecords.sql" />
+    <Build Include="dbo\Tables\TransactionRequestIdentifiers.sql" />
+    <Build Include="dbo\Tables\UinTypes.sql" />
+    <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\VposBoricaRequests.sql" />
+    <Build Include="dbo\Tables\VposClients.sql" />
+    <Build Include="dbo\Tables\VposDskEcommRequests.sql" />
+    <Build Include="dbo\Tables\VposEpayRequests.sql" />
+    <Build Include="dbo\Tables\VposFiBankRequests.sql" />
+    <Build Include="dbo\Tables\VposRedirects.sql" />
+    <Build Include="dbo\Tables\VposResults.sql" />
+    <Build Include="dbo\Views\vwDepartmentAisClients.sql" />
+    <Build Include="Security\EGP02-TSS_AdmDigitall.sql" />
+    <Build Include="Security\EGP02-TSS_AVukov-adm.sql" />
+    <Build Include="Security\EGP02-TSS_IHristova-adm.sql" />
+    <Build Include="Security\EGP02-TSS_RDDimitrov-adm.sql" />
+    <Build Include="Security\ePaymentsReadOnly_eDeliveryProd.sql" />
+    <Build Include="Security\EPaymentsSysUsr.sql" />
+    <Build Include="Security\NT AUTHORITY_LOCAL SERVICE.sql" />
+    <Build Include="Security\ReadOnlyUser.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,193 @@
+﻿@model EPayments.Web.Models.EserviceAdmin.PrintPaymentRequestsVM
+@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+@using EPayments.Data.ViewObjects.Web
+@using EPayments.Web.Common;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        /*START NOTES*/
+        ul.start-notes {
+            list-style-type: none;
+            padding-left: 0;
+            font-style: italic;
+        }
+
+            ul.start-notes li {
+            }
+
+        /*TABLE*/
+        div.table-wrapper {
+            margin-bottom: 50px;
+        }
+
+        p.table-header {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            vertical-align: top;
+            padding: 5px;
+            border-width: 2px;
+            border-style: solid;
+            color: #333;
+            background-color: #FFF;
+            border-color: #333;
+        }
+
+            td.header-cell {
+                font-weight: bold;
+                color: #333;
+                background-color: #E9E9E9;
+                border-color: #333;
+            }
+
+            td.bold-cell {
+                font-weight: bold;
+            }
+
+            td.number-cell {
+                text-align: right;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+        /*END NOTES*/
+        ul.end-notes {
+            list-style-type: none;
+            padding-left: 0;
+            font-style: italic;
+        }
+
+            ul.end-notes li {
+            }
+    </style>
+</head>
+<body>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Номер						
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Дата и час
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Задължение на
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    ЕГН / Булстат
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Основание за плащане
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Сума
+                </td>
+                <td class="header-cell  "
+                    style="width:px"
+                    rowspan="1"
+                    colspan="1">
+                    Статус
+                </td>
+
+            </tr>
+
+            @foreach (var payment in Model.Requests)
+            {
+        <tr>
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @payment.PaymentRequestIdentifier
+            </td>
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                    @(EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(payment.TransactionDate))
+            </td>
+
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @payment.ApplicantName
+            </td>
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @payment.ApplicantUin
+            </td>
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @payment.PaymentReason
+            </td>
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @CurrencyHelper.GetValueForDisplayUsingCurrencyMode(payment.PaymentAmountRequest, payment.CreateDate)
+            </td>
+
+            <td class=" "
+                style="width:px"
+                rowspan="1"
+                colspan="1">
+                @(EPayments.Common.Helpers.Formatter.EnumToDescriptionString(payment.PaymentRequestStatusId))
+            </td>
+
+        </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    setTimeout(function () {
+        print();
+    }, 100);
+</script>

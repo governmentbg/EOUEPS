@@ -1,0 +1,19 @@
+﻿@using EPayments.Admin.Models.EserviceClient
+@using EPayments.Admin.Controllers
+
+@model EserviceVM
+
+@{
+    string noParent = "--Първостепенен разпоредител--";
+    Dictionary<int, string> eservicesById = (Dictionary<int, string>)ViewData[DepartmentController.DepartmentsName];
+
+    List<SelectListItem> options = new List<SelectListItem>();
+    options.Add(new SelectListItem() { Text = noParent, Value = null });
+    options.AddRange(
+        eservicesById
+        .Where(kv => kv.Key != Model.DepartmentId)
+        .Select(kv => new SelectListItem() { Text = kv.Value, Value = kv.Key.ToString(), Selected = Model.ParentId == kv.Key }));
+
+    ViewDataDictionary viewData = new ViewDataDictionary();
+    viewData.Add(DepartmentController.DepartmentsName, options);
+}

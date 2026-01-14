@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://ereg.egov.bg/segment/R-10034" xmlns="http://ereg.egov.bg/segment/R-10034" 
+
+    xmlns:ptc="http://ereg.egov.bg/value/R-10002"
+    xmlns:cta="http://ereg.egov.bg/value/R-10032"
+    xmlns:prr="http://ereg.egov.bg/value/R-10008"
+    xmlns:ppp="http://ereg.egov.bg/segment/R-10024"
+    xmlns:pr="http://ereg.egov.bg/segment/R-10018"
+  
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+   
+    elementFormDefault="qualified">
+	
+	
+	<xsd:import namespace="http://ereg.egov.bg/value/R-10002" />
+    <xsd:import namespace="http://ereg.egov.bg/value/R-10032" />
+    <xsd:import namespace="http://ereg.egov.bg/value/R-10008" />
+    <xsd:import namespace="http://ereg.egov.bg/segment/R-10024" />
+    <xsd:import namespace="http://ereg.egov.bg/segment/R-10018" />
+
+    <xsd:element name="CreditTransferOrder" type="CreditTransferOrder" />
+  
+	<xsd:complexType name="CreditTransferOrder">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="bg">Нареждане за кредитен превод</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>		
+			<xsd:element name="PaymentCode" type="ptc:PaymentCode" minOccurs="0" />
+            <xsd:element name="CreditTransferAmount" type="cta:CreditTransferAmount" minOccurs="0" />          
+            <xsd:element name="PaymentReason" type="prr:PaymentReason" minOccurs="0" />          
+            <xsd:element name="PaymentReference" type="pr:PaymentReference" minOccurs="0" />           
+            <xsd:element name="PaymentPeriod" type="ppp:PaymentPeriod" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,96 @@
+﻿@model EPayments.Web.Models.Payments.ShareVM
+@{
+    ViewBag.Title = "Код за плащане";
+}
+@using EPayments.Web.Common;
+
+<div class="container main-content">
+
+    <h1>Код за плащане</h1>
+
+    <div class="col-lg-6 code-login-txt">
+        <p>Функционалността <strong>Код за плащане</strong> позволява да се влезе в системата без квалифициран електронен подпис и да се достъпи информация и/или да се заплати конкретното задължение, за което се отнася този код от произволно лице.</p>
+        <p>Функционалността е удобна, ако например искате да предоставите възможност на някой друг да влезе в Портала и да достъпи и заплати Ваше конкретно задължение, без да може да вижда останалите Ви задължения. Например можете да предоставите този код на Ваш роднина, клиент, колега или служител, който да извърши плащането по това задължение от Ваше име. Или например, ако искате на по-късен етап да може да влезете в Средата и да видите и/или заплатите Ваше конкретно задължение без квалифициран електронен подпис (КЕП) - например от мобилен телефон, поради съществуващите технически ограничения за използване на КЕП от тези устройства.</p>
+        <p>
+            Тук имате възможност да:
+            <ul class="ticks" style="text-align: justify;">
+                <li style="margin-bottom: 12px;">генерирате нов Код за плащане;</li>
+                <li style="margin-bottom: 12px;">видите и копирате хипервръзката, с която може да се достъпи системата директно и конкретно задължение, за което се отнася кодът;</li>
+                <li>изпратите на посочен от Вас произволен адрес на електронна поща хипервръзката за директен достъп до системата и конкретното задължение, както и самият Код за плащане по това задължение; </li>
+            </ul>
+        </p>
+        <p>Ако кодът бъде генериран наново, то старият вече няма да може да се използва, като междувременно, ако сте го дали на някой, ще е необходимо след генерирането да му изпратите новия Код за плащане повторно.</p>
+        <p>Кодът е десет символен, състоящ се от цифри и латински букви. </p>
+    </div>
+    <div class="col-lg-6 code-login" style="min-height: 410px;">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="margin-top: 30px;">
+                @Html.ValidationSummary()
+            </div>
+        }
+        else
+        {
+            bool showSendingConfirmedMsg = TempData[TempDataKeys.SharePaymentEmailSend] != null && (bool)TempData[TempDataKeys.SharePaymentEmailSend];
+
+            if (showSendingConfirmedMsg)
+            {
+                <div class="validation-summary-errors validation-success" style="margin-top: 30px;">
+                    <ul>
+                        <li style="padding-left: 40px;">Кодът за плащане беше изпратен успешно.</li>
+                    </ul>
+                </div>
+            }
+        }
+
+        @using (Html.BeginForm(MVC.Payment.ActionNames.Share, MVC.Payment.Name, null, FormMethod.Post, new { id = "accessByCode_form", @class = "inquiry" }))
+        {
+            @Html.HiddenFor(m => m.Gid)
+            @Html.HiddenFor(m => m.Link)
+
+            <div class="row">
+
+            <div class="form-group col-md-8">
+                <label>Код за плащане:</label>
+                @Html.TextBoxFor(m => m.AccessCode, new { @class = "form-control generated-code", @readonly = "readonly" })
+            </div>
+                
+            <div class="col-md-4">
+                <a data-href="@Url.Action(MVC.Payment.ActionNames.GenerateAccessCode, MVC.Payment.Name, new { id = Model.Gid })"
+                    data-toggle="confirmation"
+                    data-placement="auto"
+                    title="Сигурни ли сте, че искате да генерирате нов Код за плащане на това задължение?"
+                    data-btnoklabel="Да, искам да генерирам нов Код за плащане"
+                    data-btncancellabel="Не, не искам да генерирам нов Код за плащане"
+                    data-btnokclass="btn btn-sm red"
+                    class="btn blue-btn big-btn code-button"
+                    style="cursor: pointer;">Генерирай нов код</a>
+            </div>
+
+            </div>
+            
+            <br /><br />
+            
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    Хипервръзка за достъп с Код за плащане:<br />
+                    <a href="@Model.Link" target="_blank">@Model.Link</a>
+                    <br /><br />
+                </div>
+            </div>
+
+            <br />
+            
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label>Изпрати Код за плащане на имейл:</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Електронна поща" })
+                </div>
+                <div class="col-md-4">
+                    <input class="btn blue-btn big-btn code-button" type="submit" value="Изпрати" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

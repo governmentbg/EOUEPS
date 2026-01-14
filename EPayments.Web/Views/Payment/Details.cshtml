@@ -1,0 +1,20 @@
+﻿@model EPayments.Web.Models.Shared.OrderVM
+@{
+    ViewBag.Title = "Детайли на плащане";
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="Затвори"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">Детайли на плащане</h4>
+</div>
+<div class="modal-body">
+    @Html.Partial(MVC.Payment.Views.DetailsPrint, Model)
+</div>
+
+<div class="payment-actions clearfix">
+    @Html.ActionLink("Изтегли в PDF", MVC.Payment.ActionNames.DownloadPdfDetails, MVC.Payment.Name, new { id = Model.Gid }, new { @class = "download-pdf", target = "_blank" })
+    <div class="right" data-toggle="popover" data-placement="left" title="" data-content="Моля, не отпечатвайте на хартия този документ, освен ако наистина е необходимо!" data-trigger="hover">
+        @Html.ActionLink("Печат", MVC.Payment.ActionNames.PrintDetails, MVC.Payment.Name, new { id = Model.Gid }, new { @class = "print", target = "_blank" })
+        <img src="@Links.Content.images.icons.ico_tree_gif" />
+    </div>
+</div>

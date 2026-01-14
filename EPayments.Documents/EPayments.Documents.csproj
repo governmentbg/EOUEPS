@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B34861E1-3014-44FB-953A-F5357152A0E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EPayments.Documents</RootNamespace>
+    <AssemblyName>EPayments.Documents</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PublicTest|AnyCPU'">
+    <OutputPath>bin\PublicTest\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Classes\0007-000003_ElectronicServiceProviderTypeNomenclature.cs" />
+    <Compile Include="Classes\0008-000001_BatchNumber.cs" />
+    <Compile Include="Classes\0008-000007_DocumentTypeName.cs" />
+    <Compile Include="Classes\0008-000008_PersonFirstName.cs" />
+    <Compile Include="Classes\0008-000009_PersonMiddleName.cs" />
+    <Compile Include="Classes\0008-000010_PersonLastName.cs" />
+    <Compile Include="Classes\0008-000011_PersonPseudonim.cs" />
+    <Compile Include="Classes\0008-000012_EGN.cs" />
+    <Compile Include="Classes\0008-000013_LNCh.cs" />
+    <Compile Include="Classes\0008-000014_ForeignCitizenFirstNameCyrillic.cs" />
+    <Compile Include="Classes\0008-000015_ForeignCitizenLastNameCyrillic.cs" />
+    <Compile Include="Classes\0008-000016_ForeignCitizenOtherNameCyrillic.cs" />
+    <Compile Include="Classes\0008-000017_ForeignCitizenPseudonimCyrillic.cs" />
+    <Compile Include="Classes\0008-000018_ForeignCitizenFirstNameLatin.cs" />
+    <Compile Include="Classes\0008-000019_ForeignCitizenLastNameLatin.cs" />
+    <Compile Include="Classes\0008-000020_ForeignCitizenOtherNameLatin.cs" />
+    <Compile Include="Classes\0008-000021_ForeignCitizenPseudonimLatin.cs" />
+    <Compile Include="Classes\0008-000022_BirthDate.cs" />
+    <Compile Include="Classes\0008-000023_SettlementAbroadName.cs" />
+    <Compile Include="Classes\0008-000024_CountryISO3166TwoLetterCode.cs" />
+    <Compile Include="Classes\0008-000025_CountryNameCyrillic.cs" />
+    <Compile Include="Classes\0008-000026_ForeignCitizenIdentityDocumentNumber.cs" />
+    <Compile Include="Classes\0008-000027_ForeignCitizenIdentityDocumentType.cs" />
+    <Compile Include="Classes\0008-000028_EntityIdentifier.cs" />
+    <Compile Include="Classes\0008-000029_EntityName.cs" />
+    <Compile Include="Classes\0008-000030_ForeignEntityName.cs" />
+    <Compile Include="Classes\0008-000031_ForeignEntityRegister.cs" />
+    <Compile Include="Classes\0008-000032_ForeignEntityIdentifier.cs" />
+    <Compile Include="Classes\0008-000033_ForeignEntityOtherData.cs" />
+    <Compile Include="Classes\0008-000034_ElectronicServiceProviderType.cs" />
+    <Compile Include="Classes\0008-000044_TermName.cs" />
+    <Compile Include="Classes\0008-000077_SUNAUServiceURI.cs" />
+    <Compile Include="Classes\0008-000372_BIC.cs" />
+    <Compile Include="Classes\0008-000373_IBAN.cs" />
+    <Compile Include="Classes\0009-000002_ElectronicServiceProviderBasicData.cs" />
+    <Compile Include="Classes\0009-000003_DocumentTypeURI.cs" />
+    <Compile Include="Classes\0009-000005_PersonNames.cs" />
+    <Compile Include="Classes\0009-000006_PersonIdentifier.cs" />
+    <Compile Include="Classes\0009-000007_ForeignCitizenNames.cs" />
+    <Compile Include="Classes\0009-000008_PersonBasicData.cs" />
+    <Compile Include="Classes\0009-000009_ForeignCitizenPlaceOfBirth.cs" />
+    <Compile Include="Classes\0009-000010_ForeignCitizenIdentityDocument.cs" />
+    <Compile Include="Classes\0009-000011_ForeignCitizenBasicData.cs" />
+    <Compile Include="Classes\0009-000013_EntityBasicData.cs" />
+    <Compile Include="Classes\0009-000014_ForeignEntityBasicData.cs" />
+    <Compile Include="Classes\0009-000015_ElectronicServiceRecipient.cs" />
+    <Compile Include="Classes\0009-000022_RegisterObjectURI.cs" />
+    <Compile Include="Classes\0009-000023_TermURI.cs" />
+    <Compile Include="Classes\R-10002_PaymentCode.cs" />
+    <Compile Include="Classes\R-10048_ObligationType.cs" />
+    <Compile Include="Classes\R-10004_Currency.cs" />
+    <Compile Include="Classes\R-10006_PaymentAmount.cs" />
+    <Compile Include="Classes\R-10008_PaymentReason.cs" />
+    <Compile Include="Classes\R-10010_ElectronicServiceProviderBankAccount.cs" />
+    <Compile Include="Classes\R-10012_PaymentReferenceType.cs" />
+    <Compile Include="Classes\R-10014_PaymentReferenceNumber.cs" />
+    <Compile Include="Classes\R-10016_PaymentReferenceDate.cs" />
+    <Compile Include="Classes\R-10018_PaymentReference.cs" />
+    <Compile Include="Classes\R-10020_PaymentPeriodFromDate.cs" />
+    <Compile Include="Classes\R-10022_PaymentPeriodToDate.cs" />
+    <Compile Include="Classes\R-10024_PaymentPeriod.cs" />
+    <Compile Include="Classes\R-10026_PaymentRequestExpirationDate.cs" />
+    <Compile Include="Classes\R-10028_AdditionalInformationInPaymentRequest.cs" />
+    <Compile Include="Classes\R-10030_ElectronicAdministrativeServiceSupplierUriRA.cs" />
+    <Compile Include="Classes\R-10032_CreditTransferAmount.cs" />
+    <Compile Include="Classes\R-10034_CreditTransferOrder.cs" />
+    <Compile Include="Classes\R-10036_PaymentRequestError.cs" />
+    <Compile Include="Classes\R-10038_PaymentRequestValidationTime.cs" />
+    <Compile Include="Classes\R-10040_ElectronicAdministrativeServiceNotificationURL.cs" />
+    <Compile Include="Classes\R-10042_PaymentRequestID.cs" />
+    <Compile Include="Classes\R-10044_PaymentRequestRegistrationTime.cs" />
+    <Compile Include="Classes\R-10046_PaymentRequest.cs" />
+    <Compile Include="Classes\R-10049_PaymentRequestMultiple.cs" />
+    <Compile Include="Classes\R-10052_PaymentRequestUnacceptedReceipt.cs" />
+    <Compile Include="Classes\R-10055_PaymentRequestAcceptedReceipt.cs" />
+    <Compile Include="Classes\R-7066_ModificationTypeNomenclature.cs" />
+    <Compile Include="DocumentsModule.cs" />
+    <Compile Include="Serializer\DocumentSerializer.cs" />
+    <Compile Include="Serializer\DocumentSerializerSettings.cs" />
+    <Compile Include="Serializer\IDocumentSerializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassGeneration.log">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassGeneration.tt</DependentUpon>
+    </None>
+    <None Include="ClassGeneration.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ClassGeneration.log</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Schemas\0007-000003_ElectronicServiceProviderTypeNomenclature.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000001_BatchNumber.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000007_DocumentTypeName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000008_PersonFirstName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000009_PersonMiddleName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000010_PersonLastName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000011_PersonPseudonim.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000012_EGN.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000013_LNCh.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000014_ForeignCitizenFirstNameCyrillic.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000015_ForeignCitizenLastNameCyrillic.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000016_ForeignCitizenOtherNameCyrillic.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000017_ForeignCitizenPseudonimCyrillic.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000018_ForeignCitizenFirstNameLatin.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000019_ForeignCitizenLastNameLatin.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000020_ForeignCitizenOtherNameLatin.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000021_ForeignCitizenPseudonimLatin.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000022_BirthDate.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000023_SettlementAbroadName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000024_CountryISO3166TwoLetterCode.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000025_CountryNameCyrillic.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000026_ForeignCitizenIdentityDocumentNumber.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000027_ForeignCitizenIdentityDocumentType.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000028_EntityIdentifier.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000029_EntityName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000030_ForeignEntityName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000031_ForeignEntityRegister.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000032_ForeignEntityIdentifier.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000033_ForeignEntityOtherData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000034_ElectronicServiceProviderType.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000044_TermName.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000077_SUNAUServiceURI.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000372_BIC.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0008-000373_IBAN.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000002_ElectronicServiceProviderBasicData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000003_DocumentTypeURI.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000005_PersonNames.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000006_PersonIdentifier.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000007_ForeignCitizenNames.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000008_PersonBasicData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000009_ForeignCitizenPlaceOfBirth.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000010_ForeignCitizenIdentityDocument.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000011_ForeignCitizenBasicData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000013_EntityBasicData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000014_ForeignEntityBasicData.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000015_ElectronicServiceRecipient.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000022_RegisterObjectURI.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\0009-000023_TermURI.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10048_ObligationType.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10002_PaymentCode.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10004_Currency.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10006_PaymentAmount.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10008_PaymentReason.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10010_ElectronicServiceProviderBankAccount.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10012_PaymentReferenceType.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10014_PaymentReferenceNumber.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10016_PaymentReferenceDate.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10018_PaymentReference.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10020_PaymentPeriodFromDate.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10022_PaymentPeriodToDate.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10024_PaymentPeriod.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10026_PaymentRequestExpirationDate.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10028_AdditionalInformationInPaymentRequest.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10030_ElectronicAdministrativeServiceSupplierUriRA.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10032_CreditTransferAmount.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10034_CreditTransferOrder.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10036_PaymentRequestError.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10038_PaymentRequestValidationTime.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10040_ElectronicAdministrativeServiceNotificationURL.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10042_PaymentRequestID.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10044_PaymentRequestRegistrationTime.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10046_PaymentRequest.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10049_PaymentRequestMultiple.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10052_PaymentRequestUnacceptedReceipt.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-10055_PaymentRequestAcceptedReceipt.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Schemas\R-7066_ModificationTypeNomenclature.xsd">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

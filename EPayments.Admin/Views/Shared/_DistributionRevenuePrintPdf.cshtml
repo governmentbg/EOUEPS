@@ -1,0 +1,181 @@
+﻿@using EPayments.Admin.Models.Distributions
+@using EPayments.Common.Helpers
+
+@model PaymentVM
+
+@{
+    string paymentRequestIdentifierTitle = "Номер на плащането";
+    string paymentReasonTitle = "Причина на задължението";
+    string prPaymentAmountBgnName = "Сума, BGN";
+    string prPaymentAmountEurName = "Сума, EUR";
+    string eServiceClientNameTitle = "Заявител";
+    string targetEServiceClientNameTitle = "АИС разпоредител";
+    string applicantNameTitle = "Задължено лице";
+    string paymentRequestStatusTitle = "Статус на плащането";
+    string obligationStatusTitle = "Статус на задължението";
+
+    string yes = "Да";
+    string no = "Не";
+
+    string distributionName = string.Empty;
+
+    var distributionType = Model.DistribtutionTypes.FirstOrDefault(dt => dt.DistributionTypeId == Model.DistributionRevenue.DistributionType);
+
+    if (distributionType != null)
+    {
+        distributionName = distributionType.Name;
+    }
+}
+
+<table class="container main-content" style="font-size:8px;border: 1px solid #333;border-collapse: collapse;width: 100%;">
+    <tr>
+        <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Справката е генерирана на</th>
+        <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Справката е разпределена на</th>
+
+        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+        {
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, BGN</th>
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+        {
+            if (CurrencyHelper.IsEuroTimePeriod)
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, EUR</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, BGN</th>
+            }
+            else
+            {
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, BGN</th>
+                <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, EUR</th>
+            }
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+        {
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Обща сума на разпределението, EUR</th>
+        }
+
+
+        <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Дали е разпределено</th>
+        @*<th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Изпратена към Борика</th>*@
+        <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">Вид на разпределението</th>
+    </tr>
+    <tr>
+        <td class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.DistributionRevenue.CreatedAt)</td>
+        <td class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@(Model.DistributionRevenue.DistributedDate != null ? EPayments.Common.Helpers.Formatter.DateTimeToBgFormatWithoutSeconds(Model.DistributionRevenue.DistributedDate) : "не е разпределено")</td>
+
+        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+        {
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+        {
+            if (CurrencyHelper.IsEuroTimePeriod)
+            {
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+            }
+            else
+            {
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+                <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+            }
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+        {
+            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(Model.DistributionRevenue.TotalSum, Model.DistributionRevenue.DistributedDate.GetValueOrDefault()))</td>
+        }
+
+
+        <td class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@(Model.DistributionRevenue.IsDistributed == true ? yes : no)</td>
+        @*<td class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@(Model.DistributionRevenue.IsSended == true ? yes : no)</td>*@
+        <td class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@(distributionName)</td>
+    </tr>
+</table>
+
+<h3 style="text-align: center">Задължения в разпределението</h3>
+
+<table class="container main-content" style="font-size:8px;border: 1px solid #333;border-collapse: collapse;width: 100%;">
+    <thead>
+        <tr>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@paymentRequestIdentifierTitle</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@paymentReasonTitle</th>
+
+            @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+            {
+                <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountBgnName</th>
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+            {
+                if (CurrencyHelper.IsEuroTimePeriod)
+                {
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountEurName</th>
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountBgnName</th>
+                }
+                else
+                {
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountBgnName</th>
+                    <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountEurName</th>
+                }
+            }
+            else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+            {
+                <th class="results-cell" style="border: 1px solid #333; border-collapse: collapse; width: 50px;">@prPaymentAmountEurName</th>
+            }
+
+
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@eServiceClientNameTitle</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@targetEServiceClientNameTitle</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@applicantNameTitle</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@paymentRequestStatusTitle</th>
+            <th class="results-cell" style="border: 1px solid #333;border-collapse: collapse;">@obligationStatusTitle</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Payments.Count > 0)
+        {
+            foreach (var payment in Model.Payments)
+            {
+                <tr class="results-row">
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.PaymentRequestIdentifier)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.PaymentReason)</td>
+
+                    @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+                    {
+                        <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+                    {
+                        if (CurrencyHelper.IsEuroTimePeriod)
+                        {
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                        }
+                        else
+                        {
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetBgnValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                            <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                        }
+                    }
+                    else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+                    {
+                        <td style="border: 1px solid #333;border-collapse: collapse;">@(CurrencyHelper.GetEuroValueFormated(payment.PaymentAmount, payment.CreateDate))</td>
+                    }
+
+
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.EServiceClientName)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.TargetEServiceClientName)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.ApplicantName)</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(EPayments.Common.Helpers.EnumHelper.GetDescription(payment.PaymentRequestStatus))</td>
+                    <td style="border: 1px solid #333;border-collapse: collapse;">@(payment.ObligationStatus != null ? EPayments.Common.Helpers.EnumHelper.GetDescription(payment.ObligationStatus) : "Няма стойност")</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="results-table-empty-results text-align-center">
+                <td colspan="8">Няма намерени резултати.</td>
+            </tr>
+        }
+    </tbody>
+</table>

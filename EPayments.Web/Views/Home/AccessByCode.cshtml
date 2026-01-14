@@ -1,0 +1,56 @@
+﻿@model EPayments.Web.Models.Home.AccessByCodeVM
+@{
+    ViewBag.Title = "Вход с код за плащане";
+}
+@using EPayments.Web.Common;
+@using EPayments.Common.Captcha;
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#ValidationImage").val('');
+        });
+</script>
+
+<div class="container main-content">
+
+    <h1 style="text-align: center;">Вход с код за плащане</h1>
+
+    <p style="text-align: justify;">Чрез вход в системата с „Код за плащане“ може да се види информация и/или да се заплати такса за заявена конкретна административна услуга. Кодът за плащане трябва да Ви бъде предоставен от лицето, заявило административната услуга (това може да сте Вие или някой друг). Това лице може да е получило кодът от информационна система, чрез която е заявило услугата или чрез настоящия Портал за електронни плащания, след като е влязъл в системата с квалифициран електронен подпис и е генерирал Код за плащане за свое конкретно задължение.</p>
+    <p style="text-align: justify;">Поради това, че входът в системата е само с квалифициран електронен подпис (КЕП) или с Код за плащане, а при мобилните устройства съществува техническо ограничение за използване на КЕП, то входът с Код за плащане е единствената възможност за достъп до задължение при някои мобилни устройства. </p>
+    <p style="text-align: justify;">Ако искате да видите всички Ваши задължения, е необходимо да влезете в системата чрез бутона горе вдясно „Вход“, като използвате квалифициран електронен подпис (КЕП).</p>
+    <p style="text-align: justify;">Кодът е десет символен, състоящ се от цифри и латински букви.</p>
+    <p style="text-align: justify;">За повече информация вижте раздели „@Html.ActionLink("Генериране на Код за плащане и вход с него в Портала", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "access_code" }, new { style = "color: #0097e5; text-decoration: none" })“ и „@Html.ActionLink("Потребители и вход в системата", MVC.Home.ActionNames.Help, MVC.Home.Name, new { focus = "question_1_header" }, new { style = "color: #0097e5; text-decoration: none" })“, в страницата @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name, null, new { style = "color: #0097e5; text-decoration: none" }).</p>
+
+
+    <div class="code-login">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div style="margin-top: 30px;">
+                @Html.ValidationSummary()
+            </div>
+        }
+
+        @using (Html.BeginForm(MVC.Home.ActionNames.AccessByCode, MVC.Home.Name, null, FormMethod.Post, new { id = "accessByCode_form", @class = "inquiry" }))
+        {
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6">
+                    <label><nobr>Код за плащане</nobr></label>
+                    @Html.TextBoxFor(m => m.AccessCode, new { @class = "form-control", name = "code", @maxlength = "10" })
+                </div>
+                <div class="form-group col-lg-5 col-md-6" cptch>
+                    <label style="display: block;"><nobr>Код за сигурност</nobr></label>
+                    @Html.TextBox("ValidationImage", null, new { @class = "form-control", name = "number", @autocomplete = "off", @maxlength = "5", style = "text-transform: uppercase; display: inline-block; width: 48%;" })
+                    @Html.CaptchaImage(CaptchaDifficultyLevel.Medium, 42, 215, "validationImage", "display: inline-block; width: 48%; vertical-align: top;")
+                </div>
+                <div class="form-group col-lg-3 col-md-6">
+                    <label style="display: block;">&nbsp;</label>
+                    <input class="btn blue-btn big-btn" type="submit" value="Вход с Код за плащане" style="width: 100%;" />
+                </div>
+            </div>
+
+            
+        }
+    </div>
+
+</div>

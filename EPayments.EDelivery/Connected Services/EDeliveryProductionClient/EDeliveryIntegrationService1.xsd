@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" />
+  <xs:import schemaLocation="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="https://edelivery.egov.bg/Services/EDeliveryIntegrationService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts.ESubject" />
+  <xs:complexType name="ArrayOfDcDocumentAdditional">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcDocumentAdditional" nillable="true" type="tns:DcDocumentAdditional" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcDocumentAdditional" nillable="true" type="tns:ArrayOfDcDocumentAdditional" />
+  <xs:complexType name="DcDocumentAdditional">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="ContentEncodingCodePage" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ContentType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DocumentDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DocumentName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcDocumentAdditional" nillable="true" type="tns:DcDocumentAdditional" />
+  <xs:complexType name="DcDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="ContentEncodingCodePage" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ContentType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DocumentName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DocumentRegistrationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="SignaturesInfo" nillable="true" type="tns:ArrayOfDcSignatureValidationResult" />
+      <xs:element minOccurs="0" name="TimeStamp" nillable="true" type="tns:DcTimeStamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcDocument" nillable="true" type="tns:DcDocument" />
+  <xs:complexType name="ArrayOfDcSignatureValidationResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcSignatureValidationResult" nillable="true" type="tns:DcSignatureValidationResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcSignatureValidationResult" nillable="true" type="tns:ArrayOfDcSignatureValidationResult" />
+  <xs:complexType name="DcSignatureValidationResult">
+    <xs:sequence>
+      <xs:element name="_x003C_CertificateAlgorithm_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_ChainCertificates_x003E_k__BackingField" nillable="true" type="tns:ArrayOfDcChainCertificate" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_ChainErrors_x003E_k__BackingField" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element name="_x003C_ContainsTimeStamp_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_Format_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_IsExpired_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_IsIntegrityValid_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_IsSignatureValid_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_IsTrustedSigner_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_Issuer_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" name="_x003C_RevocationStatus_x003E_k__BackingField" type="q2:eRevokationResult" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" name="_x003C_Status_x003E_k__BackingField" type="q3:eVerificationResult" />
+      <xs:element name="_x003C_SubjectEGN_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Subject_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_TimeStampAuthority_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_TimeStampDate_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+      <xs:element name="_x003C_ValidFrom_x003E_k__BackingField" type="xs:dateTime" />
+      <xs:element name="_x003C_ValidTo_x003E_k__BackingField" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcSignatureValidationResult" nillable="true" type="tns:DcSignatureValidationResult" />
+  <xs:complexType name="ArrayOfDcChainCertificate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcChainCertificate" nillable="true" type="tns:DcChainCertificate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcChainCertificate" nillable="true" type="tns:ArrayOfDcChainCertificate" />
+  <xs:complexType name="DcChainCertificate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsRoot" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcChainCertificate" nillable="true" type="tns:DcChainCertificate" />
+  <xs:complexType name="DcTimeStamp">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TimeStampData" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcTimeStamp" nillable="true" type="tns:DcTimeStamp" />
+  <xs:complexType name="ArrayOfDcDocument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcDocument" nillable="true" type="tns:DcDocument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcDocument" nillable="true" type="tns:ArrayOfDcDocument" />
+  <xs:complexType name="DcMessageDetails">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DcMessage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AttachedDocuments" nillable="true" type="tns:ArrayOfDcDocument" />
+          <xs:element minOccurs="0" name="MessageText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TimeStampContent" nillable="true" type="tns:DcTimeStampMessageContent" />
+          <xs:element minOccurs="0" name="TimeStampNRD" nillable="true" type="tns:DcTimeStamp" />
+          <xs:element minOccurs="0" name="TimeStampNRO" nillable="true" type="tns:DcTimeStamp" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DcMessageDetails" nillable="true" type="tns:DcMessageDetails" />
+  <xs:complexType name="DcMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateReceived" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateSent" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsDraft" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ReceiverLogin" nillable="true" type="tns:DcLogin" />
+      <xs:element minOccurs="0" name="ReceiverProfile" nillable="true" type="tns:DcProfile" />
+      <xs:element minOccurs="0" name="SenderLogin" nillable="true" type="tns:DcLogin" />
+      <xs:element minOccurs="0" name="SenderProfile" nillable="true" type="tns:DcProfile" />
+      <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcMessage" nillable="true" type="tns:DcMessage" />
+  <xs:complexType name="DcLogin">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CertificateThumbprint" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ElectronicSubjectId" type="ser:guid" />
+      <xs:element minOccurs="0" name="ElectronicSubjectName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Profiles" nillable="true" type="tns:ArrayOfDcProfile" />
+      <xs:element minOccurs="0" name="PushNotificationsUrl" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcLogin" nillable="true" type="tns:DcLogin" />
+  <xs:complexType name="ArrayOfDcProfile">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcProfile" nillable="true" type="tns:DcProfile" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcProfile" nillable="true" type="tns:ArrayOfDcProfile" />
+  <xs:complexType name="DcProfile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ElectronicSubjectId" type="ser:guid" />
+      <xs:element minOccurs="0" name="ElectronicSubjectName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IsDefault" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" minOccurs="0" name="ProfileType" type="q4:eProfileType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcProfile" nillable="true" type="tns:DcProfile" />
+  <xs:complexType name="DcTimeStampMessageContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="ContentType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcTimeStampMessageContent" nillable="true" type="tns:DcTimeStampMessageContent" />
+  <xs:complexType name="ArrayOfDcMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcMessage" nillable="true" type="tns:DcMessage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcMessage" nillable="true" type="tns:ArrayOfDcMessage" />
+  <xs:complexType name="DcPartialListOfDcMessageHR29gRRX">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="DcPartialListOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="DcMessage" Namespace="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AllItemsCount" type="xs:int" />
+      <xs:element minOccurs="0" name="Items" nillable="true" type="tns:ArrayOfDcMessage" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" minOccurs="0" name="SortColumn" type="q5:eSortColumn" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" minOccurs="0" name="SortOrder" type="q6:eSortOrder" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcPartialListOfDcMessageHR29gRRX" nillable="true" type="tns:DcPartialListOfDcMessageHR29gRRX" />
+  <xs:complexType name="DcPersonRegistrationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccessibleProfiles" nillable="true" type="tns:ArrayOfDcSubjectShortInfo" />
+      <xs:element minOccurs="0" name="HasRegistration" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PersonIdentificator" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcPersonRegistrationInfo" nillable="true" type="tns:DcPersonRegistrationInfo" />
+  <xs:complexType name="ArrayOfDcSubjectShortInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DcSubjectShortInfo" nillable="true" type="tns:DcSubjectShortInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDcSubjectShortInfo" nillable="true" type="tns:ArrayOfDcSubjectShortInfo" />
+  <xs:complexType name="DcSubjectShortInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EGN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EIK" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" minOccurs="0" name="ProfileType" type="q7:eProfileType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcSubjectShortInfo" nillable="true" type="tns:DcSubjectShortInfo" />
+  <xs:complexType name="DcLegalPersonRegistrationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EIK" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HasRegistration" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProfilesWithAccess" nillable="true" type="tns:ArrayOfDcSubjectShortInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcLegalPersonRegistrationInfo" nillable="true" type="tns:DcLegalPersonRegistrationInfo" />
+  <xs:complexType name="DcSubjectRegistrationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HasRegistration" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Identificator" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubjectInfo" nillable="true" type="tns:DcRegisteredSubjectInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcSubjectRegistrationInfo" nillable="true" type="tns:DcSubjectRegistrationInfo" />
+  <xs:complexType name="DcRegisteredSubjectInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/EDelivery.Common.DataContracts.ESubject" base="q8:DcSubjectPublicInfo">
+        <xs:sequence>
+          <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/EDelivery.Common.Enums" minOccurs="0" name="InstitutionType" nillable="true" type="q9:eInstitutionType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DcRegisteredSubjectInfo" nillable="true" type="tns:DcRegisteredSubjectInfo" />
+  <xs:complexType name="DcStatisticsGeneral">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="NumberOfLogins" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfRegisteredAdministrations" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfRegisteredLegalPerson" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfRegisteredSocialOrganisations" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfSentMessage" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfSentMessage10days" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfSentMessage30days" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfSentMessageToday" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DcStatisticsGeneral" nillable="true" type="tns:DcStatisticsGeneral" />
+</xs:schema>

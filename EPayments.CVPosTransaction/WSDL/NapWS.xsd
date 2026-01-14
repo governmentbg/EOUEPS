@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.11-b150616.1732 svn-revision#a247ba216861f2c0baac9a3657c5690bce0c744d. --><xs:schema xmlns:tns="http://ws.sucardws.bobs.bg/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.sucardws.bobs.bg/">
+
+<xs:element name="SucardFault" nillable="true" type="tns:sucardError"/>
+
+<xs:element name="distributionRevenueAgencies" type="tns:distributionRevenueAgencies"/>
+
+<xs:element name="distributionRevenueAgenciesResponse" type="tns:distributionRevenueAgenciesResponse"/>
+
+<xs:element name="managment_POS" type="tns:managment_POS"/>
+
+<xs:element name="managment_POSResponse" type="tns:managment_POSResponse"/>
+
+<xs:element name="transactionsDifferentDays" type="tns:transactionsDifferentDays"/>
+
+<xs:element name="transactionsDifferentDaysResponse" type="tns:transactionsDifferentDaysResponse"/>
+
+<xs:element name="transactionsForDate" type="tns:transactionsForDate"/>
+
+<xs:element name="transactionsForDateAPI" type="tns:transactionsForDateAPI"/>
+
+<xs:element name="transactionsForDateAPIResponse" type="tns:transactionsForDateAPIResponse"/>
+
+<xs:element name="transactionsForDateCurrency" type="tns:transactionsForDateCurrency"/>
+
+<xs:element name="transactionsForDateCurrencyResponse" type="tns:transactionsForDateCurrencyResponse"/>
+
+<xs:element name="transactionsForDateResponse" type="tns:transactionsForDateResponse"/>
+
+<xs:complexType name="transactionsForDate">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="event" type="xs:string" minOccurs="0"/>
+<xs:element name="dateEvent" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsForDateResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:recEventTransaction" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recEventTransaction">
+<xs:sequence>
+<xs:element name="areaOfIssue" type="xs:string" minOccurs="0"/>
+<xs:element name="authorizationCode" type="xs:string" minOccurs="0"/>
+<xs:element name="cardBrand" type="xs:string" minOccurs="0"/>
+<xs:element name="distributionDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="orderId" type="xs:string" minOccurs="0"/>
+<xs:element name="productCategory" type="xs:string" minOccurs="0"/>
+<xs:element name="rrn" type="xs:string" minOccurs="0"/>
+<xs:element name="settlementDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="sum" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tax" type="xs:decimal" minOccurs="0"/>
+<xs:element name="taxBorica" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sucardError">
+<xs:sequence>
+<xs:element name="errCode" type="xs:int" minOccurs="0"/>
+<xs:element name="errMessage" type="xs:string" minOccurs="0"/>
+<xs:element name="errStatus" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsForDateAPI">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="event" type="xs:string" minOccurs="0"/>
+<xs:element name="dateEvent" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+<xs:element name="requestId" type="xs:string" minOccurs="0"/>
+<xs:element name="numberTrnz" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsForDateAPIResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:recEventTransactionAPIResult" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recEventTransactionAPIResult">
+<xs:sequence>
+<xs:element name="listRecEventTransactionAPI" type="tns:recEventTransactionAPI" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="totalTrnz" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recEventTransactionAPI">
+<xs:sequence>
+<xs:element name="areaOfIssue" type="xs:string" minOccurs="0"/>
+<xs:element name="authorizationCode" type="xs:string" minOccurs="0"/>
+<xs:element name="cardBrand" type="xs:string" minOccurs="0"/>
+<xs:element name="distributionDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="orderId" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentType" type="xs:string" minOccurs="0"/>
+<xs:element name="productCategory" type="xs:string" minOccurs="0"/>
+<xs:element name="rrn" type="xs:string" minOccurs="0"/>
+<xs:element name="settlementDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="sum" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tax" type="xs:decimal" minOccurs="0"/>
+<xs:element name="taxBorica" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="managment_POS">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="recDevices" type="tns:recDevices" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recDevices">
+<xs:sequence>
+<xs:element name="city" type="xs:string" minOccurs="0"/>
+<xs:element name="countryCode" type="xs:string" minOccurs="0"/>
+<xs:element name="currency" type="xs:string" minOccurs="0"/>
+<xs:element name="deviceIdn" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentType" type="xs:string" minOccurs="0"/>
+<xs:element name="postCode" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+<xs:element name="street" type="xs:string" minOccurs="0"/>
+<xs:element name="streetNo" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="managment_POSResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:recStatusUpdates" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recStatusUpdates">
+<xs:sequence>
+<xs:element name="deviceIdn" type="xs:string" minOccurs="0"/>
+<xs:element name="errMsg" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsDifferentDays">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="unequality" type="xs:string" minOccurs="0"/>
+<xs:element name="dateEvent" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsDifferentDaysResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:recEventTransaction" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsForDateCurrency">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="event" type="xs:string" minOccurs="0"/>
+<xs:element name="dateEvent" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionsForDateCurrencyResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:recEventTransactionEUR" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recEventTransactionEUR">
+<xs:sequence>
+<xs:element name="areaOfIssue" type="xs:string" minOccurs="0"/>
+<xs:element name="authorizationCode" type="xs:string" minOccurs="0"/>
+<xs:element name="cardBrand" type="xs:string" minOccurs="0"/>
+<xs:element name="distributionDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="orderId" type="xs:string" minOccurs="0"/>
+<xs:element name="productCategory" type="xs:string" minOccurs="0"/>
+<xs:element name="rrn" type="xs:string" minOccurs="0"/>
+<xs:element name="settlementDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="sum" type="xs:decimal" minOccurs="0"/>
+<xs:element name="sumEUR" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tax" type="xs:decimal" minOccurs="0"/>
+<xs:element name="taxBorica" type="xs:decimal" minOccurs="0"/>
+<xs:element name="taxEUR" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="distributionRevenueAgencies">
+<xs:sequence>
+<xs:element name="agency" type="xs:string" minOccurs="0"/>
+<xs:element name="distributedDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="num" type="xs:int" minOccurs="0"/>
+<xs:element name="transactions" type="tns:recTransaction" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="totalSum" type="xs:decimal" minOccurs="0"/>
+<xs:element name="distributedAmounts" type="tns:recDistributedAmount" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recTransaction">
+<xs:sequence>
+<xs:element name="authorizationCode" type="xs:string" minOccurs="0"/>
+<xs:element name="orderId" type="xs:string" minOccurs="0"/>
+<xs:element name="rrn" type="xs:string" minOccurs="0"/>
+<xs:element name="sum" type="xs:decimal" minOccurs="0"/>
+<xs:element name="tid" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="recDistributedAmount">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0"/>
+<xs:element name="sum" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="distributionRevenueAgenciesResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>

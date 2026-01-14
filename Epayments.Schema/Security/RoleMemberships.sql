@@ -1,0 +1,13 @@
+﻿ALTER ROLE [db_owner] ADD MEMBER [EGP02-TSS\AdmDigitall]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [EGP02-TSS\AVukov-adm]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [EGP02-TSS\IHristova-adm]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [EGP02-TSS\RDDimitrov-adm]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [EPaymentsSysUsr]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [NT AUTHORITY\LOCAL SERVICE]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ReadOnlyUser]

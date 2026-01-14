@@ -1,0 +1,885 @@
+﻿@using EPayments.Model.Enums
+@using EPayments.Common.Helpers
+
+@model EPayments.Web.Models.Shared.OrderVM
+
+@if (!Model.ShowDetailsForm)
+{
+    <table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Verdana; font-size: 14px; border-collapse: collapse; margin-left: 0px; margin-right: auto;">
+        <tbody>
+            <tr>
+                <td width="70">До</td>
+                <td width="260" style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+                <td width="40">&nbsp;</td>
+                <td width="260" style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="font-size: 8px; text-align: center;">банка</td>
+                <td width="40">&nbsp;</td>
+                <td style="font-size: 8px; text-align: center;">уникален регистрационен номер</td>
+            </tr>
+            <tr>
+                <td>Клон</td>
+                <td style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+                <td width="40">&nbsp;</td>
+                <td style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="font-size: 8px; text-align: center;"></td>
+                <td width="40">&nbsp;</td>
+                <td style="font-size: 8px; text-align: center;">дата на представяне</td>
+            </tr>
+            <tr>
+                <td>Адрес</td>
+                <td style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+                <td width="40">&nbsp;</td>
+                <td style="font-weight: bold; text-align: center; border-bottom: 1px solid #000000;"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="font-size: 8px; text-align: center;"></td>
+                <td width="40">&nbsp;</td>
+                <td style="font-size: 8px; text-align: center;">подпис на наредителя/вносителя</td>
+            </tr>
+            <tr>
+                <td colspan="4">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <table cellpadding="0" cellspacing="0" border="0" width="600" style="font-family:Verdana; font-size: 14px; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+        <tbody>
+            <tr>
+                <td width="80" colspan="3">Номер на заявка: @Model.PaymentRequestIdentifier</td>
+            </tr>
+            <tr>
+                <td width="80" colspan="3">Статус на заявка: @Model.CanceledRequestStatusDesc</td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<!--<table cellpadding="0" cellspacing="0" border="1" width="600" style="font-family:Verdana; border: 1px solid #000000; border-collapse: collapse;">
+    <tbody>
+        <tr>
+            <td colspan="8">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">
+                                &nbsp;Платете на - <span color="#80a880">име на получателя</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="letter-spacing:4px; font-size: 13px;">@Model.ServiceProviderName</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" bgcolor="#d6f8d6" height="30">
+                <table cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;IBAN на получателя</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="font-size:13px; letter-spacing: 5px;">@Model.IBAN</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="6" align="left" height="30">-->
+<!-- Problem N1: -->
+<!--<table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;Вид плащане</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="font-size:13px; letter-spacing: 5px;">@Model.ObligationType | @Model.ObligationTypeCode</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" bgcolor="#d6f8d6" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp; BIC на банката на получателя</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="font-size:13px; letter-spacing: 5px;">@Model.BIC</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="6" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">
+                                &nbsp;При банка - <font color="#80a880">име на банката на получателя</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="font-size:13px; letter-spacing: 5px;">@Model.BankName</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td width="225" style="font-size:13px; width:225px;">
+                @if (Model.PaymentRequestStatusId == PaymentRequestStatus.Paid ||
+                Model.PaymentRequestStatusId == PaymentRequestStatus.Authorized ||
+                Model.PaymentRequestStatusId == PaymentRequestStatus.Ordered)
+                {
+                    <b>@Model.PaymentRequestStatusId.GetDescription()</b>
+                }
+                else if (Model.PaymentRequestStatusId == PaymentRequestStatus.Canceled ||
+                    Model.PaymentRequestStatusId == PaymentRequestStatus.Expired ||
+                    Model.PaymentRequestStatusId == PaymentRequestStatus.Suspended)
+                {
+                    <b>@Model.PaymentRequestStatusId.GetDescription()</b>
+                }
+                else
+                {
+                    <b>
+                        ПЛАТЕЖНО НАРЕЖДАНЕ<br>
+                        (ВНОСНА БЕЛЕЖКА)<br>
+                        ЗА ПЛАЩАНЕ КЪМ БЮДЖЕТА
+                    </b>
+                }
+            </td>
+            <td width="65" style="width:65px;" align="left" bgcolor="#d6f8d6">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;Вид валута</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span style="font-size:13px; letter-spacing: 5px; display: inline-block; margin-top: 13px;">@CurrencyHelper.GetCurrencyCode()</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="6" bgcolor="#d6f8d6">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;Сума</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                                <span style="font-size:13px; letter-spacing: 5px; display: inline-block; margin-top: 13px;">
+                                    @if (CurrencyHelper.IsEuroTimePeriod)
+                                    {
+                                        @CurrencyHelper.GetEuroValueFormated(Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(), Model.CreateDate)
+                                    }
+                                    else
+                                    {
+                                        @CurrencyHelper.GetBgnValueFormated(Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(), Model.CreateDate)
+                                    }
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">
+                                &nbsp;Основание за плащане/внасяне - <span color="#80a880">вид данък, такса, осигуровка, мито, лихва...</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span>@Model.PaymentReason</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;Още пояснения</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                @if (Model.ObligationTypeAlgorithmId == 1)
+                                {
+                                    if (Model.AdditionalInfoModel != null)
+                                    {
+                                        string clarifications = "";
+                                        if (!String.IsNullOrEmpty(Model.AdditionalInfoModel.PropertyAddress))
+                                        {
+                                            clarifications += String.Format("propertyAddress: {0}", Model.AdditionalInfoModel.PropertyAddress);
+                                        }
+                                        if (!String.IsNullOrEmpty(Model.AdditionalInfoModel.RegisterNo))
+                                        {
+                                            if (!String.IsNullOrEmpty(clarifications))
+                                            {
+                                                clarifications += ", ";
+                                            }
+                                            clarifications += String.Format("registerNo: {0}", Model.AdditionalInfoModel.RegisterNo);
+                                        }
+
+                                        if (!String.IsNullOrEmpty(clarifications))
+                                        {
+                                            @System.Web.HttpUtility.HtmlEncode(clarifications)
+                                        }
+                                    }
+                                }
+                                else if (Model.ObligationTypeAlgorithmId == 0)
+                                {
+                                    @Model.AdditionalInformation;
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px; width: 52px; border-right: 1px solid #000000;">
+                                &nbsp;Вид док.<sup>*</sup>
+                            </td>
+                            <td style="font-size:9px;">
+                                &nbsp;&nbsp;&nbsp;Номер на документа, по който се плаща
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; text-align: center;  border-right: 1px solid #000000;">
+                                <span>@Model.DocumentType</span>
+                            </td>
+                            <td style="font-size:13px; letter-spacing: 5px;">&nbsp;@Model.DocumentNumber</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td height="30" style="width: 101px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Дата на документа</td></tr>
+                        <tr><td>&nbsp;<span>@Model.DocumentDate</span></td></tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;Период, за който се отнася плащането</td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-size:9px; width: 310px;">
+                                                &nbsp;От дата:
+                                                &nbsp; <span style="font-size:13px; letter-spacing: 5px;">@Model.PaymentPeriodStartDate</span>
+                                            </td>
+                                            <td style="font-size:9px;">
+                                                &nbsp;До дата:
+                                                &nbsp; <span style="font-size:13px; letter-spacing: 5px;">@Model.PaymentPeriodEndDate</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">
+                                &nbsp;Задължено лице - <font color="#80a880">наименование на юридическото лице или трите имена на физическото лице</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span>@Model.ApplicantName</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;">&nbsp;ЕИК/Код по БУЛСТАТ на задълженото лице</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span>@Model.ApplicantBulstat</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="4" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;ЕГН/ЛНЧ на задълженото лице</td></tr>
+                        <tr>
+                            <td>
+                                &nbsp;<span>@Model.ApplicantEgnLnch</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" height="30">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:9px;" align="left">
+                                &nbsp;Наредител - <font color="#80a880">наименование на юридическото лице или трите имена на физическото лице</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align="left" bgcolor="#d6f8d6">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;" align="left">&nbsp;IBAN на наредителя</td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="4" align="left" bgcolor="#d6f8d6">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;" align="left">&nbsp;BIC нa банката на наредителя</td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;<span></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Платежна система</td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td title="Такси">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Такси<font color="#0097e5">**</font></td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </td>
+            <td colspan="6" title="Вид плащане">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Вид плащане<font color="#0097e5">***</font></td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Банков служител</td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="6">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr><td style="font-size:9px;">&nbsp;Касиер</td></tr>
+                        <tr>
+                            <td style="font-size:13px; letter-spacing: 5px;">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+    </tbody>
+</table>-->
+
+
+<table style="width:600px; font-family:Verdana; font-size:14px; border-collapse:collapse; margin:0 auto;">
+    <tbody>
+        <tr>
+            <td style="width:280px; padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Номер на заявка
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.PaymentRequestIdentifier
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Счетоводна дата
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.PaymentRequestStatusChangeTime
+            </td>
+        </tr>
+
+        @if (Model.PaymentRequestStatusId == PaymentRequestStatus.Paid ||
+             Model.PaymentRequestStatusId == PaymentRequestStatus.Authorized ||
+             Model.PaymentRequestStatusId == PaymentRequestStatus.Ordered)
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Статус
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @Model.PaymentRequestStatusId.GetDescription()
+                </td>
+            </tr>
+        }
+        else if (Model.PaymentRequestStatusId == PaymentRequestStatus.Canceled ||
+                 Model.PaymentRequestStatusId == PaymentRequestStatus.Expired ||
+                 Model.PaymentRequestStatusId == PaymentRequestStatus.Suspended)
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Статус
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @Model.PaymentRequestStatusId.GetDescription()
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Начин на плащане
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @Model.PaymentMethod
+                </td>
+            </tr>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.VposAuthorizationId))
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Референция
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @Model.VposAuthorizationId
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Платете на
+                <div style="font-size:9px; color:#80a880;">
+                    (име на получателя)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.ServiceProviderName
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                IBAN на получателя
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.IBAN
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                BIC на банката на получателя
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.BIC
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                При банка
+                <div style="font-size:9px; color:#80a880;">
+                    (име на банката на получателя)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.BankName
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Вид плащане
+                <div style="font-size:9px; color:#80a880;">
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.ObligationType | @Model.ObligationTypeCode
+            </td>
+        </tr>
+
+        @if (CurrencyHelper.CurrencyMode == CurrencyMode.BGN)
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Сума BGN
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @CurrencyHelper.GetBgnValueFormated(
+                        Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                        Model.CreateDate)
+                </td>
+            </tr>
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+        {
+            if (CurrencyHelper.IsEuroTimePeriod)
+            {
+                <tr>
+                    <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                        Сума €
+                    </td>
+                    <td style="padding:8px; border:1px solid #ccc;">
+                        @CurrencyHelper.GetEuroValueFormated(
+                            Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                            Model.CreateDate)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                        Сума BGN
+                    </td>
+                    <td style="padding:8px; border:1px solid #ccc;">
+                        @CurrencyHelper.GetBgnValueFormated(
+                            Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                            Model.CreateDate)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                        Сума BGN
+                    </td>
+                    <td style="padding:8px; border:1px solid #ccc;">
+                        @CurrencyHelper.GetBgnValueFormated(
+                            Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                            Model.CreateDate)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                        Сума €
+                    </td>
+                    <td style="padding:8px; border:1px solid #ccc;">
+                        @CurrencyHelper.GetEuroValueFormated(
+                            Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                            Model.CreateDate)
+                    </td>
+                </tr>
+            }
+        }
+        else if (CurrencyHelper.CurrencyMode == CurrencyMode.EUR)
+        {
+            <tr>
+                <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                    Сума €
+                </td>
+                <td style="padding:8px; border:1px solid #ccc;">
+                    @CurrencyHelper.GetEuroValueFormated(
+                        Parser.TwoDecimalPlacesFormatStringToDecimal(Model.PaymentAmount).GetValueOrDefault(),
+                        Model.CreateDate)
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Основание за плащане/внасяне
+                <div style="font-size:9px; color:#80a880;">
+                    (вид данък, такса, осигуровка, мито, лихва...)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.PaymentReason
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Още пояснения
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @if (Model.ObligationTypeAlgorithmId == 1)
+                {
+                    if (Model.AdditionalInfoModel != null)
+                    {
+                        string clarifications = "";
+                        if (!String.IsNullOrEmpty(Model.AdditionalInfoModel.PropertyAddress))
+                        {
+                            clarifications += string.Format("propertyAddress: {0}", Model.AdditionalInfoModel.PropertyAddress);
+                        }
+                        if (!String.IsNullOrEmpty(Model.AdditionalInfoModel.RegisterNo))
+                        {
+                            if (!String.IsNullOrEmpty(clarifications))
+                            {
+                                clarifications += ", ";
+                            }
+                            clarifications += string.Format("registerNo: {0}", Model.AdditionalInfoModel.RegisterNo);
+                        }
+                        if (!String.IsNullOrEmpty(clarifications))
+                        {
+                            @System.Web.HttpUtility.HtmlEncode(clarifications)
+                        }
+                    }
+                }
+                else if (Model.ObligationTypeAlgorithmId == 0)
+                {
+                    @Model.AdditionalInformation
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Вид документ / Номер на документа
+                <div style="font-size:9px; color:#80a880;">
+                    (напр. фактура, акт, пр.)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.DocumentType | @Model.DocumentNumber
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Дата на документа
+                <div style="font-size:9px; color:#80a880;">
+                    (формат: дд.мм.гггг)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.DocumentDate
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Период, за който се отнася плащането
+                <div style="font-size:9px; color:#80a880;">
+                    (от-до дати)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                От: @Model.PaymentPeriodStartDate<br />
+                До: @Model.PaymentPeriodEndDate
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Задължено лице
+                <div style="font-size:9px; color:#80a880;">
+                    (наименование на юридическо лице или трите имена на физическо лице)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.ApplicantName
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                ЕИК/Код по БУЛСТАТ
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.ApplicantBulstat
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                ЕГН/ЛНЧ
+                <div style="font-size:9px; color:#80a880;">
+                    (на задълженото лице)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+                @Model.ApplicantEgnLnch
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Наредител
+                <div style="font-size:9px; color:#80a880;">
+                    (наименование на юридическо лице или трите имена на физическо лице)
+                </div>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                IBAN на наредителя
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                BIC на банката на наредителя
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Платежна система
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Такси<font color="#0097e5">**</font>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px; font-weight:bold; border:1px solid #ccc;">
+                Вид плащане<font color="#0097e5">***</font>
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding: 8px; font-weight: bold; border: 1px solid #ccc;">
+                Банков служител
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;"></td>
+        </tr>
+
+        <tr>
+            <td style="padding: 8px; font-weight: bold; border: 1px solid #ccc;">
+                Касиер
+            </td>
+            <td style="padding:8px; border:1px solid #ccc;"></td>
+        </tr>
+    </tbody>
+</table>
+@if (CurrencyHelper.CurrencyMode == CurrencyMode.Dual)
+{
+    <div style="text-align:center; margin-top:1%;">
+        <p>Официален валутен курс евро / лева - 1 EUR = 1.95583 BGN</p>
+    </div>
+}

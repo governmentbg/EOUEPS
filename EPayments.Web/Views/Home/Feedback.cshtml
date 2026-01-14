@@ -1,0 +1,90 @@
+﻿@model EPayments.Web.Models.Home.FeedbackVM
+@{
+    ViewBag.Title = "Форма за обратна връзка";
+}
+@using EPayments.Web.Common;
+@using EPayments.Common.Captcha;
+
+@if (TempData[TempDataKeys.FeedbackSend] == null || (bool)TempData[TempDataKeys.FeedbackSend] == false)
+{
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ValidationImage").val('');
+            });
+    </script>
+}
+
+<div class="container main-content">
+    <div class="col-lg-8 col-md-10 col-xs-12 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 text-align-center">
+        <h1 style="margin-top: 10px; margin-bottom: 0px; text-align: left;">Форма за обратна връзка</h1>
+    </div>
+    <div class="clear"> </div>
+    <div class="col-lg-8 col-md-10 col-lg-offset-2 col-md-offset-1 col-xs-offset-0 inquiry-form">
+        <hr />
+
+
+        @{bool showFeedbackMsg = TempData[TempDataKeys.FeedbackSend] != null && (bool)TempData[TempDataKeys.FeedbackSend];}
+        
+        @if (showFeedbackMsg)
+        {
+            <div class="validation-summary-errors validation-success">
+                <ul>
+                    <li style="padding-left: 40px;">Вашето съобщение е прието и ще бъде обработено. В случай че сте посочили валиден адрес на електронна поща или телефон, при необходимост и нужда, ще се свържем с Вас.</li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            @Html.ValidationSummary()
+        }
+
+        @using (Html.BeginForm(MVC.Home.ActionNames.Feedback, MVC.Home.Name, null, FormMethod.Post, new { id = "feedback_form", @class = "inquiry" }))
+        {
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    <label><span style="color: red;">*&nbsp;</span>Съобщение за</label>
+                    <select class="form-control" name="messageType">
+                        <option value="">- Моля, изберете -</option>
+                        <option value="1" @(Model.MessageType == "1" ? "selected" : "")>Въпрос</option>
+                        <option value="2" @(Model.MessageType == "2" ? "selected" : "")>Предложение</option>
+                        <option value="3" @(Model.MessageType == "3" ? "selected" : "")>Технически проблем</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label>Име и фамилия</label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Електронна поща</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Телефон</label>
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    <label><span style="color: red;">*&nbsp;</span>Описание (до 4000 символа)</label>
+                    <span style="top: 0px; right: 15px; display: block; position: absolute;"><span id="feedback-count" style="color:red;">@(Model.Message != null ? Model.Message.Length : 0)</span></span>
+                    @Html.TextAreaFor(m => m.Message, new { @class = "form-control", rows = "4", id = "feedback-description", onkeyup = "$('#feedback-count').text(this.value.length);" })
+                </div>
+            </div>
+            <div class="row ">
+                <div class="form-group col-lg-7 col-md-8 cptch">
+                    <label style="display: block; text-align: left;"><span style="color: red;">*&nbsp;</span>Код за сигурност</label>
+                    @Html.TextBox("ValidationImage", null, new { @class = "form-control", @autocomplete = "off", @maxlength = "5", style = "width: 180px; letter-spacing: 8px; text-align: center; padding-top: 2px; text-transform: uppercase; display: inline-block; width: 48%;" })
+                    @Html.CaptchaImage(CaptchaDifficultyLevel.Extreme, 42, 215, "validationImage", "display: inline-block; width: 48%; vertical-align: top;")
+                </div>
+                <div class="form-group col-lg-5 col-md-4 snd">
+                    <label style="display: block;">&nbsp;</label>
+                    <input type="submit" value="Изпрати" style="text-align: left;">
+                </div>
+            </div>
+        }
+    </div>
+</div>
